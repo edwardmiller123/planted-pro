@@ -3,7 +3,7 @@ LD = arm-none-eabi-ld
 
 CFLAGS = -mcpu=cortex-m4 -mthumb
 
-CSRCS := $(wildcard *.c)
+CSRCS := $(filter-out interrupts.c, $(wildcard *.c))
 COBJS := $(patsubst %.c, %.o, $(CSRCS))
 
 ASMSRCS := $(wildcard *.s)

@@ -1,19 +1,15 @@
 #ifndef IO_H
 #define IO_H
 
-static inline void write_word(unsigned int *port, unsigned int data)
-{
-    *(volatile unsigned int *)port = data;
-}
+#include "stdint.h"
 
-static inline unsigned int read_word(unsigned int *port)
-{
-    return *(volatile unsigned int *)port;
-}
+typedef volatile uint32_t *io_port;
 
-static inline unsigned int toggle_bit(unsigned int num, unsigned int n)
+#define IO_ACCESS(port) (*(io_port)(port))
+
+static inline void io_toggle_bit(uint32_t port, uint32_t n)
 {
-    return num ^ ((unsigned int)1 << n);
+    IO_ACCESS(port) ^= ((uint32_t)1 << n);
 }
 
 #endif
