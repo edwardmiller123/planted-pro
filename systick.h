@@ -3,15 +3,13 @@
 
 #include <stdint.h>
 
-#define systick_base 0xE000E010U
-
-typedef struct systick_registers {
-    uint32_t STCSR;
-    uint32_t STRVR;
-    uint32_t STCVR;
-    uint32_t STCR;
-} systick_registers;
+#define STK_CTRL_R 0xE000E010U
+#define STK_LOAD_R 0xE000E014U
+#define STK_VAL_R 0xE000E018U
+#define STK_CALIB_R 0xE000E01CU
 
 void systick_handler(void);
+
+void configure_systick(void);
 
 #endif
