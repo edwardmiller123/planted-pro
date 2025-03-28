@@ -3,7 +3,6 @@
 #include "systick.h"
 
 extern uint32_t _stack;
-extern void reset_handler(void);
 
 __attribute__ ((section(".interrupts")))
 int_table interrupt_table = {
@@ -14,10 +13,13 @@ int_table interrupt_table = {
     .mem_manage_fault = &mem_manage_fault_handler,
     .bus_fault = &bus_fault_handler,
     .usage_fault = &usage_fault_handler,
-    .reserved1 = NULL,
+    .reserved1 = 0,
+    .reserved2 = 0,
+    .reserved3 = 0,
+    .reserved4 = 0,
     .sv_call = NULL,
     .debug_monitor = &debug_monitor_handler,
-    .reserved2 = NULL,
+    .reserved5 = 0,
     .pend_sv = NULL,
     .systick = &systick_handler,
 };

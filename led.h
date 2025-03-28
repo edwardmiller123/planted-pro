@@ -42,6 +42,10 @@
 #define GPIOAOD_R_OFFSET (0x00000014U)
 #define GPIOAOD_R (GPIOA_BASE + GPIOAOD_R_OFFSET)
 
-void toggle_led(uint32_t led);
+#define LED2 5
+
+void toggle_user_led();
+
+void init_user_led();
 
 #endif
