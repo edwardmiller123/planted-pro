@@ -26,7 +26,6 @@ SECTIONS
 		_data = .; 
 		*(.data*)
 		. = ALIGN(4);
-		_data_end = .;
 	} >sram AT>flash
 	
 	/* Read-write zero initialized data */

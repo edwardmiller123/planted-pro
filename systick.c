@@ -13,7 +13,6 @@ void systick_handler(void)
 // initialise thew system clock to tick every millisecond
 void init_systick(void)
 {
-    system_counter = 0;
     // set the clock reload value (tick every millisecond)
     IO_ACCESS(STK_LOAD_R) = 18750 - 1; // processor speed/1000 - 1
     // clear the current value (just to be sure)
@@ -24,8 +23,6 @@ void init_systick(void)
     io_set_bit(STK_CTRL_R, 0);
     // enable systick exceptions
     io_set_bit(STK_CTRL_R, 1);
-
-    // enable_interrupt(SYSTICK);
 }
 
 void sys_sleep(uint32_t ms)

@@ -1,7 +1,7 @@
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
 
-CFLAGS = -mcpu=cortex-m4 -mthumb
+CFLAGS = -mcpu=cortex-m4 -mthumb -g0
 
 CSRCS := $(filter-out interrupt_table.c, $(wildcard *.c))
 COBJS := $(patsubst %.c, %.o, $(CSRCS))
