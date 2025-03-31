@@ -5,9 +5,11 @@
 #include "systick.h"
 
 extern void main(void);
-extern uint8_t _fdata;
-extern uint8_t _fdata_end;
 extern uint8_t _data;
+extern uint8_t _data_end;
+extern uint8_t _fdata;
+extern uint8_t _bss;
+extern uint8_t _bss_end;
 
 void enable_interrupt(uint32_t n)
 {
@@ -42,13 +44,19 @@ void clear_pending_interrupt(uint32_t n)
 
 void reset_handler(void)
 {
-    // copy .data section to ram
+    // copy .data section to sram
     uint8_t *pos = &_fdata;
-    uint8_t *data_end = &_fdata_end;
-    uint8_t *dst = &_data;
-    while (pos != data_end)
+    uint8_t *data_dst = &_data;
+    while (data_dst != &_data_end)
     {
-        *(dst++) = *(pos++);
+        *(data_dst++) = *(pos++);
+    }
+
+    // zero the .bss section
+    uint8_t *bss_dst = &_bss;
+    while (bss_dst != &_bss_end)
+    {
+        *(bss_dst++) = 0;
     }
 
     main();

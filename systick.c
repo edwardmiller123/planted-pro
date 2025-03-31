@@ -3,7 +3,8 @@
 #include "io.h"
 #include "led.h"
 
-static uint32_t system_counter = 0;
+// This is initialised to zero by the reset handler
+static uint32_t system_counter;
 
 void systick_handler(void)
 {
