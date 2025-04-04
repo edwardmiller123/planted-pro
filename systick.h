@@ -2,6 +2,7 @@
 #define SYSTICK_H
 
 #include <stdint.h>
+
 #define STK_OFFSET 0xE010U
 #define STK_BASE (CORE_PERIPH_BASE + STK_OFFSET)
 
@@ -15,5 +16,7 @@ void systick_handler(void);
 void init_systick(void);
 
 void sys_sleep(uint32_t ms);
+
+int wait_for_condition(bool (*cond)(void), uint32_t ms);
 
 #endif

@@ -1,3 +1,4 @@
 *.o
 prog
 *.json
+.vscode
