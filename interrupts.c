@@ -2,7 +2,6 @@
 
 #include "interrupts.h"
 #include "io.h"
-#include "systick.h"
 
 extern void main(void);
 extern uint8_t _data;
@@ -11,35 +10,56 @@ extern uint8_t _fdata;
 extern uint8_t _bss;
 extern uint8_t _bss_end;
 
-void enable_interrupt(uint32_t n)
+void nvic_enable_irq(uint32_t n)
 {
     uint32_t port;
     if (n <= 31)
     {
-        port = NVIC_ISER1_R;
+        port = NVIC_ISER0;
+    }
+    if ((32 <= n) && (n <= 63))
+    {
+        port = NVIC_ISER1;
+        n -= 32;
+    }
+
+    io_set_bit(port, n);
+}
+
+void nvic_disable_irq(uint32_t n)
+{
+    uint32_t port;
+    if (n <= 31)
+    {
+        port = NVIC_ICER0;
     }
     io_set_bit(port, n);
 }
 
-void disable_interrupt(uint32_t n)
-{
-    uint32_t port;
-    if (n <= 31)
-    {
-        port = NVIC_ICER1_R;
-    }
-    io_set_bit(port, n);
+void unmask_exti(uint32_t n) {
+    io_clear_bit(EXTI_IMR, n);
 }
 
 // clears the pending status of an interrupt so it can fire again
-void clear_pending_interrupt(uint32_t n)
+void nvic_clear_pending_irq(uint32_t n)
 {
     uint32_t port;
     if (n <= 31)
     {
-        port = NVIC_ICPR1_R;
+        port = NVIC_ICPR0;
+    }
+
+    if ((32 <= n) && (n <= 63))
+    {
+        port = NVIC_ICPR1;
+        n -= 32;
     }
     io_set_bit(port, n);
+}
+
+void exti_clear_pending_irq(uint32_t n) {
+    // writing a 1 to this register clears the bit
+    io_set_bit(EXTI_PR, n);
 }
 
 void reset_handler(void)
@@ -109,4 +129,8 @@ void debug_monitor_handler(void)
     {
         ;
     };
+}
+
+void register_irq_handler(int_table * interrupt_table, uint32_t irq, void * handler) {
+    interrupt_table->irq_handlers[irq] = handler;
 }

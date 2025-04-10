@@ -3,6 +3,7 @@
 #include "gpio.h"
 #include "io.h"
 #include "systick.h"
+#include "interrupts.h"
 
 void toggle_user_led()
 {
@@ -10,14 +11,17 @@ void toggle_user_led()
 }
 
 // Crude error signalling for now
-void fast_blink() {
-    for (int i = 0; i < 4; i++) {
+void fast_blink()
+{
+    for (int i = 0; i < 4; i++)
+    {
         toggle_user_led();
         sys_sleep(50);
     }
 }
 
-void init_user_led() {
+void init_user_led()
+{
     // enable GPIOA
     IO_ACCESS(RCC_AHB1ENR) = 0x01U;
 
@@ -37,15 +41,20 @@ void init_user_led() {
 }
 
 // Initialise the USART to use PA9 for TX and PA10 for RX
-// TODO: Enable the usart interrupts to signal the transmission is complete
-// TODO: Specify the alternative function number to use
-void init_usart() {
+void init_usart1()
+{
+    // Enable APB2 clock for USART1 interrupts
+    io_set_bit(RCC_APB2ENR, 4);
+
     // enable gpio alternate function mode (USART) for PA9
     io_clear_bit(GPIOA_MODER, 18);
     io_set_bit(GPIOA_MODER, 19);
 
-    // enable usart
-    io_set_bit(USART1_CR1, 13);
+    // set the alternate function for PA9 to AF7 (4 bits, 0111)
+    io_set_bit(GPIOA_AFRH, 4);
+    io_set_bit(GPIOA_AFRH, 5);
+    io_set_bit(GPIOA_AFRH, 6);
+    io_clear_bit(GPIOA_AFRH, 7);
 
     // set word length to transmit to 8 bits
     io_clear_bit(USART1_CR1, 12);
@@ -63,18 +72,42 @@ void init_usart() {
 
     // enable transmit
     io_set_bit(USART1_CR1, 3);
+
+    // enable transmission complete interrupt
+    io_set_bit(USART1_CR1, 6);
+
+    // enable TXE interrupt
+    io_set_bit(USART1_CR1, 7);
+
+    // enable usart
+    io_set_bit(USART1_CR1, 13);
+
+    nvic_enable_irq(USART1);
 }
 
-bool uart_transmission_succesfful() {
+bool usart_transmission_succesfful()
+{
     return io_is_bit_set(USART1_SR, 6);
 }
 
+// Checks if the TDR register is empty and hence we are ready to send data
+bool usart_data_not_empty()
+{
+    return io_is_bit_set(USART1_SR, 7);
+}
 
-void usart_send_byte(uint8_t data) {
-    IO_ACCESS(USART1_DR) = data;
-    // wait for transmission to complete (2 second timeout)
-    int ok = wait_for_condition(&uart_transmission_succesfful, 2000);
-    if (ok == -1) {
-        fast_blink();
+int usart_send_byte(uint8_t data)
+{
+    // wait for the TDR register to be empty before sending (1 second timeout)
+    if (wait_for_condition(&usart_data_not_empty, 1000) == -1)
+    {
+        return -1;
     }
+
+    IO_ACCESS(USART1_DR) = data;
+    return 0;
+}
+
+void usart1_handler()
+{
 }

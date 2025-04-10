@@ -14,6 +14,8 @@
 // AHB1 enable register
 #define RCC_AHB1ENR (RCC_BASE + 0x30U)
 
+#define RCC_APB2ENR (RCC_BASE + 0x44)
+
 // AHB1 enable in low power register
 #define AHB1LPEN_R_OFFSET (0x50U)
 #define RCC_AHB1LPEN_R (RCC_BASE + AHB1LPEN_R_OFFSET)
@@ -29,6 +31,9 @@
 #define GPIOA_OSPEEDR (GPIOA_BASE + 0x8U)
 
 #define GPIOA_PUPDR (GPIOA_BASE + 0x0CU)
+
+// Pin alternate functions 
+#define GPIOA_AFRH (GPIOA_BASE + 0x24U)
 
 // GPIOA output data register
 #define GPIOAOD_R (GPIOA_BASE + 0x14U)
@@ -51,8 +56,10 @@ void fast_blink();
 #define USART1_CR1 (USART1_BASE + 0x0CU)
 #define USART1_CR2 (USART1_BASE + 0x10)
 
-void init_usart();
+void init_usart1();
 
-void usart_send_byte(uint8_t data);
+int usart_send_byte(uint8_t data);
+
+void usart1_handler();
 
 #endif

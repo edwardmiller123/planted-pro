@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include "interrupts.h"
 #include "systick.h"
+#include "gpio.h"
 
 extern uint32_t _stack;
 
@@ -23,3 +24,7 @@ int_table interrupt_table = {
     .pend_sv = NULL,
     .systick = &systick_handler,
 };
+
+void init_irqs(int_table * interrupt_table) {
+    register_irq_handler(interrupt_table, USART1, &usart1_handler);
+}

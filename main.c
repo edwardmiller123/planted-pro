@@ -8,19 +8,25 @@
 
 #include "interrupt_table.c"
 
-void main(void)
+int main(void)
 {
-    init_user_led();
-
     init_systick();
 
-    init_usart();
+    init_irqs(&interrupt_table);
 
-    usart_send_byte('h');
+    init_user_led();
+
+    init_usart1();
 
     while (1)
     {
         toggle_user_led();
+        if (usart_send_byte('h') == -1)
+        {
+            fast_blink();
+        };
         sys_sleep(500);
     };
+
+    return 0;
 }

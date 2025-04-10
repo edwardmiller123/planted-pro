@@ -5,44 +5,61 @@
 
 #include "memmap.h"
 
-// Exception interrupt numbers
-#define RESET 1
-#define NMI 2
-#define HARD_FAULT 3
-#define MEM_MANAGE 4
-#define BUS_FAULT 5
-#define USAGE_FAULT 6
-#define SV_CALL 11
-#define DEBUG_MONITOR 12
-#define PEND_SV 14
-#define SYSTICK 15
+#define IRQ_COUNT 96
 
-// nvic register addresses
+// IRQ numbers
 
+#define EXTI9_5 23
+
+// ...
+
+#define USART1 37
+
+// EXTI Interrupt numbers
+
+#define EXTI9 9
+
+// NVIC registers
 #define NVIC_OFFSET 0xE100U
 #define NVIC_BASE (CORE_PERIPH_BASE + NVIC_OFFSET)
 
 #define NVIC_ISER_OFFSET 0x100
-#define NVIC_ISER1_R (NVIC_BASE + NVIC_ISER_OFFSET + 0x0U)
+#define NVIC_ISER0 (NVIC_BASE + NVIC_ISER_OFFSET + 0x0U)
 
-#define NVIC_ISER2_R (NVIC_BASE + NVIC_ISER_OFFSET + 0x04U)
+#define NVIC_ISER1 (NVIC_BASE + NVIC_ISER_OFFSET + 0x4U)
 
 // ...
 
 #define NVIC_ICER_OFFSET 0x180U
-#define NVIC_ICER1_R (NVIC_BASE + NVIC_ICER_OFFSET + 0x0U)
+#define NVIC_ICER0 (NVIC_BASE + NVIC_ICER_OFFSET + 0x0U)
 
 // ...
 
-#define NVIC_ICPR_OFFSET 0x280
-#define NVIC_ICPR1_R (NVIC_BASE + NVIC_ICPR_OFFSET + 0x00)
+#define NVIC_ICPR_OFFSET 0x280U
+#define NVIC_ICPR0 (NVIC_BASE + NVIC_ICPR_OFFSET + 0x0U)
 
-void enable_interrupt(uint32_t n);
+#define NVIC_ICPR1 (NVIC_BASE + NVIC_ICPR_OFFSET + 0x4U)
 
-void disable_interrupt(uint32_t n);
+// EXTI registers
+#define EXTI_BASE (APB2_BASE + 0x3C00U)
 
-// clears the pedning status of an interrupt so it can fire again
-void clear_pending_interrupt(uint32_t n);
+// Interrupt mask register
+#define EXTI_IMR (EXTI_BASE + 0x0U)
+
+// Interrupt pending register
+#define EXTI_PR (EXTI_BASE + 0x14U)
+
+void nvic_enable_irq(uint32_t n);
+
+void nvic_disable_irq(uint32_t n);
+
+void unmask_exti(uint32_t n);
+
+// clears the pending status of an irq in so it can fire again
+void nvic_clear_pending_irq(uint32_t n);
+
+// clears the pending status of an IRQ in the EXTI so it can fire again
+void exti_clear_pending_irq(uint32_t n);
 
 void reset_handler(void);
 
@@ -75,6 +92,9 @@ typedef struct __attribute__ ((packed)) int_table {
     uint32_t reserved5;
     void * pend_sv;
     void * systick;
+    void * irq_handlers[IRQ_COUNT];
 } int_table;
+
+void register_irq_handler(int_table * interrupt_table, uint32_t irq, void * handler);
 
 #endif
