@@ -56,9 +56,11 @@ void fast_blink();
 #define USART1_CR1 (USART1_BASE + 0x0CU)
 #define USART1_CR2 (USART1_BASE + 0x10)
 
-void init_usart1();
+void configure_usart1(uint32_t baud);
 
 int usart_send_byte(uint8_t data);
+
+int usart_send_buffer(uint8_t * buf, uint32_t size);
 
 void usart1_handler();
 

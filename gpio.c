@@ -40,8 +40,8 @@ void init_user_led()
     IO_ACCESS(GPIOA_OSPEEDR) = 0x400U;
 }
 
-// Initialise the USART to use PA9 for TX and PA10 for RX
-void init_usart1()
+// Initialise USART1 with (PA9 and PA10) witht he given baud rate
+void configure_usart1(uint32_t baud)
 {
     // Enable APB2 clock for USART1 interrupts
     io_set_bit(RCC_APB2ENR, 4);
@@ -63,12 +63,7 @@ void init_usart1()
     io_clear_bit(USART1_CR2, 12);
     io_clear_bit(USART1_CR2, 13);
 
-    // set baud rate to 115200
-    // usartdiv = max_clock_freq / (16 * baud_rate) = 90000000 / (16 * 115200)
-    // = 48.8281
-    // Mentissa = 48, Fraction = 0.8281 * 16 = 13.2496 ~ 13
-    // USARTDIV = DIV_Mantisa[11:0] DIV_Fraction[3:0] = [000000110000][1101] = 0x30D
-    IO_ACCESS(USART1_BRR) = 0x30D;
+    IO_ACCESS(USART1_BRR) = (APB2_DEFAULT_CLK_FREQ + baud / 2) / baud;
 
     // enable transmit
     io_set_bit(USART1_CR1, 3);
@@ -98,13 +93,22 @@ bool usart_data_not_empty()
 
 int usart_send_byte(uint8_t data)
 {
-    // wait for the TDR register to be empty before sending (1 second timeout)
-    if (wait_for_condition(&usart_data_not_empty, 1000) == -1)
-    {
-        return -1;
-    }
-
     IO_ACCESS(USART1_DR) = data;
+
+     // wait for the transmit to complete (1 second timeout)
+     if (wait_for_condition(&usart_transmission_succesfful, 1000) == -1)
+     {
+        return -1;
+     }
+    return 0;
+}
+
+int usart_send_buffer(uint8_t * buf, uint32_t size) {
+    for (int i = 0; i < size; i++) {
+        if (usart_send_byte(buf[i]) == -1) {
+            return -1;
+        }
+    }
     return 0;
 }
 
