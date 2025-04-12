@@ -78,9 +78,12 @@ void configure_usart1(uint32_t baud)
     io_set_bit(USART1_CR1, 13);
 
     nvic_enable_irq(USART1);
+
+    // allow time for usart initialise otherwise the first byte sent gets mangled
+    sys_sleep(1);
 }
 
-bool usart_transmission_succesfful()
+bool usart_transmission_successful()
 {
     return io_is_bit_set(USART1_SR, 6);
 }
@@ -91,21 +94,21 @@ bool usart_data_not_empty()
     return io_is_bit_set(USART1_SR, 7);
 }
 
-int usart_send_byte(uint8_t data)
+int usart1_send_byte(uint8_t data)
 {
     IO_ACCESS(USART1_DR) = data;
 
      // wait for the transmit to complete (1 second timeout)
-     if (wait_for_condition(&usart_transmission_succesfful, 1000) == -1)
+     if (wait_for_condition(&usart_transmission_successful, 1000) == -1)
      {
         return -1;
      }
     return 0;
 }
 
-int usart_send_buffer(uint8_t * buf, uint32_t size) {
+int usart1_send_buffer(uint8_t * buf, uint32_t size) {
     for (int i = 0; i < size; i++) {
-        if (usart_send_byte(buf[i]) == -1) {
+        if (usart1_send_byte(buf[i]) == -1) {
             return -1;
         }
     }

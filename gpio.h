@@ -58,9 +58,9 @@ void fast_blink();
 
 void configure_usart1(uint32_t baud);
 
-int usart_send_byte(uint8_t data);
+int usart1_send_byte(uint8_t data);
 
-int usart_send_buffer(uint8_t * buf, uint32_t size);
+int usart1_send_buffer(uint8_t * buf, uint32_t size);
 
 void usart1_handler();
 

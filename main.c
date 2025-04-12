@@ -6,6 +6,7 @@
 #include "io.h"
 #include "gpio.h"
 #include "systick.h"
+#include "logger.h"
 
 #include "interrupt_table.c"
 
@@ -19,12 +20,8 @@ int main(void)
 
     configure_usart1(115200);
 
-    char * test = "testing";
-
-    if (usart_send_buffer((uint8_t *)test, strlen(test)) == -1)
-    {
-        fast_blink();
-    };
+    uint32_t args[1] = {get_system_uptime()};
+    loggerf(INFO, "Initialised: systick, LED2, USART1 in $ ms", args, 1);
 
     while (1)
     {

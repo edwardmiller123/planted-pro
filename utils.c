@@ -1,8 +1,10 @@
 #include <stdint.h>
+#include <stdio.h>
 
 #define MAX_STRING_SIZE 256
+#define MAX_DIGITS 10
 
-uint32_t strlen(char *str)
+uint32_t str_len(char *str)
 {
 	uint32_t len = 0;
 	for (int i = 0; i < MAX_STRING_SIZE; i++)
@@ -14,4 +16,94 @@ uint32_t strlen(char *str)
 		len++;
 	}
 	return len;
+}
+
+void byte_copy(uint8_t *src, uint8_t *dst, uint32_t n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		dst[i] = src[i];
+	}
+}
+
+void mem_zero(uint8_t *dst, uint32_t n)
+{
+	for (int i = 0; i < n; i++)
+	{
+		dst[i] = 0;
+	}
+}
+
+// concatenates the two given strings in the given buffer. The new buffer must
+// have enough room for both strings and no args can be NULL.
+void str_cat(char *str1, char *str2, char *buf)
+{
+	uint32_t str1_len = str_len(str1);
+	uint32_t str2_len = str_len(str2);
+	uint32_t new_len = str1_len + str2_len + 1;
+	byte_copy((uint8_t *)str1, (uint8_t *)buf, str1_len);
+	byte_copy((uint8_t *)str2, (uint8_t *)buf + str1_len, str2_len);
+	buf[new_len] = '\0';
+}
+
+// returns the reverse of the provided string.
+char *reverse_string(char *str, char *new_str)
+{
+	int i = 0;
+	int j = str_len(str) - 1;
+	while (i < str_len(str))
+	{
+		new_str[i] = str[j];
+		j--;
+		i++;
+	}
+
+	// Add back the terminating character
+	new_str[str_len(str)] = '\0';
+	return new_str;
+}
+
+// returns the number of digits in the given base 10 integer
+int get_digit_count(int num)
+{
+	int multiple = 10;
+	int count = 1;
+	while (num > multiple)
+	{
+		count++;
+		multiple *= 10;
+	}
+	return count;
+}
+
+// converts an integer to a string.
+char *int_to_string(int integer, char *new_str)
+{
+  int digit_count = get_digit_count(integer);
+  // check the number doesnt exceed the digit count. This shouldnt be possible
+  // on a 32 bit system but checking just to be safe.
+  if (digit_count > MAX_DIGITS)
+  {
+    return NULL;
+  }
+
+  char reverse_str[MAX_DIGITS];
+  int n = integer;
+  int i = 0;
+  int j = 0;
+  int a = integer;
+  int b;
+  while (n > 0)
+  {
+    b = a % 10;
+    reverse_str[i] = b + 0x30;
+    a /= 10;
+    n /= 10;
+    i++;
+  }
+  reverse_str[i] = '\0';
+
+  char *result_string = reverse_string(reverse_str, new_str);
+
+  return result_string;
 }
