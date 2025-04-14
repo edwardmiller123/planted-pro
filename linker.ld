@@ -13,7 +13,6 @@ SECTIONS
 		*(.interrupts)
 		*(.text*)	/* Program code */
 		. = ALIGN(4);
-		_rodata = .;
 		*(.rodata*)	/* Read-only data. */
 		*(.data*) /* This gets copied to sram by the reset handler on startup */
 		. = ALIGN(4);

@@ -20,7 +20,7 @@ int get_digit_count(int num);
 char *reverse_string(char *str, char *new_str);
 
 // converts an integer to a string.
-char *int_to_string(int integer, char *new_str);
+char *int_to_string(uint32_t integer, char *new_str);
 
 static inline uint32_t toggle_bit(uint32_t data, uint32_t n)
 {

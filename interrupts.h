@@ -5,6 +5,9 @@
 
 #include "memmap.h"
 
+#define SCB_OFFSET (CORE_PERIPH_BASE + 0xED00U)
+#define SCB_AIRCR (SCB_OFFSET + 0x0CU)
+
 #define IRQ_COUNT 96
 
 // IRQ numbers
@@ -62,6 +65,8 @@ void nvic_clear_pending_irq(uint32_t n);
 void exti_clear_pending_irq(uint32_t n);
 
 void reset_handler(void);
+
+void software_reset(void);
 
 void nmi_handler(void);
 

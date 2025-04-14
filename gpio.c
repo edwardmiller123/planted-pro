@@ -80,7 +80,7 @@ void configure_usart1(uint32_t baud)
     nvic_enable_irq(USART1);
 
     // allow time for usart initialise otherwise the first byte sent gets mangled
-    sys_sleep(1);
+    sys_sleep(10);
 }
 
 bool usart_transmission_successful()
@@ -89,26 +89,34 @@ bool usart_transmission_successful()
 }
 
 // Checks if the TDR register is empty and hence we are ready to send data
-bool usart_data_not_empty()
+bool usart_data_empty()
 {
     return io_is_bit_set(USART1_SR, 7);
 }
 
 int usart1_send_byte(uint8_t data)
 {
+    if (wait_for_condition(&usart_data_empty, 500) == -1)
+    {
+        return -1;
+    }
+
     IO_ACCESS(USART1_DR) = data;
 
-     // wait for the transmit to complete (1 second timeout)
-     if (wait_for_condition(&usart_transmission_successful, 1000) == -1)
-     {
+    // wait for the transmit to complete (1 second timeout)
+    if (wait_for_condition(&usart_transmission_successful, 500) == -1)
+    {
         return -1;
-     }
+    }
     return 0;
 }
 
-int usart1_send_buffer(uint8_t * buf, uint32_t size) {
-    for (int i = 0; i < size; i++) {
-        if (usart1_send_byte(buf[i]) == -1) {
+int usart1_send_buffer(uint8_t *buf, uint32_t size)
+{
+    for (int i = 0; i < size; i++)
+    {
+        if (usart1_send_byte(buf[i]) == -1)
+        {
             return -1;
         }
     }

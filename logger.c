@@ -4,11 +4,13 @@
 #include "logger.h"
 #include "utils.h"
 #include "gpio.h"
+#include "interrupts.h"
 
 // maximum length of a log message
 #define MAX_MESSAGE_LENGTH 256
 #define MAX_MESSAGE_PART_COUNT 10
 #define MAX_MESSAGE_PART_SIZE 64
+
 
 static log_level current_level = INFO;
 
@@ -26,15 +28,16 @@ void logger_send(char *level, char *msg)
     char *finished_msg = buf;
     if (str_len(level) + str_len(msg) > MAX_MESSAGE_LENGTH)
     {
-        finished_msg = "ERROR: Log message character limit exceeded\n";
+        finished_msg = "ERROR: Log message character limit exceeded";
     }
     else
     {
         str_cat(level, msg, finished_msg);
-        str_cat(finished_msg, "\n", finished_msg);
     }
 
-    if (usart1_send_buffer((uint8_t *)finished_msg, str_len(buf)) == -1)
+    str_cat(finished_msg, "\r\n", finished_msg);
+
+    if (usart1_send_buffer((uint8_t *)finished_msg, str_len(finished_msg)) == -1)
     {
         fast_blink();
     }
@@ -58,7 +61,7 @@ void log_info(char *msg)
         return;
     }
 
-    char *level = "INFO : ";
+    char *level = "INFO: ";
     logger_send(level, msg);
 }
 
@@ -69,7 +72,7 @@ void log_warning(char *msg)
         return;
     }
 
-    char *level = "WARNING: ";
+    char *level = "WARN: ";
     logger_send(level, msg);
 }
 
@@ -80,15 +83,18 @@ void log_error(char *msg)
         return;
     }
 
-    char *levelStr = "ERROR: ";
-    logger_send(levelStr, msg);
+    char *level = "ERROR: ";
+    logger_send(level, msg);
 }
 
 void log_fatal(char *msg)
 {
     char *level = "FATAL: ";
     logger_send(level, msg);
-    // TODO: trigger software reset as we cant continue
+
+    // force a system reset since by definition FATAL is unrecoverable
+    software_reset();
+    
 }
 
 void logger(log_level level, char *msg)
@@ -179,18 +185,17 @@ void loggerf(log_level level, char *msg, uint32_t args[], uint32_t arg_count)
             log_error("Log message has to many parts");
             return;
         }
+
         if (arg_idx > arg_count)
         {
-            log_error("Logger arg limit exceeded");
+            log_error("Logger argument limit exceeded");
             return;
         }
     }
 
     // now concatenate the parts of the string
-    // TODO: this doesnt work correctly
-    char *formatted_msg;
-    char new_str[MAX_MESSAGE_LENGTH];
-    formatted_msg = new_str;
+    char formatted_msg[MAX_MESSAGE_LENGTH];
+    formatted_msg[0] = '\0';
 
     for (int i = 0; i <= part_idx; i++)
     {

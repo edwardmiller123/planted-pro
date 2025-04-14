@@ -82,6 +82,11 @@ void reset_handler(void)
     main();
 }
 
+void software_reset(void) {
+    io_set_bit(SCB_AIRCR, 2);
+    reset_handler();
+}
+
 // for now just hang
 void nmi_handler(void)
 {

@@ -77,9 +77,9 @@ int get_digit_count(int num)
 }
 
 // converts an integer to a string.
-char *int_to_string(int integer, char *new_str)
+char *int_to_string(uint32_t integer, char *new_str)
 {
-  int digit_count = get_digit_count(integer);
+  uint32_t digit_count = get_digit_count(integer);
   // check the number doesnt exceed the digit count. This shouldnt be possible
   // on a 32 bit system but checking just to be safe.
   if (digit_count > MAX_DIGITS)
@@ -88,11 +88,10 @@ char *int_to_string(int integer, char *new_str)
   }
 
   char reverse_str[MAX_DIGITS];
-  int n = integer;
-  int i = 0;
-  int j = 0;
-  int a = integer;
-  int b;
+  uint32_t n = integer;
+  uint32_t i = 0;
+  uint32_t a = integer;
+  uint32_t b;
   while (n > 0)
   {
     b = a % 10;
