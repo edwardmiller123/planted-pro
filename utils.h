@@ -5,7 +5,7 @@
 
 uint32_t str_len(char *str);
 
-void byte_copy(uint8_t * src, uint8_t * dst, uint32_t n);
+uint8_t * byte_copy(uint8_t * src, uint8_t * dst, uint32_t n);
 
 void mem_zero(uint8_t *dst, uint32_t n);
 

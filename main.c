@@ -22,14 +22,8 @@ int main(void)
 
     set_log_level(INFO);
 
-    char buf[10];
-
-    logger(INFO, int_to_string(34567, buf));
-
     uint32_t args[1] = {get_system_uptime()};
     loggerf(INFO, "Systick, LED2 and USART1 initialisation completed in $ ms", args, 1);
-
-    logger(INFO, "test");
 
     while (1)
     {

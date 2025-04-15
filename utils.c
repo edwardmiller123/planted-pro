@@ -18,12 +18,14 @@ uint32_t str_len(char *str)
 	return len;
 }
 
-void byte_copy(uint8_t *src, uint8_t *dst, uint32_t n)
+// copies n bytes from src to dst returning apointer at the end of the copied region
+uint8_t * byte_copy(uint8_t *src, uint8_t *dst, uint32_t n)
 {
 	for (int i = 0; i < n; i++)
 	{
-		dst[i] = src[i];
+		*dst++ = *src++;
 	}
+	return dst;
 }
 
 void mem_zero(uint8_t *dst, uint32_t n)
@@ -36,6 +38,7 @@ void mem_zero(uint8_t *dst, uint32_t n)
 
 // concatenates the two given strings in the given buffer. The new buffer must
 // have enough room for both strings and no args can be NULL.
+// TODO: use pointer from byte_copy
 void str_cat(char *str1, char *str2, char *buf)
 {
 	uint32_t str1_len = str_len(str1);

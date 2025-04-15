@@ -195,12 +195,16 @@ void loggerf(log_level level, char *msg, uint32_t args[], uint32_t arg_count)
 
     // now concatenate the parts of the string
     char formatted_msg[MAX_MESSAGE_LENGTH];
-    formatted_msg[0] = '\0';
 
-    for (int i = 0; i <= part_idx; i++)
-    {
-        str_cat(formatted_msg, msg_parts[i], formatted_msg);
-    }
+    int i = 0;
+    uint8_t * pos = (uint8_t *)formatted_msg;
+    uint32_t total_length = 0;
+    do {
+        pos = byte_copy((uint8_t *)msg_parts[i], pos, str_len(msg_parts[i]));
+        total_length += str_len(msg_parts[i]);
+        i++;
+    } while (i <= part_idx);
+    formatted_msg[total_length] = '\0';
 
     logger(level, formatted_msg);
 }
