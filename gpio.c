@@ -7,7 +7,7 @@
 
 void toggle_user_led()
 {
-    io_toggle_bit(GPIOAOD_R, LED2);
+    io_toggle_bit(GPIOA_ODR, LED2); //0x40020014
 }
 
 // Crude error signalling for now
@@ -20,17 +20,15 @@ void fast_blink()
     }
 }
 
+// Initialise GPIOA for the user LED. Requires the bus to be enabled first
 void init_user_led()
 {
-    // enable GPIOA
-    IO_ACCESS(RCC_AHB1ENR) = 0x01U;
-
-    // set GPIO mode to output. Since this option is encoded as two bits we shouldnt assume
+    // set GPIO PA5 mode to output. Since this option is encoded as two bits we shouldnt assume
     // one hasnt been set
     io_clear_bit(GPIOA_MODER, 9);
     io_set_bit(GPIOA_MODER, 10);
 
-    // set GPIO mode to pull up
+    // set GPIO PA5 mode to pull up
     io_set_bit(GPIOA_PUPDR, 10);
 
     // set GPIO type to push pull
@@ -40,12 +38,9 @@ void init_user_led()
     IO_ACCESS(GPIOA_OSPEEDR) = 0x400U;
 }
 
-// Initialise USART1 with (PA9 and PA10) witht he given baud rate
+// Initialise USART1 with (PA9 and PA10) with the given baud rate. Requires the correct bus to be enabled first
 void configure_usart1(uint32_t baud)
 {
-    // Enable APB2 clock for USART1 interrupts
-    io_set_bit(RCC_APB2ENR, 4);
-
     // enable gpio alternate function mode (USART) for PA9
     io_clear_bit(GPIOA_MODER, 18);
     io_set_bit(GPIOA_MODER, 19);
@@ -85,13 +80,13 @@ void configure_usart1(uint32_t baud)
 
 bool usart_transmission_successful()
 {
-    return io_is_bit_set(USART1_SR, 6);
+    return (bool)io_get_bit(USART1_SR, 6);
 }
 
 // Checks if the TDR register is empty and hence we are ready to send data
 bool usart_data_empty()
 {
-    return io_is_bit_set(USART1_SR, 7);
+    return (bool)io_get_bit(USART1_SR, 7);
 }
 
 int usart1_send_byte(uint8_t data)

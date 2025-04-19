@@ -1,5 +1,3 @@
-#include <stdbool.h>
-
 #include "systick.h"
 #include "interrupts.h"
 #include "io.h"

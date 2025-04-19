@@ -2,7 +2,8 @@
 #define IO_H
 
 #include "stdint.h"
-#include "stdbool.h"
+
+#include "utils.h"
 
 typedef volatile uint32_t *io_port;
 
@@ -25,13 +26,29 @@ static inline void io_clear_bit(uint32_t port, uint32_t n)
     IO_ACCESS(port) &= ~((uint32_t)1 << n);
 }
 
-// Check if the given bit is set
-static inline bool io_is_bit_set(uint32_t port, uint32_t n) {
-    uint32_t isolated_bit = IO_ACCESS(port) & (1 << n);
-    if (isolated_bit == 0) {
-        return false;
+// returns the given bit from the IO port
+static inline uint32_t io_get_bit(uint32_t port, uint32_t n) {
+    return ((IO_ACCESS(port) & (1 << n)) >> n);
+}
+
+// set or clear the given bit in the IO port based of the value of the 
+// given condition bit
+static inline void io_match_bit(uint32_t port, uint32_t condition_bit, uint32_t n)
+{
+    switch (condition_bit) {
+        case 1:
+            io_set_bit(port, n);
+            break;
+        case 0:
+            io_clear_bit(port, n);
+            break;
     }
-    return true;
 }
 
 #endif
+
+// data port res
+// 0100 0011 |= 0111
+// 0100 0111 |= 0111
+// 0000 0011 &= 
+// 0000 0111

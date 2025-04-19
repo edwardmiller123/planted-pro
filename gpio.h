@@ -5,40 +5,69 @@
 
 #include "memmap.h"
 
-// base address of RCC module
-#define RCC_BASE (AHB1_BASE + 0x3800U)
-
-// AHB1 peripheral reset
-#define RCC_AHB1RSTR (RCC_BASE + 0x10U)
-
-// AHB1 enable register
-#define RCC_AHB1ENR (RCC_BASE + 0x30U)
-
-#define RCC_APB2ENR (RCC_BASE + 0x44)
-
-// AHB1 enable in low power register
-#define AHB1LPEN_R_OFFSET (0x50U)
-#define RCC_AHB1LPEN_R (RCC_BASE + AHB1LPEN_R_OFFSET)
+// GPIOA //
 
 // base address of GPIOA port
 #define GPIOA_BASE (AHB1_BASE + 0x0U)
 
-// base address of GPIOA mode register
-#define GPIOA_MODER (GPIOA_BASE + 0x0U)
-
+#define GPIOA_MODER (GPIOA_BASE + 0x0U) // Output mode
 #define GPIOA_OTYPER (GPIOA_BASE + 0x4U)
-
 #define GPIOA_OSPEEDR (GPIOA_BASE + 0x8U)
-
 #define GPIOA_PUPDR (GPIOA_BASE + 0x0CU)
-
-// Pin alternate functions 
-#define GPIOA_AFRH (GPIOA_BASE + 0x24U)
-
-// GPIOA output data register
-#define GPIOAOD_R (GPIOA_BASE + 0x14U)
+#define GPIOA_AFRH (GPIOA_BASE + 0x24U) // Pin alternate functions 
+#define GPIOA_ODR (GPIOA_BASE + 0x14U) // Output data register
 
 #define PA5 5
+
+// GPIOB //
+
+#define PB8 8
+#define PB13 13
+#define PB14 14
+#define PB15 15
+
+#define GPIOB_BASE (AHB1_BASE + 0x400U)
+
+#define GPIOB_MODER (GPIOB_BASE + 0x0U)
+#define GPIOB_OTYPER (GPIOB_BASE + 0x4U)
+#define GPIOB_OSPEEDR (GPIOB_BASE + 0x8U)
+#define GPIOB_PUPDR (GPIOB_BASE + 0x0CU)
+#define GPIOB_AFRH (GPIOB_BASE + 0x24U)
+#define GPIOB_ODR (GPIOB_BASE + 0x14U)
+
+// GPIOC //
+
+#define GPIOC_BASE (AHB1_BASE + 0x800U)
+
+#define GPIOC_MODER (GPIOC_BASE + 0x0U)
+#define GPIOC_OTYPER (GPIOC_BASE + 0x4U)
+#define GPIOC_OSPEEDR (GPIOC_BASE + 0x8U)
+#define GPIOC_PUPDR (GPIOC_BASE + 0x0CU)
+#define GPIOC_AFRH (GPIOC_BASE + 0x24U)
+#define GPIOC_ODR (GPIOC_BASE + 0x14U)
+
+#define PC6 6
+#define PC8 8
+#define PC9 9
+#define PC10 10
+#define PC11 11
+#define PC12 12
+
+// GPIOD //
+
+#define GPIOD_BASE (AHB1_BASE + 0xC00U)
+
+#define GPIOD_MODER (GPIOD_BASE + 0x0U)
+#define GPIOD_OTYPER (GPIOD_BASE + 0x4U)
+#define GPIOD_OSPEEDR (GPIOD_BASE + 0x8U)
+#define GPIOD_PUPDR (GPIOD_BASE + 0x0CU)
+#define GPIOD_AFRH (GPIOD_BASE + 0x24U)
+#define GPIOD_ODR (GPIOD_BASE + 0x14U)
+
+#define PD2 2
+
+// LED //
+
 #define LED2 PA5
 
 void toggle_user_led();
@@ -46,6 +75,8 @@ void toggle_user_led();
 void init_user_led();
 
 void fast_blink();
+
+// USART1 //
 
 #define USART1_OFFSET (0x1000U)
 #define USART1_BASE (APB2_BASE + USART1_OFFSET)

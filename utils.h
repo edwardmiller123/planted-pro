@@ -28,4 +28,8 @@ static inline uint32_t toggle_bit(uint32_t data, uint32_t n)
     return data;
 }
 
+static inline uint32_t get_bit(uint32_t data, uint32_t n) {
+    return ((data & (1 << n)) >> n);
+}
+
 #endif

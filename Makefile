@@ -8,7 +8,7 @@ COBJS := $(patsubst %.c, %.o, $(CSRCS))
 ASMSRCS := $(wildcard *.s)
 ASMOBJS := $(patsubst %.s, %.o, $(ASMSRCS))
 
-prog: $(COBJS) $(ASMOBJS)
+plant_monitor: $(COBJS) $(ASMOBJS)
 	$(LD) $^ -T linker.ld -o $@
 
 %.o: %.c
@@ -17,5 +17,7 @@ prog: $(COBJS) $(ASMOBJS)
 %.o: %.s
 	$(CC) $(CFLAGS) -c $^ -o $@ -g
 
+.PHONY: clean
+
 clean :
-	rm -rf *.o prog
+	rm -rf *.o plant-monitor
