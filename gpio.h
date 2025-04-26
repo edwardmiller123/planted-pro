@@ -5,6 +5,21 @@
 
 #include "memmap.h"
 
+typedef enum gpio {
+	GPIOA,
+	GPIOB,
+	GPIOC,
+	GPIOD
+} gpio;
+
+typedef enum gpio_action {
+	CLEAR,
+	SET
+} gpio_action;
+
+// alters the state the given pin in the given gpio port using the atomic BSSR register
+void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action);
+
 // GPIOA //
 
 // base address of GPIOA port
@@ -16,6 +31,7 @@
 #define GPIOA_PUPDR (GPIOA_BASE + 0x0CU)
 #define GPIOA_AFRH (GPIOA_BASE + 0x24U) // Pin alternate functions 
 #define GPIOA_ODR (GPIOA_BASE + 0x14U) // Output data register
+#define GPIOA_BSSR (GPIOA_BASE + 0x18U) // Output data register
 
 #define PA5 5
 
@@ -34,6 +50,7 @@
 #define GPIOB_PUPDR (GPIOB_BASE + 0x0CU)
 #define GPIOB_AFRH (GPIOB_BASE + 0x24U)
 #define GPIOB_ODR (GPIOB_BASE + 0x14U)
+#define GPIOB_BSSR (GPIOB_BASE + 0x18U)
 
 // GPIOC //
 
@@ -45,6 +62,7 @@
 #define GPIOC_PUPDR (GPIOC_BASE + 0x0CU)
 #define GPIOC_AFRH (GPIOC_BASE + 0x24U)
 #define GPIOC_ODR (GPIOC_BASE + 0x14U)
+#define GPIOC_BSSR (GPIOC_BASE + 0x18U)
 
 #define PC6 6
 #define PC8 8
@@ -63,6 +81,7 @@
 #define GPIOD_PUPDR (GPIOD_BASE + 0x0CU)
 #define GPIOD_AFRH (GPIOD_BASE + 0x24U)
 #define GPIOD_ODR (GPIOD_BASE + 0x14U)
+#define GPIOD_BSSR (GPIOD_BASE + 0x18U)
 
 #define PD2 2
 

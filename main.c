@@ -12,8 +12,11 @@
 
 int main(void)
 {
-    // enable AHB1 bus
-    IO_ACCESS(RCC_AHB1ENR) = 0x01U;
+    // enable gpio ports A - D in AHB1 bus
+    io_set_bit(RCC_AHB1ENR, 0);
+    io_set_bit(RCC_AHB1ENR, 1);
+    io_set_bit(RCC_AHB1ENR, 2);
+    io_set_bit(RCC_AHB1ENR, 3);
 
     // Enable APB2 bus for USART1
     io_set_bit(RCC_APB2ENR, 4);
@@ -33,9 +36,21 @@ int main(void)
 
     configure_lcd();
 
+    lcd_write_string("Hello there");
+
     while (1)
     {
+        lcd_clear_display();
         toggle_user_led();
+        lcd_write_string("Hello");
+        sys_sleep(500);
+
+        toggle_user_led();
+        lcd_clear_display();
+        sys_sleep(500);
+        
+        toggle_user_led();
+        lcd_write_string("There");
         sys_sleep(500);
     };
 

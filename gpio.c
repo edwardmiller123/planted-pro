@@ -5,6 +5,27 @@
 #include "systick.h"
 #include "interrupts.h"
 
+// alters the state the given pin in the given gpio port using the atomic BSSR register
+void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action) {
+    if (action == CLEAR) {
+        pin += 16;
+    }
+    switch (port){
+        case GPIOA:
+            io_set_bit(GPIOA_BSSR, pin);
+            break;
+        case GPIOB:
+            io_set_bit(GPIOB_BSSR, pin);
+            break;
+        case GPIOC:
+            io_set_bit(GPIOC_BSSR, pin);
+            break;
+        case GPIOD:
+            io_set_bit(GPIOD_BSSR, pin);
+            break;
+    }
+}
+
 void toggle_user_led()
 {
     io_toggle_bit(GPIOA_ODR, LED2); //0x40020014
@@ -20,13 +41,13 @@ void fast_blink()
     }
 }
 
-// Initialise GPIOA for the user LED. Requires the bus to be enabled first
+// Initialise GPIOA for the user LED. Requires GPIOA to be enabled first
 void init_user_led()
 {
     // set GPIO PA5 mode to output. Since this option is encoded as two bits we shouldnt assume
     // one hasnt been set
-    io_clear_bit(GPIOA_MODER, 9);
     io_set_bit(GPIOA_MODER, 10);
+    io_clear_bit(GPIOA_MODER, 11);
 
     // set GPIO PA5 mode to pull up
     io_set_bit(GPIOA_PUPDR, 10);
