@@ -36,13 +36,11 @@ int main(void)
 
     configure_lcd();
 
-    lcd_set_cursor(3, 0);
+    lcd_write_string("Hello There");
 
-    lcd_write_string("H");
+    lcd_set_cursor(0, 1);
 
-    lcd_set_cursor(5, 1);
-
-    lcd_write_string("T");
+    lcd_write_string("General Kenobi");
 
     while (1)
     {

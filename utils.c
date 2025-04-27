@@ -38,15 +38,13 @@ void mem_zero(uint8_t *dst, uint32_t n)
 
 // concatenates the two given strings in the given buffer. The new buffer must
 // have enough room for both strings and no args can be NULL.
-// TODO: use pointer from byte_copy
 void str_cat(char *str1, char *str2, char *buf)
 {
 	uint32_t str1_len = str_len(str1);
 	uint32_t str2_len = str_len(str2);
-	uint32_t new_len = str1_len + str2_len + 1;
-	byte_copy((uint8_t *)str1, (uint8_t *)buf, str1_len);
-	byte_copy((uint8_t *)str2, (uint8_t *)buf + str1_len, str2_len);
-	buf[new_len] = '\0';
+	uint8_t * pos = byte_copy((uint8_t *)str1, (uint8_t *)buf, str1_len);
+	pos = byte_copy((uint8_t *)str2, pos, str2_len);
+	*pos = '\0';
 }
 
 // returns the reverse of the provided string.
