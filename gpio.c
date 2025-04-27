@@ -96,7 +96,7 @@ void configure_usart1(uint32_t baud)
     nvic_enable_irq(USART1);
 
     // allow time for usart initialise otherwise the first byte sent gets mangled
-    sys_sleep(10);
+    sys_sleep(5);
 }
 
 bool usart_transmission_successful()

@@ -29,28 +29,25 @@ int main(void)
 
     configure_usart1(115200);
 
-    set_log_level(INFO);
+    set_log_level(DEBUG);
 
     uint32_t args[1] = {get_system_uptime()};
     loggerf(INFO, "Systick, LED2 and USART1 initialisation completed in $ ms", args, 1);
 
     configure_lcd();
 
-    lcd_write_string("Hello there");
+    lcd_set_cursor(3, 0);
+
+    lcd_write_string("H");
+
+    lcd_set_cursor(5, 1);
+
+    lcd_write_string("T");
 
     while (1)
     {
-        lcd_clear_display();
-        toggle_user_led();
-        lcd_write_string("Hello");
-        sys_sleep(500);
 
         toggle_user_led();
-        lcd_clear_display();
-        sys_sleep(500);
-        
-        toggle_user_led();
-        lcd_write_string("There");
         sys_sleep(500);
     };
 

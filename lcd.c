@@ -160,6 +160,7 @@ void configure_lcd(void)
 	logger(INFO, "Initialised LCD in 8bit mode");
 }
 
+// write the given string from the current cursor position
 void lcd_write_string(char * str) {
 	logger(DEBUG, "Writing string to lcd");
 
@@ -175,4 +176,23 @@ void lcd_clear_display() {
 	logger(DEBUG, "Clearing lcd display");
 	lcd_write_byte((uint8_t)0x1, INSTRUCTION);
 	sys_sleep(2);
+}
+
+// set the cursor to the given coordinates. x gives the column and y specifies the row 
+// e.g (3, 1) third colum, second row.
+void lcd_set_cursor(uint32_t x, uint32_t y) {
+	if (y > 1) {
+		uint32_t args[] = {x, y};
+		loggerf(ERROR, "Invalid cursor position: ($, $)", args, 2);
+		return;
+	}
+
+	uint32_t y_offset = y * 0x40;
+	uint32_t pos = y_offset + x;
+
+	uint32_t args2[] = {pos};
+	loggerf(DEBUG, "Setting cursor address to $", args2, 1);
+
+	lcd_write_byte((uint8_t)set_bit(pos, 7), INSTRUCTION);
+	sys_sleep(1);
 }

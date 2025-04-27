@@ -5,9 +5,9 @@
 
 #include "utils.h"
 
-typedef volatile uint32_t *io_port;
+typedef volatile uint32_t *_io_port;
 
-#define IO_ACCESS(port) (*(io_port)(port))
+#define IO_ACCESS(port) (*(_io_port)(port))
 
 static inline void io_toggle_bit(uint32_t port, uint32_t n)
 {
@@ -44,11 +44,4 @@ static inline void io_match_bit(uint32_t port, uint32_t condition_bit, uint32_t 
             break;
     }
 }
-
 #endif
-
-// data port res
-// 0100 0011 |= 0111
-// 0100 0111 |= 0111
-// 0000 0011 &= 
-// 0000 0111

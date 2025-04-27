@@ -13,7 +13,7 @@ void mem_zero(uint8_t *dst, uint32_t n);
 // have enough room for both strings and no args can be NULL.
 void str_cat(char *str1, char *str2, char *buf);
 
-// getDigitCount returns the number of digits in the given base 10 integer
+// get_digit_count returns the number of digits in the given base 10 integer
 int get_digit_count(int num);
 
 // returns the reverse of the provided string.
@@ -28,8 +28,22 @@ static inline uint32_t toggle_bit(uint32_t data, uint32_t n)
     return data;
 }
 
+// returns the given bit from the data
 static inline uint32_t get_bit(uint32_t data, uint32_t n) {
     return ((data & (1 << n)) >> n);
+}
+
+static inline uint32_t set_bit(uint32_t data, uint32_t n)
+{
+    data |= ((uint32_t)1 << n);
+    return data;
+}
+
+// sets the given bit to 0 in the given data. Does nothing if the bit is already 0
+static inline uint32_t clear_bit(uint32_t data, uint32_t n)
+{
+    data &= ~((uint32_t)1 << n);
+    return data;
 }
 
 #endif
