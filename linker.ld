@@ -13,12 +13,14 @@ SECTIONS
 		*(.interrupts)
 		*(.text*)	/* Program code */
 		. = ALIGN(4);
-		*(.rodata*)	/* Read-only data. */
-		*(.data*) /* This gets copied to sram by the reset handler on startup */
+	} >flash
+
+	.rodata : {
+		*(.rodata*)
 		. = ALIGN(4);
 	} >flash
 
-	/* Read-write initialized data */
+	/* Read-write initialized data. This gets copied from flash at run time */
 	.data : {
 		_data = .; 
 		*(.data*)
@@ -38,4 +40,4 @@ SECTIONS
 
 _fdata = LOADADDR(.data);
 
-PROVIDE(_stack = ORIGIN(sram) + LENGTH(sram));
+_stack = ORIGIN(sram) + LENGTH(sram);

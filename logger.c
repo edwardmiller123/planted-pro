@@ -11,7 +11,6 @@
 #define MAX_MESSAGE_PART_COUNT 10
 #define MAX_MESSAGE_PART_SIZE 64
 
-
 static log_level current_level = INFO;
 
 // set_log_level sets the global logging level

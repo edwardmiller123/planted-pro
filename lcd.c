@@ -157,7 +157,7 @@ void configure_lcd(void)
 	lcd_write_byte((uint8_t)0xC, INSTRUCTION);
 	sys_sleep(1);
 
-	logger(INFO, "Initialised LCD in 8bit mode");
+	logger(INFO, "Initialised LCD in 8-bit mode");
 }
 
 // write the given string from the current cursor position
