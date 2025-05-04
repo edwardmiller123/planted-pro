@@ -11,11 +11,8 @@
 #define IRQ_COUNT 96
 
 // IRQ numbers
-
+#define ADC 18
 #define EXTI9_5 23
-
-// ...
-
 #define USART1 37
 
 // EXTI Interrupt numbers

@@ -33,6 +33,7 @@ void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action);
 #define GPIOA_ODR (GPIOA_BASE + 0x14U) // Output data register
 #define GPIOA_BSSR (GPIOA_BASE + 0x18U) // Output data register
 
+#define PA1 1
 #define PA5 5
 
 // GPIOB //

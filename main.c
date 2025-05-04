@@ -7,6 +7,7 @@
 #include "systick.h"
 #include "logger.h"
 #include "lcd.h"
+#include "adc.h"
 
 #include "interrupt_table.c"
 
@@ -17,9 +18,6 @@ int main(void)
     io_set_bit(RCC_AHB1ENR, 1);
     io_set_bit(RCC_AHB1ENR, 2);
     io_set_bit(RCC_AHB1ENR, 3);
-
-    // Enable APB2 bus for USART1
-    io_set_bit(RCC_APB2ENR, 4);
 
     init_systick();
 
@@ -42,10 +40,13 @@ int main(void)
 
     lcd_write_string("General Kenobi");
 
+    configure_adc1();
+
     while (1)
     {
 
         toggle_user_led();
+        adc1_manual_conversion();
         sys_sleep(500);
     };
 

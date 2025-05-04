@@ -2,6 +2,7 @@
 #include "interrupts.h"
 #include "systick.h"
 #include "gpio.h"
+#include "adc.h"
 
 extern uint32_t _stack;
 
@@ -25,6 +26,8 @@ int_table interrupt_table = {
     .systick = &systick_handler,
 };
 
+// TODO: IRQs dont actually work
 void init_irqs(int_table * interrupt_table) {
     register_irq_handler(interrupt_table, USART1, &usart1_handler);
+    register_irq_handler(interrupt_table, ADC, &adc_handler);
 }

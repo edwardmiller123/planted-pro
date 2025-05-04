@@ -62,6 +62,9 @@ void init_user_led()
 // Initialise USART1 with (PA9 and PA10) with the given baud rate. Requires the correct bus to be enabled first
 void configure_usart1(uint32_t baud)
 {
+    // Enable APB2 bus for USART1
+    io_set_bit(RCC_APB2ENR, 4);
+    
     // enable gpio alternate function mode (USART) for PA9
     io_clear_bit(GPIOA_MODER, 18);
     io_set_bit(GPIOA_MODER, 19);
