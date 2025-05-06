@@ -28,7 +28,7 @@ void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action) {
 
 void toggle_user_led()
 {
-    io_toggle_bit(GPIOA_ODR, LED2); //0x40020014
+    io_toggle_bit(GPIOA_ODR, LED2);
 }
 
 // Crude error signalling for now

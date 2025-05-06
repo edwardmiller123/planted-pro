@@ -8,6 +8,7 @@
 #include "logger.h"
 #include "lcd.h"
 #include "adc.h"
+#include "monitor.h"
 
 #include "interrupt_table.c"
 
@@ -30,24 +31,21 @@ int main(void)
     set_log_level(DEBUG);
 
     uint32_t args[1] = {get_system_uptime()};
-    loggerf(INFO, "Systick, LED2 and USART1 initialisation completed in $ ms", args, 1);
+    loggerf(INFO, "Systick, LED2 and USART1 initialisation completed in $ ms", args, 1, NULL, 0);
 
     configure_lcd();
 
-    lcd_write_string("Hello There");
-
-    lcd_set_cursor(0, 1);
-
-    lcd_write_string("General Kenobi");
-
     configure_adc1();
+
+    queue light_readings_queue;
+    light_monitor lm;
+    monitor m;
+
+    init_monitor(&m, &lm, &light_readings_queue);
 
     while (1)
     {
-
-        toggle_user_led();
-        adc1_manual_conversion();
-        sys_sleep(500);
+        run_monitor(&m);
     };
 
     return 0;

@@ -1,4 +1,6 @@
-#include <stdio.h>
+#include <stdint.h>
+
+#include "utils.h"
 #include "interrupts.h"
 #include "systick.h"
 #include "gpio.h"

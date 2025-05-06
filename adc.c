@@ -1,6 +1,7 @@
 #include <stdbool.h>
 #include <stdint.h>
 
+#include "utils.h"
 #include "adc.h"
 #include "systick.h"
 #include "io.h"
@@ -8,8 +9,7 @@
 #include "logger.h"
 #include "interrupts.h"
 
-// A conversion is manually started and once finished is written to a FIFO queue
-// by the interrupt handler which can be read from at will
+// TODO: maybe make adc interrupt driven
 
 // configure the ADC to use PA1 as the input pin
 void configure_adc1() {
@@ -52,19 +52,19 @@ bool adc_conversion_complete() {
 	return (bool)io_get_bit(ADC1_SR, 1);
 }
 
-uint32_t adc1_manual_conversion() {
+int32_t adc1_manual_conversion() {
 	io_set_bit(ADC1_CR2, 30);
 
 	if (wait_for_condition(&adc_conversion_complete, 500) == -1)
     {
 		logger(ERROR, "ADC conversion timed out");
-        return 0;
+        return -1;
     }
 	
 	uint32_t adc_val = IO_ACCESS(ADC1_DR);
 
 	uint32_t args[] = {adc_val};
-	loggerf(DEBUG, "ADC read conversion value: $", args, 1);
+	loggerf(DEBUG, "ADC read conversion value: $", args, 1, NULL, 0);
 
 	return adc_val;
 }
@@ -72,9 +72,4 @@ uint32_t adc1_manual_conversion() {
 
 void adc_handler() {
 	logger(DEBUG, "ADC interrupt triggered");
-
-	// // check if conversion has finished
-	// if ((bool)io_get_bit(ADC_CR2, 10)) {
-
-	// }
 }

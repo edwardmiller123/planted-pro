@@ -2,7 +2,6 @@
 
 #include "utils.h"
 #include "logger.h"
-
 #include "queue.h"
 
 void reset_queue(queue *q)
@@ -10,14 +9,12 @@ void reset_queue(queue *q)
 	q->size = 0;
 	q->back = 0;
 	q->pos = 0;
-	mem_zero(q->data, MAX_QUEUE_SIZE);
-
-	logger(DEBUG, "Queue resetting.");
+	logger(DEBUG, "Queue resetting");
 }
 
 int fifo_add(queue *q, uint32_t elem)
 {
-	if (q->size = MAX_QUEUE_SIZE)
+	if (q->size == MAX_QUEUE_SIZE)
 	{
 		logger(ERROR, "Queue full");
 		reset_queue(q);
@@ -29,15 +26,15 @@ int fifo_add(queue *q, uint32_t elem)
 	q->size++;
 
 	uint32_t args[] = {elem};
-	loggerf(DEBUG, "Added $ to queue", args, 1);
+	loggerf(DEBUG, "Added $ to queue", args, 1, NULL, 0);
 
 	return 0;
 }
 
-uint32_t fifo_get(queue *q) {
+int32_t fifo_get(queue *q) {
 	if (q->size == 0) {
 		logger(ERROR, "Queue empty");
-		return 0;
+		return -1;
 	}
 
 	uint32_t val = q->data[q->back++];
@@ -45,11 +42,12 @@ uint32_t fifo_get(queue *q) {
 	q->size--;
 
 	uint32_t args[] = {q->data[q->back - 1]};
-	loggerf(DEBUG, "Removed $ from queue", args, 1);
+	loggerf(DEBUG, "Removed $ from queue", args, 1, NULL, 0);
 
 	if (q->back == MAX_QUEUE_SIZE) {
+		logger(WARNING, "Queue capacity reached");
 		reset_queue(q);
 	}
 
-	return val;
+	return (int32_t)val;
 }

@@ -5,9 +5,6 @@
 
 #include "memmap.h"
 
-#define SCB_OFFSET (CORE_PERIPH_BASE + 0xED00U)
-#define SCB_AIRCR (SCB_OFFSET + 0x0CU)
-
 #define IRQ_COUNT 96
 
 // IRQ numbers

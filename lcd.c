@@ -46,7 +46,6 @@ typedef enum output_type
 	DATA
 } output_type;
 
-
 void lcd_write_byte(uint8_t data, output_type ot)
 {
 	gpio_write_pin_atomic(GPIOB, RS, (gpio_action)ot);
@@ -161,29 +160,34 @@ void configure_lcd(void)
 }
 
 // write the given string from the current cursor position
-void lcd_write_string(char * str) {
-	logger(DEBUG, "Writing string to lcd");
+void lcd_write_string(char *str)
+{
+	char * args[] = {str};
+	loggerf(DEBUG, "Writing string to lcd: &", NULL, 0, args, 1);
 
-	for (int i = 0; i < DISPLAY_LENGTH; i++) {
-		if (str[i] == '\0') {
+	for (int i = 0; i < DISPLAY_LENGTH; i++)
+	{
+		if (str[i] == '\0')
+		{
 			break;
 		}
 		lcd_write_byte(str[i], DATA);
 	}
 }
 
-void lcd_clear_display() {
+void lcd_clear_display()
+{
 	logger(DEBUG, "Clearing lcd display");
 	lcd_write_byte((uint8_t)0x1, INSTRUCTION);
 	sys_sleep(2);
 }
 
-// set the cursor to the given coordinates. x gives the column and y specifies the row 
-// e.g (3, 1) third colum, second row.
-void lcd_set_cursor(uint32_t x, uint32_t y) {
-	if (y > 1) {
+void lcd_set_cursor(uint32_t x, uint32_t y)
+{
+	if (y > 1)
+	{
 		uint32_t args[] = {x, y};
-		loggerf(ERROR, "Invalid cursor position: ($, $)", args, 2);
+		loggerf(ERROR, "Invalid cursor position: ($, $)", args, 2, NULL, 0);
 		return;
 	}
 
@@ -191,7 +195,7 @@ void lcd_set_cursor(uint32_t x, uint32_t y) {
 	uint32_t pos = y_offset + x;
 
 	uint32_t args2[] = {pos};
-	loggerf(DEBUG, "Setting cursor address to $", args2, 1);
+	loggerf(DEBUG, "Setting cursor address to $", args2, 1, NULL, 0);
 
 	lcd_write_byte((uint8_t)set_bit(pos, 7), INSTRUCTION);
 	sys_sleep(1);

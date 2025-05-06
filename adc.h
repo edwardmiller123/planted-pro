@@ -17,7 +17,7 @@
 void configure_adc1();
 
 // manually trigger a conversion and read the result
-uint32_t adc1_manual_conversion();
+int32_t adc1_manual_conversion();
 
 void adc_handler();
 

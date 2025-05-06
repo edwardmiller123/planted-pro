@@ -1,4 +1,3 @@
-#include <stdio.h>
 #include <stdint.h>
 
 #include "logger.h"
@@ -90,10 +89,6 @@ void log_fatal(char *msg)
 {
     char *level = "FATAL: ";
     logger_send(level, msg);
-
-    // force a system reset since by definition FATAL is unrecoverable
-    software_reset();
-    
 }
 
 void logger(log_level level, char *msg)
@@ -119,7 +114,7 @@ void logger(log_level level, char *msg)
 }
 
 // logs a formatted message at the given log level over USART1
-void loggerf(log_level level, char *msg, uint32_t args[], uint32_t arg_count)
+void loggerf(log_level level, char *msg, uint32_t int_args[], uint32_t int_arg_count, char *str_args[], uint32_t str_args_count)
 {
     if (msg == NULL)
     {
@@ -128,12 +123,18 @@ void loggerf(log_level level, char *msg, uint32_t args[], uint32_t arg_count)
     }
 
     int args_digit_count = 0;
-    for (int i = 0; i < arg_count; i++)
+    for (int i = 0; i < int_arg_count; i++)
     {
-        args_digit_count += get_digit_count(args[i]);
+        args_digit_count += get_digit_count(int_args[i]);
     }
 
-    int msg_length = str_len(msg) + args_digit_count;
+    int str_args_total_length = 0;
+    for (int i = 0; i < str_args_count; i++)
+    {
+        str_args_total_length += str_len(str_args[i]);
+    }
+
+    int msg_length = str_len(msg) + args_digit_count + str_args_total_length;
 
     if (msg_length > MAX_MESSAGE_LENGTH)
     {
@@ -150,21 +151,31 @@ void loggerf(log_level level, char *msg, uint32_t args[], uint32_t arg_count)
         mem_zero((uint8_t *)msg_parts[i], MAX_MESSAGE_PART_SIZE);
     }
 
-    int arg_idx = 0;
+    int str_arg_idx = 0;
+    int int_arg_idx = 0;
     int part_idx = 0;
     int j = 0;
     for (int i = 0; i < str_len(msg); i++)
     {
-        if (msg[i] == '$')
+        if (msg[i] == '$' || msg[i] == '&')
         {
             msg_parts[part_idx][j] = '\0';
             part_idx++;
             j = 0;
 
-            // int_to_string needs the space for the string pre allocated so we pass in the
-            // next array in msg_parts
-            int_to_string(args[arg_idx], msg_parts[part_idx]);
-            arg_idx++;
+            switch (msg[i])
+            {
+            case '$':
+                // int_to_string needs the space for the string pre allocated so we pass in the
+                // next array in msg_parts
+                int_to_string(int_args[int_arg_idx], msg_parts[part_idx]);
+                int_arg_idx++;
+                break;
+            case '&':
+                byte_copy((uint8_t *)str_args[str_arg_idx], (uint8_t *)msg_parts[part_idx], str_len(str_args[str_arg_idx]));
+                str_arg_idx++;
+                break;
+            }
         }
         else
         {
@@ -185,9 +196,9 @@ void loggerf(log_level level, char *msg, uint32_t args[], uint32_t arg_count)
             return;
         }
 
-        if (arg_idx > arg_count)
+        if (int_arg_idx > int_arg_count)
         {
-            log_error("Logger argument limit exceeded");
+            log_error("Log message argument limit exceeded");
             return;
         }
     }
@@ -196,9 +207,10 @@ void loggerf(log_level level, char *msg, uint32_t args[], uint32_t arg_count)
     char formatted_msg[MAX_MESSAGE_LENGTH];
 
     int i = 0;
-    uint8_t * pos = (uint8_t *)formatted_msg;
+    uint8_t *pos = (uint8_t *)formatted_msg;
     uint32_t total_length = 0;
-    do {
+    do
+    {
         pos = byte_copy((uint8_t *)msg_parts[i], pos, str_len(msg_parts[i]));
         total_length += str_len(msg_parts[i]);
         i++;

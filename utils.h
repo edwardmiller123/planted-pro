@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define NULL (void*)0
+
 uint32_t str_len(char *str);
 
 uint8_t * byte_copy(uint8_t * src, uint8_t * dst, uint32_t n);

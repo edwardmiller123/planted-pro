@@ -1,5 +1,6 @@
 #include <stdint.h>
-#include <stdio.h>
+
+#include "utils.h"
 
 #define MAX_STRING_SIZE 256
 #define MAX_DIGITS 10
@@ -7,6 +8,11 @@
 uint32_t str_len(char *str)
 {
 	uint32_t len = 0;
+
+	if (str == NULL) {
+		return len;
+	}
+
 	for (int i = 0; i < MAX_STRING_SIZE; i++)
 	{
 		if (str[i] == '\0')

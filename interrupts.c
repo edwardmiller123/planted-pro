@@ -1,7 +1,8 @@
-#include <stdio.h>
 
 #include "interrupts.h"
 #include "io.h"
+#include "utils.h"
+#include "logger.h"
 
 extern void main(void);
 extern uint8_t _data;
@@ -82,11 +83,6 @@ void reset_handler(void)
     main();
 }
 
-void software_reset(void) {
-    io_set_bit(SCB_AIRCR, 2);
-    reset_handler();
-}
-
 // for now just hang
 void nmi_handler(void)
 {
@@ -98,6 +94,7 @@ void nmi_handler(void)
 
 void hard_fault_handler(void)
 {
+    logger(FATAL, "Hard Fault");
     while (1)
     {
         ;
