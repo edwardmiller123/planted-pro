@@ -42,7 +42,7 @@ int main(void)
     monitor m;
 
     init_monitor(&m, &lm, &light_readings_queue);
-
+    
     while (1)
     {
         run_monitor(&m);

@@ -5,6 +5,7 @@
 #include "logger.h"
 #include "light.h"
 #include "utils.h"
+#include "fpmath.h"
 
 #define BRIGHT_DIRECT_VAL 1000
 #define BRIGHT_INDIRECT_VAL 1600
@@ -29,7 +30,17 @@ void init_light_monitor(light_monitor *lm, queue *q)
 	reset_queue(q);
 	lm->readings_queue = q;
 	lm->level = NULL;
-	lm->percentage = UNDEFINED_PERCENTAGE;
+	lm->intensity_percent = UNDEFINED_PERCENTAGE;
+}
+
+void set_intensity_percent(light_monitor *lm, uint32_t average_reading) {
+	uint32_t percentage = fp_percentage(average_reading, ADC_MAX_OUTPUT);
+
+	uint32_t args[] = {percentage};
+	loggerf(DEBUG, "Raw ADC percentage: $", args, 1, NULL, 0);
+
+	// we want the "light" percentage and darkness gives the max adc value 
+	lm->intensity_percent = 100 - percentage;
 }
 
 int32_t set_light_level(light_monitor *lm)
@@ -47,8 +58,11 @@ int32_t set_light_level(light_monitor *lm)
 		total_val += (uint32_t)reading;
 	}
 
-	uint32_t average = total_val / SAMPLE_SIZE;
+	uint32_t average = fp_divide(total_val, SAMPLE_SIZE);
 	lm->raw_average = average;
+
+	uint32_t args_average[] = {average};
+	loggerf(DEBUG, "Set average light ADC value to $", args_average, 1, NULL, 0);
 
 	if (average > LOW_VAL)
 	{
@@ -67,16 +81,12 @@ int32_t set_light_level(light_monitor *lm)
 		lm->level = (char *)bright_direct;
 	}
 
-	char * args[] = {lm->level};
-	loggerf(INFO, "Light level set to &", NULL, 0, args, 1);
+	char * args_level[] = {lm->level};
+	loggerf(INFO, "Light level set to &", NULL, 0, args_level, 1);
+
+	set_intensity_percent(lm, average);
 
 	return 0;
-}
-
-void set_percentage(light_monitor *lm) {
-	uint32_t percentage = (lm->raw_average / (ADC_MAX_OUTPUT)) * 100;
-	// we want the "light" percentage and darkness gives the max adc value 
-	lm->percentage = 100 - percentage;
 }
 
 int measure_light(light_monitor *lm)
@@ -88,8 +98,6 @@ int measure_light(light_monitor *lm)
 			logger(ERROR, "Failed to calculate light level");
 			return -1;
 		}
-
-		set_percentage(lm);
 
 		reset_queue(lm->readings_queue);
 	}

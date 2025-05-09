@@ -50,16 +50,23 @@ void display_light_info(light_monitor *lm)
 	char line2_buf[LCD_LINE_LENGTH];
 	char *line2 = line2_buf;
 
-	if (lm->percentage == UNDEFINED_PERCENTAGE)
+	if (lm->intensity_percent == UNDEFINED_PERCENTAGE)
 	{
-		line2 = "Percent: Initialising...";
+		line2 = "Intensity: Initialising...";
 	}
 	else
 	{
-		char percentage[3];
-		char percentage_hr[4];
-		str_cat(int_to_string(lm->percentage, percentage), "%", percentage_hr);
-		str_cat("Percent: ", percentage_hr, line2);
+		uint32_t intensity_percent = lm->intensity_percent;
+		if (intensity_percent == 0)
+		{
+			// show 1 percent rather than 0 since its very rare that there is 0 light available
+			intensity_percent = 1;
+		}
+
+		char percentage_str[3];
+		char percentage_pretty[4];
+		str_cat(int_to_string(intensity_percent, percentage_str), "%", percentage_pretty);
+		str_cat("Intensity: ", percentage_pretty, line2);
 	}
 
 	lcd_write_string(line2);

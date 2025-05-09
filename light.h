@@ -11,7 +11,7 @@ typedef struct light_monitor {
 	queue * readings_queue;
 	uint32_t raw_average;
 	char * level;
-	uint32_t percentage;
+	uint32_t intensity_percent;
 
 } light_monitor;
 
