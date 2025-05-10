@@ -1,0 +1,12 @@
+# TODO
+- Implement lcd scrolling
+- fix soil moisture sensor
+- fix lcd contrast (potential divider?)
+- draw circuit diagrams
+- enable swd pins and add debug pin for flashing / debugging finished pcb
+- add battery pack
+- design pcb
+- design case
+- make pcb
+- print case
+- assemble
