@@ -35,15 +35,19 @@ void sys_sleep(uint32_t ms)
     };
 }
 
-uint32_t get_system_uptime(void) {
+uint32_t get_system_uptime(void)
+{
     return system_counter;
 }
 
 // Waits for a condition function to be satisfied until the specified timeout
-int wait_for_condition(bool (*cond)(void), uint32_t ms) {
+int wait_for_condition(bool (*cond)(void), uint32_t ms)
+{
     uint32_t timeout = system_counter + ms;
-    while (system_counter < timeout) {
-        if ((*cond)()) {
+    while (system_counter < timeout)
+    {
+        if ((*cond)())
+        {
             return 0;
         }
     }

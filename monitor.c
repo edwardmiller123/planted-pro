@@ -6,13 +6,21 @@
 #include "lcd.h"
 #include "utils.h"
 #include "gpio.h"
+#include "adc.h"
+#include "sensor.h"
 #include "monitor.h"
 
 #define DISPLAY_SWITCH_TIME 3000
 
-void init_monitor(monitor *m, light_monitor *lm, queue *light_readings)
+// max adc output using a 82k resistor in the potential divider
+#define ADC_LIGHT_MAX_OUTPUT 4095
+
+#define SAMPLE_SIZE 5
+
+void init_monitor(monitor *m, light_monitor *lm, sensor * light_sensor, queue *light_readings)
 {
-	init_light_monitor(lm, light_readings);
+	init_sensor(light_sensor, light_readings, ADC_LIGHT_MAX_OUTPUT, SAMPLE_SIZE);
+	init_light_monitor(lm, light_sensor);
 
 	m->currently_showing = LIGHT;
 	m->sys_uptime = 0;
@@ -25,7 +33,7 @@ void poll_sensors(monitor *m)
 	{
 		logger(ERROR, "Failed to measure light level");
 	}
-	// TODO: measure soil moisture
+	adc_manual_conversion(ADC2);
 }
 
 void display_light_info(light_monitor *lm)

@@ -19,7 +19,7 @@ typedef struct monitor
 	light_monitor *lm;
 } monitor;
 
-void init_monitor(monitor *m, light_monitor* lm, queue* light_readings);
+void init_monitor(monitor *m, light_monitor *lm, sensor * light_sensor, queue *light_readings);
 
 void run_monitor(monitor *m);
 

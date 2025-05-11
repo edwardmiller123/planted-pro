@@ -8,6 +8,7 @@
 #include "logger.h"
 #include "lcd.h"
 #include "adc.h"
+#include "sensor.h"
 #include "monitor.h"
 
 #include "interrupt_table.c"
@@ -35,13 +36,14 @@ int main(void)
 
     configure_lcd();
 
-    configure_adc1();
+    configure_adc();
 
     queue light_readings_queue;
+    sensor light_sensor;
     light_monitor lm;
     monitor m;
 
-    init_monitor(&m, &lm, &light_readings_queue);
+    init_monitor(&m, &lm, &light_sensor, &light_readings_queue);
     
     while (1)
     {

@@ -41,74 +41,41 @@ void logger_send(char *level, char *msg)
     }
 }
 
-void log_debug(char *msg)
-{
-    if (current_level < DEBUG)
-    {
-        return;
-    }
-
-    char *level = "DEBUG: ";
-    logger_send(level, msg);
-}
-
-void log_info(char *msg)
-{
-    if (current_level < INFO)
-    {
-        return;
-    }
-
-    char *level = "INFO: ";
-    logger_send(level, msg);
-}
-
-void log_warning(char *msg)
-{
-    if (current_level < WARNING)
-    {
-        return;
-    }
-
-    char *level = "WARN: ";
-    logger_send(level, msg);
-}
-
 void log_error(char *msg)
 {
-    if (current_level < ERROR)
-    {
-        return;
-    }
-
     char *level = "ERROR: ";
-    logger_send(level, msg);
-}
-
-void log_fatal(char *msg)
-{
-    char *level = "FATAL: ";
     logger_send(level, msg);
 }
 
 void logger(log_level level, char *msg)
 {
+    if (current_level < level)
+    {
+        return;
+    }
+
+    char * level_str;
+
     switch (level)
     {
     case DEBUG:
-        log_debug(msg);
+        level_str = "DEBUG: ";
+        logger_send(level_str, msg);
         break;
     case INFO:
-        log_info(msg);
+        level_str = "INFO: ";
+        logger_send(level_str, msg);
         break;
     case WARNING:
-        log_warning(msg);
+        level_str = "WARN: ";
+        logger_send(level_str, msg);
         break;
     case ERROR:
         log_error(msg);
         break;
     case FATAL:
-        log_fatal(msg);
+        level_str = "FATAL: ";
+        logger_send(level_str, msg);
         break;
     }
 }
@@ -116,6 +83,11 @@ void logger(log_level level, char *msg)
 // logs a formatted message at the given log level over USART1
 void loggerf(log_level level, char *msg, uint32_t int_args[], uint32_t int_arg_count, char *str_args[], uint32_t str_args_count)
 {
+    if (current_level < level)
+    {
+        return;
+    }
+
     if (msg == NULL)
     {
         log_error("Log message cannot be NULL");
@@ -144,8 +116,7 @@ void loggerf(log_level level, char *msg, uint32_t int_args[], uint32_t int_arg_c
 
     char msg_parts[MAX_MESSAGE_PART_COUNT][MAX_MESSAGE_PART_SIZE];
 
-    // this is full of garbage values so we zero before writing
-    // our log message
+    // zero to remove garbage values from the message
     for (int i = 0; i < MAX_MESSAGE_PART_COUNT; i++)
     {
         mem_zero((uint8_t *)msg_parts[i], MAX_MESSAGE_PART_SIZE);

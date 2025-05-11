@@ -5,7 +5,7 @@
 #include "systick.h"
 #include "interrupts.h"
 
-// alters the state the given pin in the given gpio port using the atomic BSSR register
+// alters the state of the given pin in the given gpio port using the atomic BSSR register
 void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action) {
     if (action == CLEAR) {
         pin += 16;

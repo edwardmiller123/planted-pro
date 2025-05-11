@@ -6,16 +6,12 @@
 #include "light.h"
 #include "utils.h"
 #include "fpmath.h"
+#include "sensor.h"
 
 #define BRIGHT_DIRECT_VAL 1000
 #define BRIGHT_INDIRECT_VAL 1600
 #define MEDIUM_VAL 2500
 #define LOW_VAL 3600
-
-// max adc output using a 82k resistor in the potential divider
-#define ADC_MAX_OUTPUT 4095
-
-#define SAMPLE_SIZE 5
 
 const char * bright_direct = "Bright Direct";
 const char * bright_indirect = "Bright Indirect";
@@ -25,54 +21,26 @@ const char * low = "Low";
 // After 5 measurements have been taken we calculate the average light level and "percentage" and write it 
 // back to the state struct. We use integer division as the accuracy is probably good enough for this use case.
 
-void init_light_monitor(light_monitor *lm, queue *q)
+void init_light_monitor(light_monitor *lm, sensor * s)
 {
-	reset_queue(q);
-	lm->readings_queue = q;
+	lm->light_sensor = s;
 	lm->level = NULL;
 	lm->intensity_percent = UNDEFINED_PERCENTAGE;
 }
 
-void set_intensity_percent(light_monitor *lm, uint32_t average_reading) {
-	uint32_t percentage = fp_percentage(average_reading, ADC_MAX_OUTPUT);
-
-	uint32_t args[] = {percentage};
-	loggerf(DEBUG, "Raw ADC percentage: $", args, 1, NULL, 0);
-
-	// we want the "light" percentage and darkness gives the max adc value 
-	lm->intensity_percent = 100 - percentage;
-}
-
 int32_t set_light_level(light_monitor *lm)
 {
-	uint32_t total_val = 0;
-	int32_t reading;
-	for (int i = 0; i < SAMPLE_SIZE; i++)
-	{
-		reading = fifo_get(lm->readings_queue);
-		if (reading == -1)
-		{
-			logger(ERROR, "failed to fetch reading from queue");
-			return -1;
-		}
-		total_val += (uint32_t)reading;
-	}
+	set_sensor_averages(lm->light_sensor);
 
-	uint32_t average = fp_divide(total_val, SAMPLE_SIZE);
-	lm->raw_average = average;
-
-	uint32_t args_average[] = {average};
-	loggerf(DEBUG, "Set average light ADC value to $", args_average, 1, NULL, 0);
-
-	if (average > LOW_VAL)
+	if (lm->light_sensor->raw_average > LOW_VAL)
 	{
 		lm->level = (char *)low;
 	}
-	else if (average > MEDIUM_VAL)
+	else if (lm->light_sensor->raw_average > MEDIUM_VAL)
 	{
 		lm->level = (char *)medium;
 	}
-	else if (average > BRIGHT_INDIRECT_VAL)
+	else if (lm->light_sensor->raw_average > BRIGHT_INDIRECT_VAL)
 	{
 		lm->level = (char *)bright_indirect;
 	}
@@ -84,35 +52,26 @@ int32_t set_light_level(light_monitor *lm)
 	char * args_level[] = {lm->level};
 	loggerf(INFO, "Light level set to &", NULL, 0, args_level, 1);
 
-	set_intensity_percent(lm, average);
+	// we want the "light" percentage and darkness gives the max adc value 
+	lm->intensity_percent = 100 - lm->light_sensor->sensor_percent;
+
+	uint32_t args_intensity[] = {lm->intensity_percent};
+	loggerf(INFO, "Light intensity set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
 }
 
-int measure_light(light_monitor *lm)
+int measure_light(light_monitor *ls)
 {
-	if (lm->readings_queue->size == SAMPLE_SIZE)
+	if (process_samples(ls->light_sensor, ls, (void *)&set_light_level) == -1)
 	{
-		if (set_light_level(lm) == -1)
-		{
-			logger(ERROR, "Failed to calculate light level");
-			return -1;
-		}
-
-		reset_queue(lm->readings_queue);
-	}
-
-	int32_t reading = adc1_manual_conversion();
-	if (reading == -1)
-	{
-		logger(ERROR, "Failed to read adc conversion");
+		logger(ERROR, "Failed to calculate light level");
 		return -1;
 	}
 
-	if (fifo_add(lm->readings_queue, (uint32_t)reading) == -1)
-	{
-		logger(ERROR, "Failed to add light reading");
+
+	if (sensor_read(ls->light_sensor, ADC1) == -1) {
+		logger(ERROR, "Failed to take light sesnor reading");
 		return -1;
 	}
-	return 0;
 }
