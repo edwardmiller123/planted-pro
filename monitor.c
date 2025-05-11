@@ -8,47 +8,62 @@
 #include "gpio.h"
 #include "adc.h"
 #include "sensor.h"
+#include "light.h"
+#include "water.h"
 #include "monitor.h"
 
 #define DISPLAY_SWITCH_TIME 3000
 
-// max adc output using a 82k resistor in the potential divider
-#define ADC_LIGHT_MAX_OUTPUT 4095
+// max adc output from ~5v supply
+#define ADC_MAX_OUTPUT 4095
 
 #define SAMPLE_SIZE 5
 
-void init_monitor(monitor *m, light_monitor *lm, sensor * light_sensor, queue *light_readings)
+void init_plant_monitor(plant_monitor *pm, monitor *lm, monitor *wm, sensor * light_sensor, sensor * water_sensor, queue *light_readings, queue *water_readings)
 {
-	init_sensor(light_sensor, light_readings, ADC_LIGHT_MAX_OUTPUT, SAMPLE_SIZE);
-	init_light_monitor(lm, light_sensor);
+	// After 5 measurements have been taken we calculate the average light level and "percentage" and write it
+    // back to the state struct. The light monitor uses ADC1 to read from a ldr in a potential divider with an 82k resistor
+	init_sensor(light_sensor, light_readings, ADC_MAX_OUTPUT, SAMPLE_SIZE, ADC1);
+	logger(INFO, "Light sesnor initialised with ADC1");
 
-	m->currently_showing = LIGHT;
-	m->sys_uptime = 0;
-	m->lm = lm;
+	init_sensor(water_sensor, water_readings, ADC_MAX_OUTPUT, SAMPLE_SIZE, ADC2);
+	logger(INFO, "Water sesnor initialised with ADC2");
+
+	init_monitor(lm, light_sensor);
+	init_monitor(wm, water_sensor);
+
+	pm->currently_showing = LIGHT;
+	pm->sys_uptime = 0;
+	pm->lm = lm;
+	pm->wm = wm;
 }
 
-void poll_sensors(monitor *m)
+void poll_sensors(plant_monitor *pm)
 {
-	if (measure_light(m->lm) == -1)
+	if (measure_light(pm->lm) == -1)
 	{
 		logger(ERROR, "Failed to measure light level");
 	}
-	adc_manual_conversion(ADC2);
+	
+	if (measure_water(pm->wm) == -1)
+	{
+		logger(ERROR, "Failed to measure water level");
+	}
 }
 
-void display_light_info(light_monitor *lm)
+void display_light_info(monitor *m)
 {
 	lcd_set_cursor(0, 0);
 	char line1_buf[LCD_LINE_LENGTH];
 	char *line1 = line1_buf;
 
-	if (lm->level == NULL)
+	if (m->level == NULL)
 	{
 		line1 = "Sun: Initialising...";
 	}
 	else
 	{
-		str_cat("Sun: ", (char *)lm->level, line1);
+		str_cat("Sun: ", (char *)m->level, line1);
 	}
 
 	lcd_write_string(line1);
@@ -58,13 +73,13 @@ void display_light_info(light_monitor *lm)
 	char line2_buf[LCD_LINE_LENGTH];
 	char *line2 = line2_buf;
 
-	if (lm->intensity_percent == UNDEFINED_PERCENTAGE)
+	if (m->percent == UNDEFINED_PERCENTAGE)
 	{
 		line2 = "Intensity: Initialising...";
 	}
 	else
 	{
-		uint32_t intensity_percent = lm->intensity_percent;
+		uint32_t intensity_percent = m->percent;
 		if (intensity_percent == 0)
 		{
 			// show 1 percent rather than 0 since its very rare that there is 0 light available
@@ -86,14 +101,14 @@ void display_moisture_info()
 	lcd_write_string("Soil: initialising...");
 }
 
-void display_info(monitor *m)
+void display_info(plant_monitor *pm)
 {
 	lcd_clear_display();
 
-	switch (m->currently_showing)
+	switch (pm->currently_showing)
 	{
 	case LIGHT:
-		display_light_info(m->lm);
+		display_light_info(pm->lm);
 		break;
 	case MOISTURE:
 		display_moisture_info();
@@ -101,16 +116,16 @@ void display_info(monitor *m)
 	}
 }
 
-void run_monitor(monitor *m)
+void run_monitor(plant_monitor *pm)
 {
 	uint32_t now = get_system_uptime();
-	if (now > (m->sys_uptime + DISPLAY_SWITCH_TIME))
+	if (now > (pm->sys_uptime + DISPLAY_SWITCH_TIME))
 	{
-		m->currently_showing = (info_type) !(bool)m->currently_showing;
-		m->sys_uptime = now;
-		display_info(m);
+		pm->currently_showing = (info_type) !(bool)pm->currently_showing;
+		pm->sys_uptime = now;
+		display_info(pm);
 		toggle_user_led();
 	}
 
-	poll_sensors(m);
+	poll_sensors(pm);
 }

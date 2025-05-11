@@ -8,13 +8,21 @@
 #include "adc.h"
 #include "sensor.h"
 
-void init_sensor(sensor *s, queue *q, uint32_t max_adc_reading, uint32_t sample_size)
+void init_sensor(sensor *s, queue *q, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num)
 {
 	reset_queue(q);
 	s->readings_queue = q;
 	s->sensor_percent = UNDEFINED_PERCENTAGE;
 	s->max_adc_reading = max_adc_reading;
 	s->sample_size = sample_size;
+	s->adc_num = adc_num;
+}
+
+void init_monitor(monitor *m, sensor * s)
+{
+	m->snr = s;
+	m->level = NULL;
+	m->percent = UNDEFINED_PERCENTAGE;
 }
 
 void set_percent(sensor *s)
@@ -23,7 +31,7 @@ void set_percent(sensor *s)
 	s->sensor_percent = percentage;
 }
 
-int32_t set_sensor_averages(sensor *s)
+int sensor_calculate_average(sensor *s)
 {
 	uint32_t total_val = 0;
 	int32_t reading;
@@ -52,9 +60,9 @@ int32_t set_sensor_averages(sensor *s)
 	return 0;
 }
 
-int sensor_read(sensor *s, adc adc_num)
+int sensor_read_adc(sensor *s)
 {
-	int32_t reading = adc_manual_conversion(adc_num);
+	int32_t reading = adc_manual_conversion(s->adc_num);
 	if (reading == -1)
 	{
 		logger(ERROR, "Failed to read adc conversion");
@@ -69,11 +77,11 @@ int sensor_read(sensor *s, adc adc_num)
 	return 0;
 }
 
-int process_samples(sensor *s, void *monitor, int (*action)(void *))
+int sensor_process_samples(sensor *s, monitor *m, int (*action)(struct monitor *))
 {
 	if (s->readings_queue->size == s->sample_size)
 	{
-		if (action(monitor) == -1)
+		if (action(m) == -1)
 		{
 			logger(ERROR, "Failed to process adc samples");
 			return -1;

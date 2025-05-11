@@ -12,15 +12,16 @@ typedef enum info_type
 	MOISTURE,
 } info_type;
 
-typedef struct monitor
+typedef struct plant_monitor
 {
 	uint32_t sys_uptime;
 	info_type currently_showing;
-	light_monitor *lm;
-} monitor;
+	monitor *lm;
+	monitor *wm;
+} plant_monitor;
 
-void init_monitor(monitor *m, light_monitor *lm, sensor * light_sensor, queue *light_readings);
+void init_plant_monitor(plant_monitor *pm, monitor *lm, monitor *wm, sensor * light_sensor, sensor * water_sensor, queue *light_readings, queue *water_readings);
 
-void run_monitor(monitor *m);
+void run_monitor(plant_monitor *pm);
 
 #endif

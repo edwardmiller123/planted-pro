@@ -39,15 +39,18 @@ int main(void)
     configure_adc();
 
     queue light_readings_queue;
+    queue water_readings_queue;
     sensor light_sensor;
-    light_monitor lm;
-    monitor m;
+    sensor water_sensor;
+    monitor lm;
+    monitor wm;
+    plant_monitor pm;
 
-    init_monitor(&m, &lm, &light_sensor, &light_readings_queue);
-    
+    init_plant_monitor(&pm, &lm, &wm, &light_sensor, &water_sensor, &light_readings_queue, &water_readings_queue);
+
     while (1)
     {
-        run_monitor(&m);
+        run_monitor(&pm);
     };
 
     return 0;
