@@ -1,5 +1,4 @@
 # TODO
-- implement lcd scrolling
 - fix soil moisture sensor
 - fix lcd contrast (potential divider?)
 - draw circuit diagrams
