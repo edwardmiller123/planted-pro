@@ -107,7 +107,9 @@ void display_moisture_info(monitor *m)
 {
 	lcd_set_cursor(0, 0);
 
-	char line1_buf[LCD_LINE_LENGTH];
+	display_percent(m);
+
+	char line1_buf[LCD_MAX_MSG_LEN];
 	char *line1 = line1_buf;
 
 	if (m->level == NULL)
@@ -119,9 +121,7 @@ void display_moisture_info(monitor *m)
 		str_cat("Soil: ", (char *)m->level, line1);
 	}
 
-	lcd_write_string_and_scroll(line1, 0, 1);
-
-	display_percent(m);
+	lcd_write_string_and_scroll(line1, 0, 0);
 }
 
 void display_info(plant_monitor *pm)
