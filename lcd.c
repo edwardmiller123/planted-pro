@@ -5,6 +5,7 @@
 #include "utils.h"
 #include "systick.h"
 #include "logger.h"
+#include "lcd.h"
 
 #define DISPLAY_LENGTH 32
 
@@ -162,16 +163,48 @@ void configure_lcd(void)
 // write the given string from the current cursor position
 void lcd_write_string(char *str)
 {
-	char * args[] = {str};
+	char *args[] = {str};
 	loggerf(DEBUG, "Writing string to lcd: &", NULL, 0, args, 1);
 
-	for (int i = 0; i < DISPLAY_LENGTH; i++)
+	for (int i = 0; i < LCD_LINE_LENGTH; i++)
 	{
 		if (str[i] == '\0')
 		{
 			break;
 		}
 		lcd_write_byte(str[i], DATA);
+	}
+}
+
+void lcd_write_string_and_scroll(char *str, uint32_t start_x, uint32_t start_y)
+{
+	lcd_set_cursor(start_x, start_y);
+
+	lcd_write_string(str);
+	uint32_t len = str_len(str);
+
+	if (len <= LCD_LINE_LENGTH)
+	{
+		return;
+	}
+
+	// dont scroll too early
+	sys_sleep(1000);
+
+	uint32_t remaining_characters = len - LCD_LINE_LENGTH;
+
+	char *str_trunc;
+	for (int i = 0; i <= remaining_characters; i++)
+	{
+		str_trunc = &str[i];
+		if (str_trunc[i] == '\0')
+		{
+			logger(DEBUG, "LCD exiting scroll");
+			return;
+		}
+		lcd_set_cursor(start_x, start_y);
+		lcd_write_string(str_trunc);
+		sys_sleep(100);
 	}
 }
 

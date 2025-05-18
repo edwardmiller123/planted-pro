@@ -19,10 +19,10 @@
 
 #define SAMPLE_SIZE 5
 
-void init_plant_monitor(plant_monitor *pm, monitor *lm, monitor *wm, sensor * light_sensor, sensor * water_sensor, queue *light_readings, queue *water_readings)
+void init_plant_monitor(plant_monitor *pm, monitor *lm, monitor *wm, sensor *light_sensor, sensor *water_sensor, queue *light_readings, queue *water_readings)
 {
 	// After 5 measurements have been taken we calculate the average light level and "percentage" and write it
-    // back to the state struct. The light monitor uses ADC1 to read from a ldr in a potential divider with an 82k resistor
+	// back to the state struct. The light monitor uses ADC1 to read from a ldr in a potential divider with an 82k resistor
 	init_sensor(light_sensor, light_readings, ADC_MAX_OUTPUT, SAMPLE_SIZE, ADC1);
 	logger(INFO, "Light sesnor initialised with ADC1");
 
@@ -44,30 +44,15 @@ void poll_sensors(plant_monitor *pm)
 	{
 		logger(ERROR, "Failed to measure light level");
 	}
-	
+
 	if (measure_water(pm->wm) == -1)
 	{
 		logger(ERROR, "Failed to measure water level");
 	}
 }
 
-void display_light_info(monitor *m)
+void display_percent(monitor *m)
 {
-	lcd_set_cursor(0, 0);
-	char line1_buf[LCD_LINE_LENGTH];
-	char *line1 = line1_buf;
-
-	if (m->level == NULL)
-	{
-		line1 = "Sun: Initialising...";
-	}
-	else
-	{
-		str_cat("Sun: ", (char *)m->level, line1);
-	}
-
-	lcd_write_string(line1);
-
 	lcd_set_cursor(0, 1);
 
 	char line2_buf[LCD_LINE_LENGTH];
@@ -75,30 +60,68 @@ void display_light_info(monitor *m)
 
 	if (m->percent == UNDEFINED_PERCENTAGE)
 	{
-		line2 = "Intensity: Initialising...";
+		line2 = "Percent: reading...";
 	}
 	else
 	{
-		uint32_t intensity_percent = m->percent;
-		if (intensity_percent == 0)
+		uint32_t displayed_percent = m->percent;
+		if (displayed_percent == 0)
 		{
-			// show 1 percent rather than 0 since its very rare that there is 0 light available
-			intensity_percent = 1;
+			// show 1 percent rather than 0 since its very rare that there is 0 percent of the read attribute available
+			displayed_percent = 1;
 		}
 
 		char percentage_str[3];
 		char percentage_pretty[4];
-		str_cat(int_to_string(intensity_percent, percentage_str), "%", percentage_pretty);
-		str_cat("Intensity: ", percentage_pretty, line2);
+		str_cat(int_to_string(displayed_percent, percentage_str), "%", percentage_pretty);
+		str_cat("Percent: ", percentage_pretty, line2);
 	}
 
 	lcd_write_string(line2);
 }
 
-void display_moisture_info()
+void display_light_info(monitor *m)
 {
 	lcd_set_cursor(0, 0);
-	lcd_write_string("Soil: initialising...");
+
+	// display the percent first so its noit held up from beiung visible by the screen scrolling
+	// which blocks
+	display_percent(m);
+
+	char line1_buf[LCD_MAX_MSG_LEN];
+	char *line1 = line1_buf;
+
+	if (m->level == NULL)
+	{
+		line1 = "Light: reading...";
+	}
+	else
+	{
+		str_cat("Light: ", (char *)m->level, line1);
+	}
+
+	lcd_write_string_and_scroll(line1, 0, 0);
+}
+
+void display_moisture_info(monitor *m)
+{
+	lcd_set_cursor(0, 0);
+
+	char line1_buf[LCD_LINE_LENGTH];
+	char *line1 = line1_buf;
+
+	if (m->level == NULL)
+	{
+		lcd_write_string("Soil: reading...");
+	}
+	else
+	{
+		str_cat("Soil: ", (char *)m->level, line1);
+	}
+
+	lcd_write_string_and_scroll(line1, 0, 1);
+
+	display_percent(m);
 }
 
 void display_info(plant_monitor *pm)
@@ -111,7 +134,7 @@ void display_info(plant_monitor *pm)
 		display_light_info(pm->lm);
 		break;
 	case MOISTURE:
-		display_moisture_info();
+		display_moisture_info(pm->wm);
 		break;
 	}
 }
