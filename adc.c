@@ -48,9 +48,10 @@ void configure_adc1()
 }
 
 // configure ADC2 to use channel 2 on PA2 as the input pin
+// TODO: adc2 isnt reading values correctly
 void configure_adc2()
 {
-	// enable adc1 clock on APB2 bus
+	// enable adc2 clock on APB2 bus
 	io_set_bit(RCC_APB2ENR, 9);
 
 	// set PA2 to analog mode
