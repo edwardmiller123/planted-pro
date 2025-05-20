@@ -11,7 +11,7 @@
 
 // TODO: maybe make adc interrupt driven
 
-// configure the ADC1 to use channel 1 on PA1 as the input pin
+// configures the ADC1 to use channel 1 on PA1 as the input pin
 void configure_adc1()
 {
 
@@ -47,21 +47,20 @@ void configure_adc1()
 	logger(INFO, "Initilaised ADC1 with PA1, channel 1 as input");
 }
 
-// configure ADC2 to use channel 2 on PA2 as the input pin
-// TODO: adc2 isnt reading values correctly
+// configures ADC2 to use channel 4 on PA4 as the input pin
 void configure_adc2()
 {
 	// enable adc2 clock on APB2 bus
 	io_set_bit(RCC_APB2ENR, 9);
 
-	// set PA2 to analog mode
-	io_set_bit(GPIOA_MODER, 4);
-	io_set_bit(GPIOA_MODER, 5);
+	// set PA4 to analog mode
+	io_set_bit(GPIOA_MODER, 8);
+	io_set_bit(GPIOA_MODER, 9);
 
-	// enable channel 2
+	// enable channel 4
 	io_clear_bit(ADC2_SQR3, 0);
-	io_set_bit(ADC2_SQR3, 1);
-	io_clear_bit(ADC2_SQR3, 2);
+	io_clear_bit(ADC2_SQR3, 1);
+	io_set_bit(ADC2_SQR3, 2);
 	io_clear_bit(ADC2_SQR3, 3);
 	io_clear_bit(ADC2_SQR3, 4);
 
@@ -72,7 +71,7 @@ void configure_adc2()
 	io_clear_bit(ADC2_CR2, 11);
 
 	// trigger EOCS bit to be set at the end of each conversion
-	io_set_bit(ADC2_CR2, 10); // 0x40012008
+	io_set_bit(ADC2_CR2, 10);
 
 	// enable EOC_interrupt
 	io_set_bit(ADC2_CR1, 0);
@@ -80,10 +79,10 @@ void configure_adc2()
 	// enable adc
 	io_set_bit(ADC2_CR2, 0);
 
-	logger(INFO, "Initilaised ADC2 with PA2, channel 2 as input");
+	logger(INFO, "Initilaised ADC2 with PA4, channel 4 as input");
 }
 
-// configure ADC1 and ADC2
+// configure ADC1 and ADC2 with GPIO pins PA1 and PA4
 void configure_adc()
 {
 	configure_adc1();

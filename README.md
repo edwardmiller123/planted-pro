@@ -1,5 +1,5 @@
 # TODO
-- fix soil moisture sensor
+- calibrate soil and light sesnors
 - fix lcd contrast (potential divider?)
 - draw circuit diagrams
 - enable swd pins and add debug pin for flashing / debugging finished pcb
