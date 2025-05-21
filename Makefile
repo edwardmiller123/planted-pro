@@ -8,7 +8,7 @@ COBJS := $(patsubst %.c, %.o, $(CSRCS))
 ASMSRCS := $(wildcard *.s)
 ASMOBJS := $(patsubst %.s, %.o, $(ASMSRCS))
 
-plant_monitor: $(COBJS) $(ASMOBJS)
+plant-monitor: $(COBJS) $(ASMOBJS)
 	$(LD) $^ -T linker.ld -o $@
 
 %.o: %.c

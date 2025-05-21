@@ -1,4 +1,4 @@
 *.o
-plant_monitor
+plant-monitor
 *.json
 .vscode
