@@ -1,23 +1,19 @@
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
 
+SRCDIR := src
+
 CFLAGS = -mcpu=cortex-m4 -mthumb -g -Wall
-CSRCS := $(filter-out interrupt_table.c, $(wildcard *.c))
-COBJS := $(patsubst %.c, %.o, $(CSRCS))
+CSRCS := $(filter-out $(SRCDIR)/interrupt_table.c, $(wildcard $(SRCDIR)/*.c))
+COBJS := $(patsubst $(SRCDIR)/%.c, $(SRCDIR)/%.o, $(CSRCS))
 
-ASMSRCS := $(wildcard *.s)
-ASMOBJS := $(patsubst %.s, %.o, $(ASMSRCS))
-
-plant-monitor: $(COBJS) $(ASMOBJS)
+plant-monitor: $(COBJS)
 	$(LD) $^ -T linker.ld -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c $^ -o $@ -g
 
-%.o: %.s
-	$(CC) $(CFLAGS) -c $^ -o $@ -g
-
 .PHONY: clean
 
 clean :
-	rm -rf *.o plant-monitor
+	rm -rf $(SRCDIR)/*.o plant-monitor
