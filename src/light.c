@@ -6,6 +6,7 @@
 #include "utils.h"
 #include "sensor.h"
 
+// values calibrated using an 82k resistor in the potential divider
 #define BRIGHT_DIRECT_VAL 1000
 #define BRIGHT_INDIRECT_VAL 1600
 #define MEDIUM_VAL 2500

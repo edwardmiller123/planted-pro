@@ -59,7 +59,7 @@ void init_user_led()
     IO_ACCESS(GPIOA_OSPEEDR) = 0x400U;
 }
 
-// Initialise USART1 with (PA9 and PA10) with the given baud rate. Requires the correct bus to be enabled first
+// Initialise USART1 (PA9) with the given baud rate. Requires the GPIO bus to be enabled first
 void configure_usart1(uint32_t baud)
 {
     // Enable APB2 bus for USART1
