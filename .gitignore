@@ -3,3 +3,4 @@ plant-monitor
 *.json
 .vscode
 pcb-backups
+*.lck
