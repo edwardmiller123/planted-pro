@@ -1,154 +1,152 @@
 #include <stdint.h>
-#include <stdbool.h>
 
-#include "logger.h"
-#include "systick.h"
-#include "lcd.h"
-#include "utils.h"
-#include "gpio.h"
 #include "adc.h"
-#include "sensor.h"
-#include "light.h"
-#include "water.h"
+#include "logger.h"
 #include "monitor.h"
+#include "utils.h"
+#include "sensor.h"
 
-#define DISPLAY_SWITCH_TIME 3000
+// values calibrated using an 82k resistor in the potential divider
+#define LIGHT_BRIGHT_DIRECT_VAL 1000
+#define LIGHT_BRIGHT_INDIRECT_VAL 1500
+#define LIGHT_MEDIUM_VAL 2000
+#define LIGHT_LOW_VAL 3600
 
-// max adc output from ~5v supply
-#define ADC_MAX_OUTPUT 4095
+const char *light_bright_direct = "Bright Direct";
+const char *light_bright_indirect = "Bright Indirect";
+const char *light_medium = "Medium";
+const char *light_low = "Low";
 
-#define SAMPLE_SIZE 5
-
-void init_plant_monitor(plant_monitor *pm, monitor *lm, monitor *wm, sensor *light_sensor, sensor *water_sensor, queue *light_readings, queue *water_readings)
+void init_monitor(monitor *m, sensor * s)
 {
-	// After 5 measurements have been taken we calculate the average light level and "percentage" and write it
-	// back to the state struct. The light monitor uses ADC1 to read from a ldr in a potential divider with an 82k resistor
-	init_sensor(light_sensor, light_readings, ADC_MAX_OUTPUT, SAMPLE_SIZE, ADC1);
-	logger(INFO, "Light sesnor initialised with ADC1");
-
-	init_sensor(water_sensor, water_readings, ADC_MAX_OUTPUT, SAMPLE_SIZE, ADC2);
-	logger(INFO, "Water sesnor initialised with ADC2");
-
-	init_monitor(lm, light_sensor);
-	init_monitor(wm, water_sensor);
-
-	pm->currently_showing = LIGHT;
-	pm->sys_uptime = 0;
-	pm->lm = lm;
-	pm->wm = wm;
+	m->snr = s;
+	m->level = NULL;
+	m->percent = UNDEFINED_PERCENTAGE;
 }
 
-void poll_sensors(plant_monitor *pm)
+int monitor_process_samples(monitor *m, int (*action)(struct monitor *))
 {
-	if (measure_light(pm->lm) == -1)
+	if (m->snr->readings_queue->size == m->snr->sample_size)
 	{
-		logger(ERROR, "Failed to measure light level");
-	}
-
-	if (measure_water(pm->wm) == -1)
-	{
-		logger(ERROR, "Failed to measure water level");
-	}
-}
-
-void display_percent(monitor *m)
-{
-	lcd_set_cursor(0, 1);
-
-	char line2_buf[LCD_LINE_LENGTH];
-	char *line2 = line2_buf;
-
-	if (m->percent == UNDEFINED_PERCENTAGE)
-	{
-		line2 = "Percent: reading...";
-	}
-	else
-	{
-		uint32_t displayed_percent = m->percent;
-		if (displayed_percent == 0)
+		if (action(m) == -1)
 		{
-			// show 1 percent rather than 0 since its very rare that there is 0 percent of the read attribute available
-			displayed_percent = 1;
+			logger(ERROR, "Failed to process adc samples");
+			return -1;
 		}
 
-		char percentage_str[3];
-		char percentage_pretty[4];
-		str_cat(int_to_string(displayed_percent, percentage_str), "%", percentage_pretty);
-		str_cat("Percent: ", percentage_pretty, line2);
+		reset_queue(m->snr->readings_queue);
 	}
-
-	lcd_write_string(line2);
+	return 0;
 }
 
-void display_light_info(monitor *m)
+int set_light_level(monitor *lm)
 {
-	lcd_set_cursor(0, 0);
-
-	// display the percent first so its noit held up from beiung visible by the screen scrolling
-	// which blocks
-	display_percent(m);
-
-	char line1_buf[LCD_MAX_MSG_LEN];
-	char *line1 = line1_buf;
-
-	if (m->level == NULL)
+	if (sensor_calculate_average(lm->snr) == -1)
 	{
-		line1 = "Light: reading...";
+		logger(ERROR, "Failed to get average light reading");
+		return -1;
+	};
+
+	if (lm->snr->raw_average > LIGHT_LOW_VAL)
+	{
+		lm->level = (char *)light_low;
+	}
+	else if (lm->snr->raw_average > LIGHT_MEDIUM_VAL)
+	{
+		lm->level = (char *)light_medium;
+	}
+	else if (lm->snr->raw_average > LIGHT_BRIGHT_INDIRECT_VAL)
+	{
+		lm->level = (char *)light_bright_indirect;
 	}
 	else
 	{
-		str_cat("Light: ", (char *)m->level, line1);
+		lm->level = (char *)light_bright_direct;
 	}
 
-	lcd_write_string_and_scroll(line1, 0, 0);
+	char *args_level[] = {lm->level};
+	loggerf(INFO, "Light level set to &", NULL, 0, args_level, 1);
+
+	// we want the "light" percentage and darkness gives the max adc value
+	lm->percent = 100 - lm->snr->sensor_percent;
+
+	uint32_t args_intensity[] = {lm->percent};
+	loggerf(INFO, "Light intensity set to $", args_intensity, 1, NULL, 0);
+
+	return 0;
 }
 
-void display_moisture_info(monitor *m)
+int measure_light(monitor *lm)
 {
-	lcd_set_cursor(0, 0);
-
-	display_percent(m);
-
-	char line1_buf[LCD_MAX_MSG_LEN];
-	char *line1 = line1_buf;
-
-	if (m->level == NULL)
+	if (monitor_process_samples(lm, &set_light_level) == -1)
 	{
-		lcd_write_string("Soil: reading...");
+		logger(ERROR, "Failed to calculate light level");
+		return -1;
+	}
+
+	if (sensor_read_adc(lm->snr) == -1)
+	{
+		logger(ERROR, "Failed to take light sensor reading");
+		return -1;
+	}
+
+	return 0;
+}
+
+#define WATER_HIGH_VAL 1400
+#define WATER_MEDIUM_VAL 2000
+#define WATER_DRY_VAL 2400
+
+const char *soil_saturated = "Saturated";
+const char *soil_medium = "Medium";
+const char *soil_dry = "Dry";
+
+int set_water_level(monitor *wm)
+{
+	if (sensor_calculate_average(wm->snr) == -1)
+	{
+		logger(ERROR, "Failed to get average water reading");
+		return -1;
+	}
+
+	if (wm->snr->raw_average > WATER_DRY_VAL)
+	{
+		wm->level = (char *)soil_dry;
+	}
+	else if (wm->snr->raw_average > WATER_MEDIUM_VAL)
+	{
+		wm->level = (char *)soil_medium;
 	}
 	else
 	{
-		str_cat("Soil: ", (char *)m->level, line1);
+		wm->level = (char *)soil_saturated;
 	}
 
-	lcd_write_string_and_scroll(line1, 0, 0);
+	char *args_level[] = {wm->level};
+	loggerf(INFO, "Water level set to &", NULL, 0, args_level, 1);
+
+	// we want the water "percentage" and dry soil gives the max adc value
+	wm->percent = 100 - wm->snr->sensor_percent;
+
+	uint32_t args_intensity[] = {wm->percent};
+	loggerf(INFO, "Soil saturation set to $", args_intensity, 1, NULL, 0);
+
+	return 0;
 }
 
-void display_info(plant_monitor *pm)
+int measure_water(monitor *wm)
 {
-	lcd_clear_display();
-
-	switch (pm->currently_showing)
+	if (monitor_process_samples(wm, &set_water_level) == -1)
 	{
-	case LIGHT:
-		display_light_info(pm->lm);
-		break;
-	case MOISTURE:
-		display_moisture_info(pm->wm);
-		break;
-	}
-}
-
-void run_monitor(plant_monitor *pm)
-{
-	uint32_t now = get_system_uptime();
-	if (now > (pm->sys_uptime + DISPLAY_SWITCH_TIME))
-	{
-		pm->currently_showing = (info_type) !(bool)pm->currently_showing;
-		pm->sys_uptime = now;
-		display_info(pm);
-		toggle_user_led();
+		logger(ERROR, "Failed to calculate water level");
+		return -1;
 	}
 
-	poll_sensors(pm);
+	if (sensor_read_adc(wm->snr) == -1)
+	{
+		logger(ERROR, "Failed to take water sensor reading");
+		return -1;
+	}
+
+	return 0;
 }

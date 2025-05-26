@@ -9,7 +9,7 @@
 #include "lcd.h"
 #include "adc.h"
 #include "sensor.h"
-#include "monitor.h"
+#include "plantmonitor.h"
 
 #include "interrupt_table.c"
 

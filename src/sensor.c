@@ -8,26 +8,22 @@
 #include "adc.h"
 #include "sensor.h"
 
-void init_sensor(sensor *s, queue *q, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num)
+void init_sensor(sensor *s, queue *q, uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num)
 {
 	reset_queue(q);
 	s->readings_queue = q;
 	s->sensor_percent = UNDEFINED_PERCENTAGE;
+	s->min_adc_reading = min_adc_reading;
 	s->max_adc_reading = max_adc_reading;
 	s->sample_size = sample_size;
 	s->adc_num = adc_num;
 }
 
-void init_monitor(monitor *m, sensor * s)
-{
-	m->snr = s;
-	m->level = NULL;
-	m->percent = UNDEFINED_PERCENTAGE;
-}
-
 void set_percent(sensor *s)
 {
-	uint32_t percentage = fp_percentage(s->raw_average, s->max_adc_reading);
+	uint32_t value_range = s->max_adc_reading - s->min_adc_reading;
+	uint32_t adjusted_val = s->raw_average - s->min_adc_reading;
+	uint32_t percentage = fp_percentage(adjusted_val, value_range);
 	s->sensor_percent = percentage;
 }
 
@@ -73,21 +69,6 @@ int sensor_read_adc(sensor *s)
 	{
 		logger(ERROR, "Failed to add light reading");
 		return -1;
-	}
-	return 0;
-}
-
-int sensor_process_samples(sensor *s, monitor *m, int (*action)(struct monitor *))
-{
-	if (s->readings_queue->size == s->sample_size)
-	{
-		if (action(m) == -1)
-		{
-			logger(ERROR, "Failed to process adc samples");
-			return -1;
-		}
-
-		reset_queue(s->readings_queue);
 	}
 	return 0;
 }
