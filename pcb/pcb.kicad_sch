@@ -3713,6 +3713,16 @@
 	)
 	(wire
 		(pts
+			(xy 259.08 138.43) (xy 264.16 138.43)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "1feecad7-3b03-4220-9c19-cbf28cdb2693")
+	)
+	(wire
+		(pts
 			(xy 129.54 67.31) (xy 129.54 71.12)
 		)
 		(stroke
@@ -3720,6 +3730,16 @@
 			(type default)
 		)
 		(uuid "20826f46-4826-4bf0-81a5-c4b879f21c4e")
+	)
+	(wire
+		(pts
+			(xy 259.08 143.51) (xy 264.16 143.51)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "2215997f-582c-4469-b159-65def8027e94")
 	)
 	(wire
 		(pts
@@ -3950,6 +3970,16 @@
 			(type default)
 		)
 		(uuid "58ad222b-d559-4001-bef6-97f5fc88a8ef")
+	)
+	(wire
+		(pts
+			(xy 142.24 86.36) (xy 149.86 86.36)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "5da1ac17-318f-40af-9f86-8b7f445083b8")
 	)
 	(wire
 		(pts
@@ -4363,6 +4393,16 @@
 	)
 	(wire
 		(pts
+			(xy 142.24 83.82) (xy 149.86 83.82)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c6ba2d35-cec5-464e-b03f-2df86c80147a")
+	)
+	(wire
+		(pts
 			(xy 43.18 27.94) (xy 43.18 25.4)
 		)
 		(stroke
@@ -4674,6 +4714,28 @@
 		(uuid "0d090f49-6bcd-4a52-8514-85f63c32f883")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
 			(at 85.9753 124.46 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "PA2"
+		(shape input)
+		(at 259.08 138.43 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "14f10a23-4118-40e0-8830-7db4393f9184")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 252.5267 138.43 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -5035,6 +5097,28 @@
 			)
 		)
 	)
+	(global_label "PA3"
+		(shape input)
+		(at 259.08 143.51 180)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify right)
+		)
+		(uuid "a09a22fd-945e-4725-9b8c-c55695728667")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 252.5267 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify right)
+				(hide yes)
+			)
+		)
+	)
 	(global_label "PA9"
 		(shape input)
 		(at 259.08 124.46 180)
@@ -5053,6 +5137,50 @@
 					(size 1.27 1.27)
 				)
 				(justify right)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "PA3"
+		(shape input)
+		(at 149.86 86.36 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "abba559b-3d3c-4c2e-8fb8-6545a22c739b")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 156.4133 86.36 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+				(hide yes)
+			)
+		)
+	)
+	(global_label "PA2"
+		(shape input)
+		(at 149.86 83.82 0)
+		(fields_autoplaced yes)
+		(effects
+			(font
+				(size 1.27 1.27)
+			)
+			(justify left)
+		)
+		(uuid "b4ecc9e3-a864-4a6e-8ec9-98bd0f7a1760")
+		(property "Intersheetrefs" "${INTERSHEET_REFS}"
+			(at 156.4133 83.82 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
 				(hide yes)
 			)
 		)
@@ -5252,6 +5380,73 @@
 				)
 				(justify left)
 				(hide yes)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x01_Socket")
+		(at 269.24 138.43 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "024b0ab3-ae18-416e-8062-b1093bb4d3d3")
+		(property "Reference" "J12"
+			(at 270.51 137.1599 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "USART2 TX"
+			(at 270.51 139.6999 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 269.24 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 269.24 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated"
+			(at 269.24 138.43 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "c8b598a8-4ac1-40f9-a6af-33934e7de904")
+		)
+		(instances
+			(project ""
+				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
+					(reference "J12")
+					(unit 1)
+				)
 			)
 		)
 	)
@@ -5731,6 +5926,73 @@
 			(project ""
 				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
 					(reference "J10")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Connector:Conn_01x01_Socket")
+		(at 269.24 143.51 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "2c5748e2-8eb5-4ee9-92bd-f44a91a340ba")
+		(property "Reference" "J13"
+			(at 270.51 142.2399 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "USART2 RX"
+			(at 270.51 144.7799 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" ""
+			(at 269.24 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 269.24 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Generic connector, single row, 01x01, script generated"
+			(at 269.24 143.51 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "63f38f27-cee8-4c22-86b9-97c9446c3d67")
+		)
+		(instances
+			(project ""
+				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
+					(reference "J13")
 					(unit 1)
 				)
 			)
