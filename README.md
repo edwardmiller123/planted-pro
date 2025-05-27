@@ -22,3 +22,4 @@
 - slide switch
 - 9v Battery?
 	- TPS5430DDA (step down regulator)
+		- for a 3.6v output we want R1 = 10kohms, R2 = 5.132kohms
