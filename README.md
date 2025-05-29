@@ -1,14 +1,15 @@
 # TODO
-- calibrate soil and light sesnors
+- check battery charge capability
+- fix schematic
+- store readings and send via bluetooth
+- calibrate light sensors
 - fix lcd contrast (potential divider?)
-- draw circuit diagrams
-- enable swd pins and add debug pin for flashing / debugging finished pcb
 - add battery pack and power switch
 - design pcb
 - design case
 - make pcb
 - print case
-- assemble
+- assembleS
 
 
 # Parts List
@@ -18,8 +19,15 @@
 - Capacitive moisture Sensor
 - Potentiometer
 - HC-06 (bluetooth)
-- AA battery holder (2 AA batteries)
 - slide switch
-- 9v Battery?
-	- TPS5430DDA (step down regulator)
-		- for a 3.6v output we want R1 = 10kohms, R2 = 5.132kohms
+- 9v Battery
+	- TLV62569DBV (step down regulator)
+
+
+
+# Schematic Fixes
+	- should use Texas Instruments TLV62569DBV instead as is simpler
+	- use 3.3v output as it will fluctuate
+	- need inductor on converter circuit (bassicaly just follow datasheet)
+	- find correct datasheet for the lcd. May need to have another buck converter to supply 5vs to the lcd
+	- test capacitve moisture sensor and lcd with 3.3v supply 
