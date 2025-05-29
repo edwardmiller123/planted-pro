@@ -5,6 +5,8 @@
 
 #include "memmap.h"
 
+#define HC06_BAUD_RATE 9600
+
 typedef enum gpio {
 	GPIOA,
 	GPIOB,
@@ -16,6 +18,11 @@ typedef enum gpio_action {
 	CLEAR,
 	SET
 } gpio_action;
+
+typedef enum usart {
+	USART1,
+	USART2
+} usart;
 
 // alters the state the given pin in the given gpio port using the atomic BSSR register
 void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action);
@@ -29,6 +36,7 @@ void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action);
 #define GPIOA_OTYPER (GPIOA_BASE + 0x4U)
 #define GPIOA_OSPEEDR (GPIOA_BASE + 0x8U)
 #define GPIOA_PUPDR (GPIOA_BASE + 0x0CU)
+#define GPIOA_AFRL (GPIOA_BASE + 0x20U) // Pin alternate functions 
 #define GPIOA_AFRH (GPIOA_BASE + 0x24U) // Pin alternate functions 
 #define GPIOA_ODR (GPIOA_BASE + 0x14U) // Output data register
 #define GPIOA_BSSR (GPIOA_BASE + 0x18U) // Output data register
@@ -94,12 +102,14 @@ void toggle_user_led();
 
 void init_user_led();
 
+// Backup error signalling
 void fast_blink();
+
+int usart_send_buffer(usart num, uint8_t *buf, uint32_t size);
 
 // USART1 //
 
-#define USART1_OFFSET (0x1000U)
-#define USART1_BASE (APB2_BASE + USART1_OFFSET)
+#define USART1_BASE (APB2_BASE + 0x1000U)
 
 #define USART1_SR (USART1_BASE + 0x0U)
 #define USART1_DR (USART1_BASE + 0x04U)
@@ -109,10 +119,19 @@ void fast_blink();
 
 void configure_usart1(uint32_t baud);
 
-int usart1_send_byte(uint8_t data);
-
-int usart1_send_buffer(uint8_t * buf, uint32_t size);
-
 void usart1_handler();
+
+// USART2 //
+
+#define USART2_BASE (APB1_BASE + 0x4400U)
+
+#define USART2_SR (USART2_BASE + 0x0U)
+#define USART2_DR (USART2_BASE + 0x04U)
+#define USART2_BRR (USART2_BASE + 0x08U)
+#define USART2_CR1 (USART2_BASE + 0x0CU)
+#define USART2_CR2 (USART2_BASE + 0x10)
+
+// Initialise USART2 (PA2 TX, PA3 RX) with the given baud rate. Requires the GPIO bus to be enabled first
+void configure_usart2(uint32_t baud);
 
 #endif

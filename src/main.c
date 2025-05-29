@@ -27,6 +27,7 @@ int main(void)
 
     init_user_led();
 
+    // used for logging
     configure_usart1(115200);
 
     set_log_level(DEBUG);
@@ -37,6 +38,9 @@ int main(void)
     configure_lcd();
 
     configure_adc();
+
+    configure_usart2(HC06_BAUD_RATE);
+    logger(INFO, "Initialised USART2");
 
     queue light_readings_queue;
     queue water_readings_queue;

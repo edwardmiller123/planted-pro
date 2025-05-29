@@ -10,7 +10,8 @@
 // IRQ numbers
 #define ADC 18
 #define EXTI9_5 23
-#define USART1 37
+#define IRQ_USART1 37
+#define IRQ_USART2 38
 
 // EXTI Interrupt numbers
 

@@ -35,7 +35,7 @@ void logger_send(char *level, char *msg)
 
     str_cat(finished_msg, "\r\n", finished_msg);
 
-    if (usart1_send_buffer((uint8_t *)finished_msg, str_len(finished_msg)) == -1)
+    if (usart_send_buffer(USART1, (uint8_t *)finished_msg, str_len(finished_msg)) == -1)
     {
         fast_blink();
     }
