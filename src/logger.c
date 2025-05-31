@@ -3,6 +3,7 @@
 #include "logger.h"
 #include "utils.h"
 #include "gpio.h"
+#include "usart.h"
 #include "interrupts.h"
 
 // maximum length of a log message

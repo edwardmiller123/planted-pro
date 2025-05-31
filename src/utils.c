@@ -1,6 +1,8 @@
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "utils.h"
+#include "systick.h"
 
 #define MAX_STRING_SIZE 256
 #define MAX_DIGITS 10
@@ -9,7 +11,8 @@ uint32_t str_len(char *str)
 {
 	uint32_t len = 0;
 
-	if (str == NULL) {
+	if (str == NULL)
+	{
 		return len;
 	}
 
@@ -25,7 +28,7 @@ uint32_t str_len(char *str)
 }
 
 // copies n bytes from src to dst returning apointer at the end of the copied region
-uint8_t * byte_copy(uint8_t *src, uint8_t *dst, uint32_t n)
+uint8_t *byte_copy(uint8_t *src, uint8_t *dst, uint32_t n)
 {
 	for (int i = 0; i < n; i++)
 	{
@@ -48,7 +51,7 @@ void str_cat(char *str1, char *str2, char *buf)
 {
 	uint32_t str1_len = str_len(str1);
 	uint32_t str2_len = str_len(str2);
-	uint8_t * pos = byte_copy((uint8_t *)str1, (uint8_t *)buf, str1_len);
+	uint8_t *pos = byte_copy((uint8_t *)str1, (uint8_t *)buf, str1_len);
 	pos = byte_copy((uint8_t *)str2, pos, str2_len);
 	*pos = '\0';
 }
@@ -86,30 +89,43 @@ int get_digit_count(int num)
 // converts an integer to a string.
 char *int_to_string(uint32_t integer, char *new_str)
 {
-  uint32_t digit_count = get_digit_count(integer);
-  // check the number doesnt exceed the digit count. This shouldnt be possible
-  // on a 32 bit system but checking just to be safe.
-  if (digit_count > MAX_DIGITS)
-  {
-    return NULL;
-  }
+	uint32_t digit_count = get_digit_count(integer);
+	// check the number doesnt exceed the digit count. This shouldnt be possible
+	// on a 32 bit system but checking just to be safe.
+	if (digit_count > MAX_DIGITS)
+	{
+		return NULL;
+	}
 
-  char reverse_str[MAX_DIGITS];
-  uint32_t n = integer;
-  uint32_t i = 0;
-  uint32_t a = integer;
-  uint32_t b;
-  while (n > 0)
-  {
-    b = a % 10;
-    reverse_str[i] = b + 0x30;
-    a /= 10;
-    n /= 10;
-    i++;
-  }
-  reverse_str[i] = '\0';
+	char reverse_str[MAX_DIGITS];
+	uint32_t n = integer;
+	uint32_t i = 0;
+	uint32_t a = integer;
+	uint32_t b;
+	while (n > 0)
+	{
+		b = a % 10;
+		reverse_str[i] = b + 0x30;
+		a /= 10;
+		n /= 10;
+		i++;
+	}
+	reverse_str[i] = '\0';
 
-  char *result_string = reverse_string(reverse_str, new_str);
+	char *result_string = reverse_string(reverse_str, new_str);
 
-  return result_string;
+	return result_string;
+}
+
+int wait_for_condition(bool (*cond)(void), uint32_t ms)
+{
+	uint32_t timeout = get_system_uptime() + ms;
+	while (get_system_uptime() < timeout)
+	{
+		if ((*cond)())
+		{
+			return 0;
+		}
+	}
+	return -1;
 }

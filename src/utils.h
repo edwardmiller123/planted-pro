@@ -2,6 +2,7 @@
 #define UTILS_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #define NULL (void*)0
 
@@ -47,5 +48,8 @@ static inline uint32_t clear_bit(uint32_t data, uint32_t n)
     data &= ~((uint32_t)1 << n);
     return data;
 }
+
+// Waits for a condition function to be satisfied until the specified timeout
+int wait_for_condition(bool (*cond)(void), uint32_t ms);
 
 #endif

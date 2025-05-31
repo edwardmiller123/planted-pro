@@ -3,7 +3,6 @@
 
 #include "utils.h"
 #include "adc.h"
-#include "systick.h"
 #include "io.h"
 #include "gpio.h"
 #include "logger.h"

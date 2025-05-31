@@ -5,7 +5,7 @@
 #include "systick.h"
 #include "lcd.h"
 #include "utils.h"
-#include "gpio.h"
+#include "usart.h"
 #include "adc.h"
 #include "sensor.h"
 #include "monitor.h"
@@ -149,7 +149,7 @@ void run_monitor(plant_monitor *pm)
 		pm->currently_showing = (info_type) !(bool)pm->currently_showing;
 		pm->sys_uptime = now;
 		display_info(pm);
-		toggle_user_led();
+		usart_send_buffer(USART1, (uint8_t *)"hi\n", 3);
 	}
 
 	poll_sensors(pm);

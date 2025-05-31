@@ -4,6 +4,7 @@
 #include "interrupts.h"
 #include "io.h"
 #include "gpio.h"
+#include "usart.h"
 #include "systick.h"
 #include "logger.h"
 #include "lcd.h"
@@ -28,7 +29,7 @@ int main(void)
     init_user_led();
 
     // used for logging
-    configure_usart3(115200);
+    configure_usart3(DEFAULT_BAUD);
 
     set_log_level(DEBUG);
 
