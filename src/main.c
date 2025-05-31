@@ -28,19 +28,20 @@ int main(void)
     init_user_led();
 
     // used for logging
-    configure_usart1(115200);
+    configure_usart3(115200);
 
     set_log_level(DEBUG);
 
     uint32_t args[1] = {get_system_uptime()};
-    loggerf(INFO, "Systick, LED2 and USART1 initialisation completed in $ ms", args, 1, NULL, 0);
+    loggerf(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);
 
     configure_lcd();
 
     configure_adc();
 
-    configure_usart3(HC05_BAUD);
-    logger(INFO, "Initialised USART3");
+    // configured for the HC-05 bluetooth module
+    configure_usart1(HC05_BAUD);
+    logger(INFO, "Initialised USART1");
 
     queue light_readings_queue;
     queue water_readings_queue;

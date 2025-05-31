@@ -5,7 +5,7 @@
 
 #include "memmap.h"
 
-#define HC05_BAUD 38400
+#define HC05_BAUD 9600
 
 typedef enum gpio {
 	GPIOA,
