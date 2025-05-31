@@ -89,7 +89,7 @@ void configure_adc()
 
 	configure_adc2();
 
-	nvic_enable_irq(ADC);
+	nvic_enable_irq(IRQ_ADC);
 }
 
 bool adc1_conversion_complete()

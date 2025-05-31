@@ -4,3 +4,4 @@ plant-monitor
 .vscode
 pcb-backups
 *.lck
+*auto_saved_files*

@@ -5,7 +5,7 @@
 
 #include "memmap.h"
 
-#define HC06_BAUD_RATE 9600
+#define HC05_BAUD 38400
 
 typedef enum gpio {
 	GPIOA,
@@ -21,7 +21,7 @@ typedef enum gpio_action {
 
 typedef enum usart {
 	USART1,
-	USART2
+	USART3
 } usart;
 
 // alters the state the given pin in the given gpio port using the atomic BSSR register
@@ -121,17 +121,17 @@ void configure_usart1(uint32_t baud);
 
 void usart1_handler();
 
-// USART2 //
+// USART3 //
 
-#define USART2_BASE (APB1_BASE + 0x4400U)
+#define USART3_BASE (APB1_BASE + 0x4800U)
 
-#define USART2_SR (USART2_BASE + 0x0U)
-#define USART2_DR (USART2_BASE + 0x04U)
-#define USART2_BRR (USART2_BASE + 0x08U)
-#define USART2_CR1 (USART2_BASE + 0x0CU)
-#define USART2_CR2 (USART2_BASE + 0x10)
+#define USART3_SR (USART3_BASE + 0x0U)
+#define USART3_DR (USART3_BASE + 0x04U)
+#define USART3_BRR (USART3_BASE + 0x08U)
+#define USART3_CR1 (USART3_BASE + 0x0CU)
+#define USART3_CR2 (USART3_BASE + 0x10)
 
 // Initialise USART2 (PA2 TX, PA3 RX) with the given baud rate. Requires the GPIO bus to be enabled first
-void configure_usart2(uint32_t baud);
+void configure_usart3(uint32_t baud);
 
 #endif

@@ -39,8 +39,8 @@ int main(void)
 
     configure_adc();
 
-    configure_usart2(HC06_BAUD_RATE);
-    logger(INFO, "Initialised USART2");
+    configure_usart3(HC05_BAUD);
+    logger(INFO, "Initialised USART3");
 
     queue light_readings_queue;
     queue water_readings_queue;
