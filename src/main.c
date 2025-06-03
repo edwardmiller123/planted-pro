@@ -10,6 +10,7 @@
 #include "lcd.h"
 #include "adc.h"
 #include "sensor.h"
+#include "heap.h"
 #include "plantmonitor.h"
 
 #include "interrupt_table.c"
@@ -43,6 +44,8 @@ int main(void)
     // configured for the HC-05 bluetooth module
     configure_usart1(HC05_BAUD);
     logger(INFO, "Initialised USART1");
+
+    init_heap();
 
     queue light_readings_queue;
     queue water_readings_queue;
