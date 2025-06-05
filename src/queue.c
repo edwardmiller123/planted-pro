@@ -1,29 +1,56 @@
 #include <stdint.h>
 
+#include "queue.h"
 #include "utils.h"
 #include "logger.h"
-#include "queue.h"
+#include "heap.h"
 
-void reset_queue(queue *q)
+void queue_reset(queue *q)
 {
 	q->size = 0;
 	q->back = 0;
 	q->pos = 0;
-	logger(DEBUG, "Queue resetting");
+	logger(DEBUG, "Queue reset");
+}
+
+queue * init_queue(uint32_t capacity) {
+	uint8_t * data = malloc(capacity * sizeof(uint32_t));
+	if (data == NULL) {
+		logger(ERROR, "Failed to allocate heap memory for queue capacity");
+		return NULL;
+	}
+
+	queue * q = malloc(sizeof(queue));
+	if (q == NULL) {
+		logger(ERROR, "Failed to allocate heap memory for queue");
+		return NULL;
+	}
+
+	q->data = data;
+	q->capacity = capacity;
+
+	queue_reset(q);
+
+	uint32_t args[] = {capacity};
+	loggerf(INFO, "Initialised queue with capacity $", args, 1, NULL, 0);
+	return q;
 }
 
 int fifo_add(queue *q, uint32_t elem)
 {
-	if (q->size == MAX_QUEUE_SIZE)
+	if (q->size == q->capacity)
 	{
 		logger(ERROR, "Queue full");
-		reset_queue(q);
+		queue_reset(q);
 		return -1;
 	}
 
-	q->data[q->pos++] = elem;
+	// a little janky but using ptr arithmetic allows us to dynamically allocate queue size on initialisation
+	uint32_t mem_pos = q->pos * sizeof(uint32_t);
+	*(uint32_t *)((uint32_t)q->data + mem_pos) = elem;
 
 	q->size++;
+	q->pos++;
 
 	uint32_t args[] = {elem};
 	loggerf(DEBUG, "Added $ to queue", args, 1, NULL, 0);
@@ -37,16 +64,18 @@ int32_t fifo_get(queue *q) {
 		return -1;
 	}
 
-	uint32_t val = q->data[q->back++];
+	uint32_t mem_pos = q->back * sizeof(uint32_t);
+	uint32_t val = *(uint32_t *)((uint32_t)q->data + mem_pos);
 
+	q->back++;
 	q->size--;
 
 	uint32_t args[] = {q->data[q->back - 1]};
 	loggerf(DEBUG, "Removed $ from queue", args, 1, NULL, 0);
 
-	if (q->back == MAX_QUEUE_SIZE) {
+	if (q->back == q->capacity) {
 		logger(WARNING, "Queue capacity reached");
-		reset_queue(q);
+		queue_reset(q);
 	}
 
 	return (int32_t)val;

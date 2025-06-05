@@ -3,17 +3,20 @@
 
 #include <stdint.h>
 
-#define MAX_QUEUE_SIZE 25
+#define DEFAULT_QUEUE_CAPACITY 25
 
 typedef struct queue
 {
-	uint32_t data[MAX_QUEUE_SIZE];
+	uint8_t * data;
 	uint32_t back;
 	uint32_t pos;
 	uint32_t size;
+	uint32_t capacity;
 } queue;
 
-void reset_queue(queue *q);
+void queue_reset(queue *q);
+
+queue * init_queue(uint32_t capacity);
 
 int fifo_add(queue *q, uint32_t elem);
 

@@ -42,7 +42,7 @@ int monitor_process_samples(monitor *m, int (*action)(struct monitor *))
 			return -1;
 		}
 
-		reset_queue(m->snr->readings_queue);
+		queue_reset(m->snr->readings_queue);
 	}
 	return 0;
 }

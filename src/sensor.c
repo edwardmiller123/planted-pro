@@ -17,13 +17,12 @@ sensor * init_sensor(uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_
 		return NULL;
 	}
 
-	queue *readings = malloc(sizeof(queue));
-	if (s == NULL) {
-		logger(ERROR, "Failed to allocate memory for sensor readings queue");
+	queue *readings = init_queue(DEFAULT_QUEUE_CAPACITY);
+	if (readings == NULL) {
+		logger(ERROR, "Failed to initialise sensor readings queue");
 		return NULL;
 	}
 
-	reset_queue(readings);
 	s->readings_queue = readings;
 
 	s->sensor_percent = UNDEFINED_PERCENTAGE;
