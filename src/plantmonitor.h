@@ -14,13 +14,13 @@ typedef enum info_type
 
 typedef struct plant_monitor
 {
-	uint32_t sys_uptime;
+	uint32_t display_change_interval;
 	info_type currently_showing;
 	monitor *lm;
 	monitor *wm;
 } plant_monitor;
 
-void init_plant_monitor(plant_monitor *pm, monitor *lm, monitor *wm, sensor * light_sensor, sensor * water_sensor, queue *light_readings, queue *water_readings);
+plant_monitor * init_plant_monitor();
 
 void run_monitor(plant_monitor *pm);
 

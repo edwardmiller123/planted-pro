@@ -33,7 +33,7 @@ int fifo_add(queue *q, uint32_t elem)
 
 int32_t fifo_get(queue *q) {
 	if (q->size == 0) {
-		logger(ERROR, "Queue empty");
+		logger(WARNING, "Cant remove element from empty queue");
 		return -1;
 	}
 

@@ -9,6 +9,7 @@
 #include "adc.h"
 #include "sensor.h"
 #include "monitor.h"
+#include "heap.h"
 #include "plantmonitor.h"
 
 #define DISPLAY_SWITCH_TIME 3000
@@ -20,24 +21,55 @@
 
 #define SAMPLE_SIZE 5
 
-void init_plant_monitor(plant_monitor *pm, monitor *lm, monitor *wm, sensor *light_sensor, sensor *water_sensor, queue *light_readings, queue *water_readings)
+plant_monitor *init_plant_monitor()
 {
+	plant_monitor *pm = malloc(sizeof(plant_monitor));
+	if (pm == NULL)
+	{
+		logger(ERROR, "Failed to allocate memory for plant monitor");
+		return NULL;
+	}
+
 	// After 5 measurements have been taken we calculate the average light level and "percentage" and write it
 	// back to the state struct. The light monitor uses ADC1 to read from a ldr in a potential divider with an 82k resistor
-	init_sensor(light_sensor, light_readings, 0, LIGHT_MAX_VALUE, SAMPLE_SIZE, ADC1);
+	sensor *light_sen = init_sensor(0, LIGHT_MAX_VALUE, SAMPLE_SIZE, ADC1);
+	if (light_sen == NULL)
+	{
+		logger(ERROR, "Failed to allocate memory for light sensor");
+		return NULL;
+	}
+
 	logger(INFO, "Light sensor initialised on ADC1");
 
 	// The water monitor uses a capacitive soil moisture sensor
-	init_sensor(water_sensor, water_readings, WATER_MIN_VALUE, WATER_MAX_VALUE, SAMPLE_SIZE, ADC2);
+	sensor *water_sen = init_sensor(WATER_MIN_VALUE, WATER_MAX_VALUE, SAMPLE_SIZE, ADC2);
+	if (water_sen == NULL)
+	{
+		logger(ERROR, "Failed to allocate memory for water sensor");
+		return NULL;
+	}
+
 	logger(INFO, "Water sensor initialised on ADC2");
 
-	init_monitor(lm, light_sensor);
-	init_monitor(wm, water_sensor);
+	monitor *lm = init_monitor(light_sen);
+	if (lm == NULL)
+	{
+		logger(ERROR, "Failed to initialise light monitor");
+		return NULL;
+	}
+
+	monitor *wm = init_monitor(water_sen);
+	if (wm == NULL)
+	{
+		logger(ERROR, "Failed to initialise water monitor");
+		return NULL;
+	}
 
 	pm->currently_showing = LIGHT;
-	pm->sys_uptime = 0;
+	pm->display_change_interval = 0;
 	pm->lm = lm;
 	pm->wm = wm;
+	return pm;
 }
 
 void poll_sensors(plant_monitor *pm)
@@ -144,13 +176,16 @@ void display_info(plant_monitor *pm)
 void run_monitor(plant_monitor *pm)
 {
 	uint32_t now = get_system_uptime();
-	if (now > (pm->sys_uptime + DISPLAY_SWITCH_TIME))
+	if (now > (pm->display_change_interval + DISPLAY_SWITCH_TIME))
 	{
 		pm->currently_showing = (info_type) !(bool)pm->currently_showing;
-		pm->sys_uptime = now;
+		pm->display_change_interval = now;
 		display_info(pm);
 		usart_send_buffer(USART1, (uint8_t *)"hi\n", 3);
 	}
 
 	poll_sensors(pm);
+
+	// TODO: every 15 minutes grab the current values along witha timestamp to a queue
+	// On request from the bluetooth module, send the stored data as JSON
 }

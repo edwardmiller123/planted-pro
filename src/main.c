@@ -47,19 +47,15 @@ int main(void)
 
     init_heap();
 
-    queue light_readings_queue;
-    queue water_readings_queue;
-    sensor light_sensor;
-    sensor water_sensor;
-    monitor lm;
-    monitor wm;
-    plant_monitor pm;
-
-    init_plant_monitor(&pm, &lm, &wm, &light_sensor, &water_sensor, &light_readings_queue, &water_readings_queue);
+    plant_monitor * pm = init_plant_monitor();
+    if (pm == NULL) {
+        logger(ERROR, "Failed to initialise plant monitor");
+        return 0;
+    }
 
     while (1)
     {
-        run_monitor(&pm);
+        run_monitor(pm);
     };
 
     return 0;

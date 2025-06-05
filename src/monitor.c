@@ -5,6 +5,7 @@
 #include "monitor.h"
 #include "utils.h"
 #include "sensor.h"
+#include "heap.h"
 
 // values calibrated using an 82k resistor in the potential divider
 #define LIGHT_BRIGHT_DIRECT_VAL 1000
@@ -17,11 +18,18 @@ const char *light_bright_indirect = "Bright Indirect";
 const char *light_medium = "Medium";
 const char *light_low = "Low";
 
-void init_monitor(monitor *m, sensor * s)
+monitor * init_monitor(sensor * s)
 {
+	monitor * m = malloc(sizeof(monitor));
+	if (m == NULL) {
+		logger(ERROR, "Failed to allocate memory for monitor");
+		return NULL;
+	}
+
 	m->snr = s;
 	m->level = NULL;
 	m->percent = UNDEFINED_PERCENTAGE;
+	return m;
 }
 
 int monitor_process_samples(monitor *m, int (*action)(struct monitor *))

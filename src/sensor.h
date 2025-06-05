@@ -21,7 +21,7 @@ typedef struct sensor {
 
 } sensor;
 
-void init_sensor(sensor *s, queue *q, uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num);
+sensor * init_sensor(uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num);
 
 // sets the average values from the already measured readings
 int sensor_calculate_average(sensor *s);

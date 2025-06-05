@@ -10,7 +10,7 @@ typedef struct monitor {
 
 } monitor;
 
-void init_monitor(monitor *m, sensor * s);
+monitor * init_monitor(sensor * s);
 
 int measure_light(monitor *m);
 

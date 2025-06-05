@@ -7,16 +7,31 @@
 #include "logger.h"
 #include "adc.h"
 #include "sensor.h"
+#include "heap.h"
 
-void init_sensor(sensor *s, queue *q, uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num)
+sensor * init_sensor(uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num)
 {
-	reset_queue(q);
-	s->readings_queue = q;
+	sensor * s = malloc(sizeof(sensor));
+	if (s == NULL) {
+		logger(ERROR, "Failed to allocate memory for sensor");
+		return NULL;
+	}
+
+	queue *readings = malloc(sizeof(queue));
+	if (s == NULL) {
+		logger(ERROR, "Failed to allocate memory for sensor readings queue");
+		return NULL;
+	}
+
+	reset_queue(readings);
+	s->readings_queue = readings;
+
 	s->sensor_percent = UNDEFINED_PERCENTAGE;
 	s->min_adc_reading = min_adc_reading;
 	s->max_adc_reading = max_adc_reading;
 	s->sample_size = sample_size;
 	s->adc_num = adc_num;
+	return s;
 }
 
 void set_percent(sensor *s)

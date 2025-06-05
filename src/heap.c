@@ -14,6 +14,8 @@
 
 // TODO: Maybe try to reduce memory fragmentation
 
+#define META_DATA_SIZE 4
+
 list free_blocks;
 heap h;
 
@@ -41,7 +43,7 @@ void *malloc(uint32_t size)
 	uint8_t *current_block = (uint8_t *)h.free_blocks->head->data;
 	for (int i = 0; i < h.free_blocks->size; i++)
 	{
-		node *free_block_node = (node *)(current_block + 4);
+		node *free_block_node = (node *)(current_block + META_DATA_SIZE);
 
 		if (*(uint32_t *)current_block >= size)
 		{
@@ -51,7 +53,7 @@ void *malloc(uint32_t size)
 			uint32_t args[] = {size, (uint32_t)current_block};
 			loggerf(DEBUG, "Allocated $ bytes on heap at free block address: $ ", args, 2, NULL, 0);
 
-			return (void *)(current_block + 4);
+			return (void *)(current_block + META_DATA_SIZE);
 		}
 
 		current_block = (uint8_t *)free_block_node->next->data;
@@ -67,23 +69,28 @@ void *malloc(uint32_t size)
 	current_block = h.top;
 	*(uint32_t *)current_block = size;
 
-	h.top += size;
+	h.top += size + META_DATA_SIZE;
 
-	uint32_t args[] = {size, (uint32_t)current_block, (uint32_t)h.top};
-	loggerf(DEBUG, "Allocated $ bytes on heap at new block address $. Heap top is now at $", args, 3, NULL, 0);
+	uint32_t usage = (uint32_t)h.top - (uint32_t)h.bottom;
+	uint32_t args[] = {size, (uint32_t)current_block, (uint32_t)h.top, usage};
+	loggerf(DEBUG, "Allocated $ bytes on heap at new block address $. Heap top: $, Usage: $ bytes", args, 4, NULL, 0);
 
-	return (void *)(current_block + 4);
+	return (void *)(current_block + META_DATA_SIZE);
 }
 
 void free(void *alloc_mem)
 {
-	uint8_t *block = (uint8_t *)((uint32_t)alloc_mem - 4);
+	uint8_t *block = (uint8_t *)((uint32_t)alloc_mem - META_DATA_SIZE);
 	uint32_t size = *(uint32_t *)block;
 
 	// if the given block is at the top already then just decrease the top of the heap
 	if ((uint32_t)alloc_mem + size == (uint32_t)h.top)
 	{
 		h.top = block;
+
+		uint32_t usage = (uint32_t)h.top - (uint32_t)h.bottom;
+		uint32_t args[] = {(uint32_t)block, usage, (uint32_t)h.top};
+		loggerf(DEBUG, "Freed heap block $. Heap usage decreased to $. Heap top: $", args, 3, NULL, 0);
 		return;
 	}
 
@@ -92,4 +99,7 @@ void free(void *alloc_mem)
 	node free_block_node = {.data = (uint32_t)block};
 	byte_copy((uint8_t *)&free_block_node, (uint8_t *)alloc_mem, sizeof(node));
 	list_add(h.free_blocks, (node *)alloc_mem);
+
+	uint32_t args[] = {(uint32_t)block};
+	loggerf(DEBUG, "Freed heap block $. Added block to free list", args, 3, NULL, 0);
 }
