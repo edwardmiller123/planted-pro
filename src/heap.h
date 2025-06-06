@@ -8,7 +8,7 @@
 
 #define MAX_HEAP_SIZE 4096
 
-typedef struct __attribute__ ((packed)) heap {
+typedef struct __attribute__ ((packed)) __attribute__((aligned(16))) heap {
 	uint8_t data[MAX_HEAP_SIZE];
 	list * free_blocks;
 	uint8_t * top;

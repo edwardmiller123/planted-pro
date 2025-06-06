@@ -15,6 +15,7 @@
 // TODO: Maybe try to reduce memory fragmentation
 
 #define META_DATA_SIZE 4
+#define ALLIGNMENT 16
 
 list free_blocks;
 heap h;
@@ -36,6 +37,11 @@ void *malloc(uint32_t size)
 	{
 		logger(ERROR, "Tried to allocate 0 bytes");
 		return NULL;
+	}
+
+	if ((size + META_DATA_SIZE) % ALLIGNMENT != 0)
+	{
+		size += ALLIGNMENT - (((size + META_DATA_SIZE) % ALLIGNMENT));
 	}
 
 	const uint8_t *heap_max = (uint8_t *)((uint32_t)h.bottom + MAX_HEAP_SIZE);
@@ -72,7 +78,7 @@ void *malloc(uint32_t size)
 	h.top += size + META_DATA_SIZE;
 
 	uint32_t usage = (uint32_t)h.top - (uint32_t)h.bottom;
-	uint32_t args[] = {size, (uint32_t)current_block, (uint32_t)h.top, usage};
+	uint32_t args[] = {size + META_DATA_SIZE, (uint32_t)current_block, (uint32_t)h.top, usage};
 	loggerf(DEBUG, "Allocated $ bytes on heap at new block address $. Heap top: $, Usage: $ bytes", args, 4, NULL, 0);
 
 	return (void *)(current_block + META_DATA_SIZE);
