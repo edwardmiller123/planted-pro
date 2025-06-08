@@ -75,6 +75,8 @@ void bus_fault_handler(void);
 
 void debug_monitor_handler(void);
 
+void init_fault_handler(void);
+
 typedef struct __attribute__ ((packed)) int_table {
     uint32_t * initial_stack;
     void * reset;

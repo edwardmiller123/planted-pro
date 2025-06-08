@@ -133,6 +133,14 @@ void debug_monitor_handler(void)
     };
 }
 
+void init_fault_handler(void) {
+    logger(FATAL, "Initialisation fault");
+    while (1)
+    {
+        ;
+    };
+}
+
 void register_irq_handler(int_table * interrupt_table, uint32_t irq, void * handler) {
     interrupt_table->irq_handlers[irq] = handler;
 }

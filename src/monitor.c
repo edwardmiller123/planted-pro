@@ -73,13 +73,13 @@ int set_light_level(monitor *lm)
 	}
 
 	char *args_level[] = {lm->level};
-	loggerf(INFO, "Light level set to &", NULL, 0, args_level, 1);
+	loggerf(DEBUG, "Light level set to &", NULL, 0, args_level, 1);
 
 	// we want the "light" percentage and darkness gives the max adc value
 	lm->percent = 100 - lm->snr->sensor_percent;
 
 	uint32_t args_intensity[] = {lm->percent};
-	loggerf(INFO, "Light intensity set to $", args_intensity, 1, NULL, 0);
+	loggerf(DEBUG, "Light intensity set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
 }
@@ -131,13 +131,13 @@ int set_water_level(monitor *wm)
 	}
 
 	char *args_level[] = {wm->level};
-	loggerf(INFO, "Water level set to &", NULL, 0, args_level, 1);
+	loggerf(DEBUG, "Water level set to &", NULL, 0, args_level, 1);
 
 	// we want the water "percentage" and dry soil gives the max adc value
 	wm->percent = 100 - wm->snr->sensor_percent;
 
 	uint32_t args_intensity[] = {wm->percent};
-	loggerf(INFO, "Soil saturation set to $", args_intensity, 1, NULL, 0);
+	loggerf(DEBUG, "Soil saturation set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
 }

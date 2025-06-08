@@ -13,7 +13,7 @@
 typedef struct sensor {
 	queue * readings_queue;
 	uint32_t raw_average;
-	uint32_t sensor_percent;
+	uint8_t sensor_percent;
 	uint32_t min_adc_reading;
 	uint32_t max_adc_reading;
 	uint32_t sample_size;

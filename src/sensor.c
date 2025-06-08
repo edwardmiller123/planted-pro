@@ -65,7 +65,7 @@ int sensor_calculate_average(sensor *s)
 	set_percent(s);
 
 	uint32_t args_percent[] = {s->sensor_percent};
-	loggerf(INFO, "Sensor percent set to $", args_percent, 1, NULL, 0);
+	loggerf(DEBUG, "Sensor percent set to $", args_percent, 1, NULL, 0);
 
 	return 0;
 }

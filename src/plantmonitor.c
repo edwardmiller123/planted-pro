@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include <stdbool.h>
 
+#include "plantmonitor.h"
 #include "logger.h"
 #include "systick.h"
 #include "lcd.h"
@@ -9,8 +10,8 @@
 #include "adc.h"
 #include "sensor.h"
 #include "monitor.h"
+#include "export.h"
 #include "heap.h"
-#include "plantmonitor.h"
 
 #define DISPLAY_SWITCH_TIME 3000
 
@@ -20,6 +21,9 @@
 #define WATER_MIN_VALUE 1200
 
 #define SAMPLE_SIZE 5
+
+#define EXPORT_POLL_INTERVAL 500
+#define EXPORT_POINT_COUNT 12
 
 plant_monitor *init_plant_monitor()
 {
@@ -69,6 +73,17 @@ plant_monitor *init_plant_monitor()
 	pm->display_change_interval = 0;
 	pm->lm = lm;
 	pm->wm = wm;
+
+	// TODO: change this to poll every 15 minutes for 12 hours after we are done testing
+	exporter *e = init_exporter(EXPORT_POLL_INTERVAL, EXPORT_POINT_COUNT);
+	if (e == NULL)
+	{
+		logger(ERROR, "Failed to initialise exporter");
+		return NULL;
+	}
+
+	pm->e = e;
+
 	return pm;
 }
 
@@ -118,7 +133,7 @@ void display_light_info(monitor *m)
 {
 	lcd_set_cursor(0, 0);
 
-	// display the percent first so its noit held up from beiung visible by the screen scrolling
+	// display the percent first so its not held up from being visible by the screen scrolling
 	// which blocks
 	display_percent(m);
 
@@ -160,6 +175,15 @@ void display_moisture_info(monitor *m)
 
 void display_info(plant_monitor *pm)
 {
+	uint32_t now = get_system_uptime();
+	if (now < (pm->display_change_interval + DISPLAY_SWITCH_TIME))
+	{
+		return;
+	}
+
+	pm->currently_showing = (info_type) !(bool)pm->currently_showing;
+	pm->display_change_interval = now;
+
 	lcd_clear_display();
 
 	switch (pm->currently_showing)
@@ -175,17 +199,11 @@ void display_info(plant_monitor *pm)
 
 void run_monitor(plant_monitor *pm)
 {
-	uint32_t now = get_system_uptime();
-	if (now > (pm->display_change_interval + DISPLAY_SWITCH_TIME))
-	{
-		pm->currently_showing = (info_type) !(bool)pm->currently_showing;
-		pm->display_change_interval = now;
-		display_info(pm);
-		usart_send_buffer(USART1, (uint8_t *)"hi\n", 3);
-	}
+	display_info(pm);
 
 	poll_sensors(pm);
 
-	// TODO: every 15 minutes grab the current values along witha timestamp to a queue
-	// On request from the bluetooth module, send the stored data as JSON
+	if (store_data_for_export(pm->e, pm->lm->percent, pm->wm->percent)) {
+		logger(WARNING, "Failed to store data for export");
+	}
 }

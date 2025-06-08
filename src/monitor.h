@@ -6,7 +6,7 @@
 typedef struct monitor {
 	sensor * snr;
 	char * level;
-	uint32_t percent;
+	uint8_t percent;
 
 } monitor;
 
