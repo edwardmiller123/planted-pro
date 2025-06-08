@@ -78,7 +78,7 @@ int store_data_for_export(exporter *e, uint8_t light_percent, uint8_t water_perc
 	dp->light_percent = light_percent;
 	dp->water_percent = water_percent;
 
-	if (fifo_add(e->export_queue, (uint32_t)dp) == -1)
+	if (fifo_add(e->export_queue, (uint32_t)dp) == QUEUE_FULL)
 	{
 		logger(ERROR, "Failed to add data point to export queue");
 		return -1;

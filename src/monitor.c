@@ -43,6 +43,7 @@ int monitor_process_samples(monitor *m, int (*action)(struct monitor *))
 		}
 
 		queue_reset(m->snr->readings_queue);
+		logger(DEBUG, "Sensor sample queue reset");
 	}
 	return 0;
 }

@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #define DEFAULT_QUEUE_CAPACITY 10
+#define QUEUE_FULL -3
 
 
 typedef struct queue
