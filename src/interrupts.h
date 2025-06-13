@@ -5,7 +5,7 @@
 
 #include "memmap.h"
 
-#define IRQ_COUNT 96
+#define IRQ_COUNT 97
 
 // IRQ numbers
 #define IRQ_ADC 18
@@ -18,7 +18,7 @@
 #define EXTI9 9
 
 // NVIC registers
-#define NVIC_OFFSET 0xE100U
+#define NVIC_OFFSET 0xE000U
 #define NVIC_BASE (CORE_PERIPH_BASE + NVIC_OFFSET)
 
 #define NVIC_ISER_OFFSET 0x100
@@ -61,8 +61,6 @@ void exti_clear_pending_irq(uint32_t n);
 
 void reset_handler(void);
 
-void software_reset(void);
-
 void nmi_handler(void);
 
 void hard_fault_handler(void);
@@ -77,26 +75,64 @@ void debug_monitor_handler(void);
 
 void init_fault_handler(void);
 
-typedef struct __attribute__ ((packed)) int_table {
-    uint32_t * initial_stack;
-    void * reset;
-    void * nmi;
-    void * hard_fault;
-    void * mem_manage_fault;
-    void * bus_fault;
-    void * usage_fault;
-    uint32_t reserved1;
-    uint32_t reserved2;
-    uint32_t reserved3;
-    uint32_t reserved4;
-    void * sv_call;
-    void * debug_monitor;
-    uint32_t reserved5;
-    void * pend_sv;
-    void * systick;
-    void * irq_handlers[IRQ_COUNT];
-} int_table;
+#define IRQ_HANDLER_BYTES (IRQ_COUNT * sizeof(void *))
 
-void register_irq_handler(int_table * interrupt_table, uint32_t irq, void * handler);
+typedef struct __attribute__((packed)) int_table
+{
+    uint32_t *initial_stack;
+    void *reset;
+    void *nmi;
+    void *hard_fault;
+    void *mem_manage_fault;
+    void *bus_fault;
+    void *usage_fault;
+    uint8_t reserved[16];
+    void *sv_call;
+    void *debug_monitor;
+    uint8_t reserved2[4];
+    void *pend_sv;
+    void *systick;
+    void * watchdog_irq_handler;
+    void * pvd_irq_handler;
+    void * tamp_stamp_irq_handler;
+    void * rtc_wkup_irq_handler;
+    void * flash_irq_handler;
+    void * rcc_irq_handler;
+    void * exti0_irq_handler;
+    void * exti1_irq_handler;
+    void * exti2_irq_handler;
+    void * exti3_irq_handler;
+    void * exti4_irq_handler;
+    void * dma1_stream0_irq_handler;
+    void * dma1_stream1_irq_handler;
+    void * dma1_stream2_irq_handler;
+    void * dma1_stream3_irq_handler;
+    void * dma1_stream4_irq_handler;
+    void * dma1_stream5_irq_handler;
+    void * dma1_stream6_irq_handler;
+    void * adc_irq_handler;
+    void * can1_tx_irq_handler;
+    void * can1_rx0_irq_handler;
+    void * can1_rx1_irq_handler;
+    void * can1_sce_irq_handler;
+    void * exti9_5_irq_handler;
+    void * tim1_brk_tim2_irq_handler;
+    void * tim1_up_tim10_irq_handler;
+    void * tim1_trg_com_tim10_irq_handler;
+    void * tim1_cc_irq_handler;
+    void * tim2_irq_handler;
+    void * tim3_irq_handler;
+    void * tim4_irq_handler;
+    void * i2c1_ev_irq_handler;
+    void * i2c1_er_irq_handler;
+    void * i2c2_ev_irq_handler;
+    void * i2c2_er_irq_handler;
+    void * spi1_irq_handler;
+    void * spi2_irq_handler;
+    void * usart1_irq_handler;
+    void * usart2_irq_handler;
+    void * usart3_irq_handler;
+
+} int_table;
 
 #endif

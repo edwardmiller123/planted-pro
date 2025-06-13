@@ -27,7 +27,7 @@ int usart_send_buffer(usart num, uint8_t *buf, uint32_t size);
 
 void configure_usart1(uint32_t baud);
 
-void usart1_handler();
+void usart1_irq_handler();
 
 // USART3 //
 
@@ -41,6 +41,8 @@ void usart1_handler();
 
 // Initialise USART3 (PB10 TX) with the given baud rate. Requires the GPIO bus to be enabled first
 void configure_usart3(uint32_t baud);
+
+void usart3_irq_handler();
 
 
 #endif

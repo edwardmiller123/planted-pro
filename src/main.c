@@ -25,14 +25,12 @@ int main(void)
 
     init_systick();
 
-    init_irqs(&interrupt_table);
-
     init_user_led();
 
     // used for logging
     configure_usart3(DEFAULT_BAUD);
 
-    set_log_level(INFO);
+    set_log_level(DEBUG);
 
     uint32_t args[1] = {get_system_uptime()};
     loggerf(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);

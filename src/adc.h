@@ -33,6 +33,6 @@ void configure_adc();
 // manually trigger a conversion from the given ADC and read the result
 int32_t adc_manual_conversion(adc adc_num);
 
-void adc_handler();
+void adc_irq_handler();
 
 #endif

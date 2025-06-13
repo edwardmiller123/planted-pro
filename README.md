@@ -1,9 +1,10 @@
 # TODO
 - check battery charge capability
-- store readings and send via bluetooth
+- fix irqs
 - calibrate light sensors
 - fix lcd contrast (potential divider?)
-- add battery pack and power switch
+- add coin cell and switch to schematic
+- add charging circuitry to schematic
 - design pcb
 - design case
 - make pcb
@@ -21,3 +22,4 @@
 - [Slide switch](https://lcsc.com/product-detail/Slide-Switches_SHOU-HAN-MSK12C02-HB_C431541.html?s_z=s_Switches%257CSlide%2520Switches)
 - 5v lipo Battery
 - [TLV62569DBV](https://www.lcsc.com/product-detail/DC-DC-Converters_Texas-Instruments-TLV62569DBVR_C141836.html?s_z=n_TLV62569DBV) (step down regulator) 
+- [MCP73831T](https://lcsc.com/product-detail/Battery-Management_Microchip-Tech-MCP73831T-2ACI-OT_C424093.html?s_z=n_mcp73831) (power management chip for charging circuit)

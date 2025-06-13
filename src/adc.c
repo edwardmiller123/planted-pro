@@ -161,7 +161,7 @@ int32_t adc_manual_conversion(adc adc_num)
 	return adc_val;
 }
 
-void adc_handler()
+void adc_irq_handler()
 {
 	logger(DEBUG, "ADC interrupt triggered");
 }
