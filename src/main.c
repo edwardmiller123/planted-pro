@@ -30,7 +30,7 @@ int main(void)
     // used for logging
     configure_usart3(DEFAULT_BAUD);
 
-    set_log_level(DEBUG);
+    set_log_level(INFO);
 
     uint32_t args[1] = {get_system_uptime()};
     loggerf(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);

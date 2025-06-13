@@ -27,6 +27,8 @@ int usart_send_buffer(usart num, uint8_t *buf, uint32_t size);
 
 void configure_usart1(uint32_t baud);
 
+uint8_t usart1_read_byte();
+
 void usart1_irq_handler();
 
 // USART3 //

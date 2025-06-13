@@ -23,9 +23,7 @@ typedef struct exporter {
 
 exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count);
 
-int store_data_for_export(exporter *e, uint8_t light_percent, uint8_t water_percent);
-
-int export_data(exporter *e);
+void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent);
 
 #endif
 

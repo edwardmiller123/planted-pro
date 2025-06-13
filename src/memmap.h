@@ -25,10 +25,8 @@
 #define RCC_AHB1RSTR (RCC_BASE + 0x10U)
 #define RCC_AHB1ENR (RCC_BASE + 0x30U)
 
-#define RCC_APB1RSTR (RCC_BASE + 0x20U)
 #define RCC_APB1ENR (RCC_BASE + 0x40)
 
-#define RCC_APB2RSTR (RCC_BASE + 0x24U)
 #define RCC_APB2ENR (RCC_BASE + 0x44)
 
 #endif

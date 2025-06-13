@@ -7,9 +7,9 @@
 #include "interrupts.h"
 
 // maximum length of a log message
-#define MAX_MESSAGE_LENGTH 256
+#define MAX_MESSAGE_LENGTH 512
 #define MAX_MESSAGE_PART_COUNT 10
-#define MAX_MESSAGE_PART_SIZE 64
+#define MAX_MESSAGE_PART_SIZE 128
 
 static log_level current_level = INFO;
 

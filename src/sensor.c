@@ -53,6 +53,10 @@ int sensor_calculate_average(sensor *s)
 			logger(ERROR, "failed to fetch reading from queue");
 			return -1;
 		}
+		
+		uint32_t args[] = {reading};
+		loggerf(DEBUG, "Removed $ from sensor readings queue", args, 1, NULL, 0);
+
 		total_val += (uint32_t)reading;
 	}
 
@@ -84,5 +88,8 @@ int sensor_read_adc(sensor *s)
 		logger(ERROR, "Failed to add light reading");
 		return -1;
 	}
+
+	uint32_t args[] = {(uint32_t)reading};
+	loggerf(DEBUG, "Added $ to sensor readings queue", args, 1, NULL, 0);
 	return 0;
 }

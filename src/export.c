@@ -11,9 +11,10 @@
 // slightly bigger than the number of values we want to hold in the queue at any one time so we
 // dont have to reset the queue too frequently
 #define MAX_EXPORT_QUEUE_CAPACITY 128
-#define MAX_JSON_SIZE 512
+#define MAX_JSON_SIZE 1024
 #define MAX_DIGITS 10
-#define MAX_DATA_POINT_JSON_SIZE 50
+#define MAX_DATA_POINT_JSON_SIZE 64
+#define SEND_CODE '6'
 
 exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 {
@@ -41,16 +42,8 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 	return e;
 }
 
-int store_data_for_export(exporter *e, uint8_t light_percent, uint8_t water_percent)
+int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8_t water_percent)
 {
-	uint32_t ts = get_system_uptime();
-	if (ts < e->poll_interval || (ts - e->last_read_ts) < e->poll_interval)
-	{
-		return 0;
-	}
-
-	e->last_read_ts = ts;
-
 	// remove the oldest data point if the queue is full
 	if (e->export_queue->size == e->data_point_limit)
 	{
@@ -136,6 +129,7 @@ char *data_point_to_json(data_point *dp, uint8_t *buf)
 	return (char *)buf;
 }
 
+// TODO: Json is sending byt getting cut off at the end
 // converts the contense of the export queue to a json list string
 char *export_queue_to_json(exporter *e, uint8_t *buf)
 {
@@ -181,4 +175,30 @@ int export_data(exporter *e)
 		return -1;
 	}
 	return 0;
+}
+
+void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
+{
+	uint8_t usart1_received_byte = usart1_read_byte();
+
+	uint32_t log_args[] = {usart1_received_byte};
+	loggerf(DEBUG, "Read byte $ from USART1 receive buffer", log_args, 1, NULL, 0);
+
+	if (usart1_received_byte == (uint8_t)SEND_CODE)
+	{
+		if (export_data(e) == -1)
+		{
+			logger(ERROR, "Failed to export data");
+		}
+	}
+
+	uint32_t ts = get_system_uptime();
+	if (ts < e->poll_interval || (ts - e->last_read_ts) < e->poll_interval)
+	{
+		return;
+	}
+
+	e->last_read_ts = ts;
+
+	store_data_for_export(e, ts, light_percent, water_percent);
 }

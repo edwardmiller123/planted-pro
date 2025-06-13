@@ -203,7 +203,6 @@ void run_monitor(plant_monitor *pm)
 
 	poll_sensors(pm);
 
-	if (store_data_for_export(pm->e, pm->lm->percent, pm->wm->percent)) {
-		logger(WARNING, "Failed to store data for export");
-	}
+	run_exporter(pm->e, pm->lm->percent, pm->wm->percent);
+
 }

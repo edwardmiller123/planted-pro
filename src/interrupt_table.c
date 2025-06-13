@@ -25,5 +25,4 @@ int_table interrupt_table = {
     // ... //
     .adc_irq_handler = &adc_irq_handler,
     .usart1_irq_handler = &usart1_irq_handler,
-    .usart3_irq_handler = &usart1_irq_handler,
 };

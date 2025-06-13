@@ -82,9 +82,6 @@ int fifo_add(queue *q, uint32_t elem)
 	q->size++;
 	q->pos++;
 
-	uint32_t args[] = {elem};
-	loggerf(DEBUG, "Added $ to queue", args, 1, NULL, 0);
-
 	return 0;
 }
 
@@ -101,9 +98,6 @@ int32_t fifo_get(queue *q)
 
 	q->back++;
 	q->size--;
-
-	uint32_t args[] = {q->data[q->back - 1]};
-	loggerf(DEBUG, "Removed $ from queue", args, 1, NULL, 0);
 
 	if (q->back * sizeof(uint32_t) == q->mem_capacity)
 	{

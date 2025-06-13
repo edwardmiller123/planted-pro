@@ -6,6 +6,10 @@
 #include "systick.h"
 #include "utils.h"
 #include "interrupts.h"
+#include "ringbuf.h"
+
+// bytes received from usart 1 are written into the circular buffer
+ring_buffer usart1_receive_buf;
 
 // Initialise USART1 (PA9 TX, PA10 RX) with the given baud rate. Requires the GPIO bus to be enabled first
 void configure_usart1(uint32_t baud)
@@ -45,11 +49,7 @@ void configure_usart1(uint32_t baud)
     // enable transmit
     io_set_bit(USART1_CR1, 3);
 
-    // // enable transmission complete interrupt
-    // io_set_bit(USART1_CR1, 6);
-
-    // // enable TXE interrupt
-    // io_set_bit(USART1_CR1, 7);
+    ring_buffer_reset(&usart1_receive_buf);
 
     // enable receive
     io_set_bit(USART1_CR1, 2);
@@ -92,19 +92,11 @@ void configure_usart3(uint32_t baud)
 
     IO_ACCESS(USART3_BRR) = (DEFAULT_CLK_FREQ + baud / 2) / baud;
 
-    // // enable transmission complete interrupt
-    // io_set_bit(USART3_CR1, 6);
-
-    // // enable TXE interrupt
-    // io_set_bit(USART3_CR1, 7);
-
     // enable transmit
     io_set_bit(USART3_CR1, 3);
 
     // enable usart
     io_set_bit(USART3_CR1, 13);
-
-    nvic_enable_irq(IRQ_USART3);
 
     // allow time for usart initialise otherwise the first byte sent gets mangled
     sys_sleep(5);
@@ -189,12 +181,12 @@ int usart_send_buffer(usart num, uint8_t *buf, uint32_t size)
     return 0;
 }
 
-void usart1_irq_handler()
+uint8_t usart1_read_byte()
 {
-    while (1) {;};
+    return ring_buffer_read(&usart1_receive_buf);
 }
 
-void usart3_irq_handler()
+void usart1_irq_handler()
 {
-
+    ring_buffer_write(&usart1_receive_buf, IO_ACCESS(USART1_DR));
 }

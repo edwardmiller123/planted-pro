@@ -16,11 +16,11 @@ void nvic_enable_irq(uint32_t n)
     uint32_t port;
     if (n <= 31)
     {
-        port = NVIC_ISER0; // 0xE000E100
+        port = NVIC_ISER0;
     }
     if ((32 <= n) && (n <= 63))
     {
-        port = NVIC_ISER1; // 0xE000E104
+        port = NVIC_ISER1;
         n -= 32;
     }
 
