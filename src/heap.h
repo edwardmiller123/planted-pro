@@ -6,7 +6,7 @@
 
 #include "list.h"
 
-#define MAX_HEAP_SIZE 4096
+#define MAX_HEAP_SIZE 8192
 
 typedef struct __attribute__ ((packed)) __attribute__((aligned(16))) heap {
 	uint8_t data[MAX_HEAP_SIZE];

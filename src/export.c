@@ -42,6 +42,7 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 	return e;
 }
 
+// TODO: timestamps are in the wrong order soimetimes and there is some corruption
 int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8_t water_percent)
 {
 	// remove the oldest data point if the queue is full
@@ -129,7 +130,6 @@ char *data_point_to_json(data_point *dp, uint8_t *buf)
 	return (char *)buf;
 }
 
-// TODO: Json is sending byt getting cut off at the end
 // converts the contense of the export queue to a json list string
 char *export_queue_to_json(exporter *e, uint8_t *buf)
 {
@@ -174,6 +174,7 @@ int export_data(exporter *e)
 		logger(ERROR, "Failed to export data over USART1");
 		return -1;
 	}
+
 	return 0;
 }
 

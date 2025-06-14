@@ -4,7 +4,7 @@
 #include "utils.h"
 #include "systick.h"
 
-#define MAX_STRING_SIZE 256
+#define MAX_STRING_SIZE 1024
 #define MAX_DIGITS 10
 
 uint32_t str_len(char *str)
