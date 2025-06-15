@@ -4,11 +4,19 @@
 #include <stdint.h>
 #include <stdbool.h>
 
-#define NULL (void*)0
+#define NULL (void *)0
+
+typedef enum result_code
+{
+    SUCCESS,
+    FAILURE,
+    FULL,
+    EMPTY,
+} result_code;
 
 uint32_t str_len(char *str);
 
-uint8_t * byte_copy(uint8_t * src, uint8_t * dst, uint32_t n);
+uint8_t *byte_copy(uint8_t *src, uint8_t *dst, uint32_t n);
 
 void mem_zero(uint8_t *dst, uint32_t n);
 
@@ -32,7 +40,8 @@ static inline uint32_t toggle_bit(uint32_t data, uint32_t n)
 }
 
 // returns the given bit from the data
-static inline uint32_t get_bit(uint32_t data, uint32_t n) {
+static inline uint32_t get_bit(uint32_t data, uint32_t n)
+{
     return ((data & (1 << n)) >> n);
 }
 

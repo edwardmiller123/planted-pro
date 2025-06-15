@@ -181,12 +181,12 @@ int usart_send_buffer(usart num, uint8_t *buf, uint32_t size)
     return 0;
 }
 
-uint8_t usart1_read_byte()
+uint8_t usart1_read_byte(result_code * result)
 {
-    return ring_buffer_read(&usart1_receive_buf);
+    return ring_buffer_read_byte(&usart1_receive_buf, result);
 }
 
 void usart1_irq_handler()
 {
-    ring_buffer_write(&usart1_receive_buf, IO_ACCESS(USART1_DR));
+    ring_buffer_write_byte(&usart1_receive_buf, IO_ACCESS(USART1_DR));
 }

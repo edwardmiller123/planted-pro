@@ -1,7 +1,7 @@
 #include <stdint.h>
 
 #include "export.h"
-#include "queue.h"
+#include "ringbuf.h"
 #include "systick.h"
 #include "heap.h"
 #include "utils.h"
@@ -25,14 +25,14 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 		return NULL;
 	}
 
-	queue *export_queue = init_queue(MAX_EXPORT_QUEUE_CAPACITY);
-	if (export_queue == NULL)
+	ring_buffer *buf = init_ring_buffer();
+	if (buf == NULL)
 	{
-		logger(ERROR, "Failed to initialise export queue");
+		logger(ERROR, "Failed to initialise export buffer");
 		return NULL;
 	}
 
-	e->export_queue = export_queue;
+	e->export_buf = buf;
 	e->data_point_limit = data_point_count;
 	e->poll_interval = poll_interval;
 	e->last_read_ts = 0;
@@ -42,23 +42,24 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 	return e;
 }
 
-// TODO: timestamps are in the wrong order soimetimes and there is some corruption
 int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8_t water_percent)
 {
 	// remove the oldest data point if the queue is full
-	if (e->export_queue->size == e->data_point_limit)
+	if (e->export_buf->word_count == e->data_point_limit)
 	{
-		uint32_t oldest_data = fifo_get(e->export_queue);
-		if (oldest_data == -1)
+		result_code read_result;
+		uint32_t oldest_data = ring_buffer_read_word(e->export_buf, &read_result);
+		if (read_result == EMPTY)
 		{
-			logger(ERROR, "Failed to remove data from export queue");
-			return -1;
+			logger(DEBUG, "Export buffer empty. Skipping read");
 		}
+		else
+		{
+			uint32_t log_args[] = {((data_point *)oldest_data)->ts, ((data_point *)oldest_data)->light_percent, ((data_point *)oldest_data)->water_percent};
+			loggerf(INFO, "Discarded values from export list. TS: $, Light: $, Water: $", log_args, 3, NULL, 0);
 
-		uint32_t log_args[] = {((data_point *)oldest_data)->ts, ((data_point *)oldest_data)->light_percent, ((data_point *)oldest_data)->water_percent};
-		loggerf(INFO, "Discarded values from export list. TS: $, Light: $, Water: $", log_args, 3, NULL, 0);
-
-		free((void *)oldest_data);
+			free((void *)oldest_data);
+		}
 	}
 
 	data_point *dp = malloc(sizeof(data_point));
@@ -72,11 +73,7 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 	dp->light_percent = light_percent;
 	dp->water_percent = water_percent;
 
-	if (fifo_add(e->export_queue, (uint32_t)dp) == QUEUE_FULL)
-	{
-		logger(ERROR, "Failed to add data point to export queue");
-		return -1;
-	};
+	ring_buffer_write_word(e->export_buf, (uint32_t)dp);
 
 	uint32_t log_args[] = {ts, light_percent, water_percent};
 	loggerf(INFO, "Stored values for export. TS: $, Light: $, Water: $", log_args, 3, NULL, 0);
@@ -138,17 +135,18 @@ char *export_queue_to_json(exporter *e, uint8_t *buf)
 
 	uint8_t *buf_pos = byte_copy((uint8_t *)"[", buf, 1);
 
-	queue *q = e->export_queue;
-	// The queue is very janky and we should really switch back to using statically allocated memory
-	for (int i = 0; i <= q->size; i++)
+	ring_buffer *rb = e->export_buf;
+	for (int i = 0; i <= rb->word_count; i++)
 	{
 
 		uint8_t dp_buf[MAX_DATA_POINT_JSON_SIZE];
-		char *dp_json = data_point_to_json((data_point *)queue_next(q), dp_buf);
+		mem_zero(dp_buf, MAX_DATA_POINT_JSON_SIZE);
+
+		char *dp_json = data_point_to_json((data_point *)ring_buffer_next_word(rb), dp_buf);
 		buf_pos = byte_copy((uint8_t *)dp_json, buf_pos, str_len(dp_json));
 
 		// dont add the separator to the list for the final element
-		if (i == q->size)
+		if (i == e->data_point_limit)
 		{
 			break;
 		}
@@ -163,6 +161,8 @@ char *export_queue_to_json(exporter *e, uint8_t *buf)
 
 int export_data(exporter *e)
 {
+	__asm__ volatile("cpsid i");
+
 	uint8_t buf[MAX_JSON_SIZE];
 	char *json_output = export_queue_to_json(e, buf);
 
@@ -175,12 +175,14 @@ int export_data(exporter *e)
 		return -1;
 	}
 
+	__asm__ volatile("cpsie i");
+
 	return 0;
 }
 
 void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
 {
-	uint8_t usart1_received_byte = usart1_read_byte();
+	uint8_t usart1_received_byte = usart1_read_byte(NULL);
 
 	uint32_t log_args[] = {usart1_received_byte};
 	loggerf(DEBUG, "Read byte $ from USART1 receive buffer", log_args, 1, NULL, 0);

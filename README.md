@@ -1,10 +1,12 @@
 # TODO
+- fixes:
+	- water giving bad value
+	- last exported tiumestamp is always corrupted
 - check battery charge capability
-- fix irqs
 - calibrate light sensors
 - fix lcd contrast (potential divider?)
-- add coin cell and switch to schematic
-- add charging circuitry to schematic
+- add battery and switch, to schematic
+- add charging circuit to schematic
 - design pcb
 - design case
 - make pcb

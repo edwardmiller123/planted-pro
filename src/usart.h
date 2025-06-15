@@ -4,6 +4,7 @@
 #include <stdint.h>
 
 #include "memmap.h"
+#include "utils.h"
 
 #define HC05_BAUD 9600
 #define DEFAULT_BAUD 115200
@@ -27,7 +28,7 @@ int usart_send_buffer(usart num, uint8_t *buf, uint32_t size);
 
 void configure_usart1(uint32_t baud);
 
-uint8_t usart1_read_byte();
+uint8_t usart1_read_byte(result_code * result);
 
 void usart1_irq_handler();
 

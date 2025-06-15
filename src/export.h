@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-#include "queue.h"
+#include "ringbuf.h"
 
 typedef struct data_point {
 	uint32_t ts;
@@ -14,7 +14,7 @@ typedef struct data_point {
 // the exporter sends the contense of the export queue over USART1 as a JSON string when requested.
 // Every time the time interval is passed we record the sensor values and discard the earliest recorded value if the queue is full
 typedef struct exporter {
-	queue * export_queue;
+	ring_buffer * export_buf;
 	uint16_t poll_interval;
 	uint32_t last_read_ts;
 	uint16_t data_point_limit;
