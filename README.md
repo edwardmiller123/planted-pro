@@ -1,6 +1,5 @@
 # TODO
 - fixes:
-	- water giving bad value
 	- last exported tiumestamp is always corrupted
 - check battery charge capability
 - calibrate light sensors
