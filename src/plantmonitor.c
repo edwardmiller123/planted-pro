@@ -109,20 +109,13 @@ void display_percent(monitor *m)
 
 	if (m->percent == UNDEFINED_PERCENTAGE)
 	{
-		line2 = "Percent: reading...";
+		line2 = "Percent: ERROR";
 	}
 	else
 	{
-		uint32_t displayed_percent = m->percent;
-		if (displayed_percent == 0)
-		{
-			// show 1 percent rather than 0 since its very rare that there is 0 percent of the read attribute available
-			displayed_percent = 1;
-		}
-
 		char percentage_str[3];
 		char percentage_pretty[4];
-		str_cat(int_to_string(displayed_percent, percentage_str), "%", percentage_pretty);
+		str_cat(int_to_string(m->percent, percentage_str), "%", percentage_pretty);
 		str_cat("Percent: ", percentage_pretty, line2);
 	}
 
@@ -142,7 +135,7 @@ void display_light_info(monitor *m)
 
 	if (m->level == NULL)
 	{
-		line1 = "Light: reading...";
+		line1 = "Light: ERROR";
 	}
 	else
 	{
@@ -163,7 +156,7 @@ void display_moisture_info(monitor *m)
 
 	if (m->level == NULL)
 	{
-		lcd_write_string("Soil: reading...");
+		lcd_write_string("Soil: ERROR");
 	}
 	else
 	{

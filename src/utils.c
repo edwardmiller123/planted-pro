@@ -59,13 +59,11 @@ void str_cat(char *str1, char *str2, char *buf)
 // returns the reverse of the provided string.
 char *reverse_string(char *str, char *new_str)
 {
-	int i = 0;
 	int j = str_len(str) - 1;
-	while (i < str_len(str))
+	for (int i = 0; i < str_len(str); i++)
 	{
 		new_str[i] = str[j];
 		j--;
-		i++;
 	}
 
 	// Add back the terminating character
@@ -102,14 +100,15 @@ char *int_to_string(uint32_t integer, char *new_str)
 	uint32_t i = 0;
 	uint32_t a = integer;
 	uint32_t b;
-	while (n > 0)
+	do
 	{
 		b = a % 10;
 		reverse_str[i] = b + 0x30;
 		a /= 10;
 		n /= 10;
 		i++;
-	}
+	} while (n > 0);
+	
 	reverse_str[i] = '\0';
 
 	char *result_string = reverse_string(reverse_str, new_str);
