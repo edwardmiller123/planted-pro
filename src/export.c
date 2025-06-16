@@ -161,8 +161,6 @@ char *export_queue_to_json(exporter *e, uint8_t *buf)
 
 int export_data(exporter *e)
 {
-	__asm__ volatile("cpsid i");
-
 	uint8_t buf[MAX_JSON_SIZE];
 	char *json_output = export_queue_to_json(e, buf);
 
@@ -174,8 +172,6 @@ int export_data(exporter *e)
 		logger(ERROR, "Failed to export data over USART1");
 		return -1;
 	}
-
-	__asm__ volatile("cpsie i");
 
 	return 0;
 }

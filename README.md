@@ -1,4 +1,6 @@
 # TODO
+- fixes:
+	- zeros are returned as blank
 - check battery charge capability
 - calibrate light sensors
 - fix lcd contrast (potential divider?)
