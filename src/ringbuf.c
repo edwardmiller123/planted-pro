@@ -94,7 +94,7 @@ void ring_buffer_write_word(ring_buffer *buf, uint32_t word)
 
 uint32_t ring_buffer_read_word(ring_buffer *buf, result_code *result)
 {
-	if (buf->word_count == 0)
+	if (buf->size == 0)
 	{
 		if (result != NULL)
 		{

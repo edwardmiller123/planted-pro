@@ -75,7 +75,7 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 
 	ring_buffer_write_word(e->export_buf, (uint32_t)dp);
 
-	uint32_t log_args[] = {ts, light_percent, water_percent};
+	uint32_t log_args[] = {dp->ts, dp->light_percent, dp->water_percent};
 	loggerf(INFO, "Stored values for export. TS: $, Light: $, Water: $", log_args, 3, NULL, 0);
 
 	return 0;
@@ -136,7 +136,7 @@ char *export_queue_to_json(exporter *e, uint8_t *buf)
 	uint8_t *buf_pos = byte_copy((uint8_t *)"[", buf, 1);
 
 	ring_buffer *rb = e->export_buf;
-	for (int i = 0; i <= rb->word_count; i++)
+	for (int i = 0; i < rb->word_count; i++)
 	{
 
 		uint8_t dp_buf[MAX_DATA_POINT_JSON_SIZE];
@@ -146,7 +146,7 @@ char *export_queue_to_json(exporter *e, uint8_t *buf)
 		buf_pos = byte_copy((uint8_t *)dp_json, buf_pos, str_len(dp_json));
 
 		// dont add the separator to the list for the final element
-		if (i == e->data_point_limit)
+		if (i == e->data_point_limit - 1)
 		{
 			break;
 		}

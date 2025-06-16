@@ -1,6 +1,4 @@
 # TODO
-- fixes:
-	- last exported tiumestamp is always corrupted
 - check battery charge capability
 - calibrate light sensors
 - fix lcd contrast (potential divider?)
@@ -11,6 +9,10 @@
 - make pcb
 - print case
 - assemble
+
+- optional:
+	- send current reading along with historical data
+	- receive current time?
 
 
 # Parts List
