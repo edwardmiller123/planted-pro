@@ -10,7 +10,7 @@ void ring_buffer_reset(ring_buffer *buf)
 	buf->back = 0;
 	buf->pos = 0;
 	buf->size = 0;
-	buf->interator_pos = 0;
+	buf->iterator_pos = 0;
 	buf->word_count = 0;
 
 	mem_zero(buf->data, RING_BUF_CAPACITY);
@@ -55,7 +55,7 @@ void ring_buffer_write_byte(ring_buffer *buf, uint8_t byte)
 		buf->size++;
 	}
 
-	buf->interator_pos = buf->back;
+	buf->iterator_pos = buf->back;
 }
 
 uint8_t ring_buffer_read_byte(ring_buffer *buf, result_code *result)
@@ -66,14 +66,14 @@ uint8_t ring_buffer_read_byte(ring_buffer *buf, result_code *result)
 		{
 			*result = EMPTY;
 		}
-		
+
 		return 0;
 	}
 
 	uint8_t byte = buf->data[buf->back++];
 	buf->size--;
 
-	buf->interator_pos = buf->back;
+	buf->iterator_pos = buf->back;
 
 	return byte;
 }
@@ -123,7 +123,22 @@ uint32_t ring_buffer_read_word(ring_buffer *buf, result_code *result)
 
 uint8_t ring_buffer_next_byte(ring_buffer *buf)
 {
-	return buf->data[buf->interator_pos++];
+	uint8_t val = buf->data[buf->iterator_pos];
+
+	if (buf->iterator_pos == buf->pos || buf->iterator_pos == (RING_BUF_CAPACITY - 1))
+	{
+		buf->iterator_pos = buf->back;
+	}
+	else if (buf->iterator_pos == (RING_BUF_CAPACITY - 1))
+	{
+		buf->iterator_pos = 0;
+	}
+	else
+	{
+		buf->iterator_pos++;
+	}
+
+	return val;
 }
 
 uint32_t ring_buffer_next_word(ring_buffer *buf)

@@ -13,7 +13,7 @@ typedef struct ring_buffer {
 	uint8_t back;
 	uint8_t pos;
 	uint8_t size;
-	uint8_t interator_pos;
+	uint8_t iterator_pos;
 	uint8_t word_count;
 } ring_buffer;
 

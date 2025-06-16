@@ -146,7 +146,7 @@ char *export_queue_to_json(exporter *e, uint8_t *buf)
 		buf_pos = byte_copy((uint8_t *)dp_json, buf_pos, str_len(dp_json));
 
 		// dont add the separator to the list for the final element
-		if (i == e->data_point_limit - 1)
+		if (i == rb->word_count - 1)
 		{
 			break;
 		}
