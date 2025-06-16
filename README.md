@@ -1,8 +1,6 @@
 # TODO
-- fixes:
-	- zeros are returned as blank
 - check battery charge capability
-- calibrate light sensors
+- calibrate light sensors (try stronger resistor)
 - fix lcd contrast (potential divider?)
 - add battery and switch, to schematic
 - add charging circuit to schematic
@@ -13,6 +11,7 @@
 - assemble
 
 - optional:
+	- replaces all queue swith ring buffers
 	- send current reading along with historical data
 	- receive current time?
 
