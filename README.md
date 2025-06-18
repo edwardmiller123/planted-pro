@@ -1,4 +1,6 @@
 # TODO
+- add nrst pin to schematic
+- dont connect shield or on usb
 - check battery charge capability
 - calibrate light sensors (try stronger resistor)
 - fix lcd contrast (potential divider?)
