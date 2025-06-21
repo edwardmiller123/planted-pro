@@ -1,4 +1,5 @@
 # TODO
+- change lcd data pins
 - check battery charge capability
 - calibrate light sensors (try stronger resistor)
 - fix lcd contrast (potential divider?)
