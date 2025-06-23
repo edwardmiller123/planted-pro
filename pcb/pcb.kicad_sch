@@ -5424,16 +5424,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 34.29) (xy 99.06 36.83)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "2b521364-dd89-42f3-b2f3-56c2a6b9c9d9")
-	)
-	(wire
-		(pts
 			(xy 129.54 115.57) (xy 133.35 115.57)
 		)
 		(stroke
@@ -5714,7 +5704,7 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 41.91) (xy 99.06 45.72)
+			(xy 99.06 34.29) (xy 99.06 45.72)
 		)
 		(stroke
 			(width 0)
@@ -9559,76 +9549,6 @@
 			(project "pcb"
 				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
 					(reference "C12")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "Device:C_Small")
-		(at 99.06 39.37 0)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "5ed3fdd2-467c-4f17-89fc-ecd652aec4ec")
-		(property "Reference" "C8"
-			(at 101.6 38.1062 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Value" "6.8pF"
-			(at 101.6 40.6462 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
-			(at 99.06 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" "~"
-			(at 99.06 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Unpolarized capacitor, small symbol"
-			(at 99.06 39.37 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "2"
-			(uuid "cc46dba1-0b5a-4b12-bd19-6c657e51596e")
-		)
-		(pin "1"
-			(uuid "9adcbccf-0e18-4173-8d62-3a22afa1bd5f")
-		)
-		(instances
-			(project "pcb"
-				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
-					(reference "C8")
 					(unit 1)
 				)
 			)
