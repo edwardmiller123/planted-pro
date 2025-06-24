@@ -8,8 +8,6 @@
 #include "logger.h"
 #include "interrupts.h"
 
-// TODO: maybe make adc interrupt driven
-
 // configures the ADC1 to use channel 1 on PA1 as the input pin
 void configure_adc1()
 {
