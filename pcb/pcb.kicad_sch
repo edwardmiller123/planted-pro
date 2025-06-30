@@ -6024,6 +6024,16 @@
 	)
 	(wire
 		(pts
+			(xy 180.34 77.47) (xy 181.61 77.47)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3ff3d0a0-533a-4256-8b23-c90a2a7a7989")
+	)
+	(wire
+		(pts
 			(xy 133.35 69.85) (xy 127 69.85)
 		)
 		(stroke
@@ -6964,7 +6974,7 @@
 	)
 	(wire
 		(pts
-			(xy 179.07 77.47) (xy 173.99 77.47)
+			(xy 175.26 77.47) (xy 173.99 77.47)
 		)
 		(stroke
 			(width 0)
@@ -8134,6 +8144,76 @@
 		)
 	)
 	(symbol
+		(lib_id "Device:C_Small")
+		(at 177.8 77.47 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "07208ab0-5c3f-4f25-90d5-18aec9b85d98")
+		(property "Reference" "C8"
+			(at 176.5362 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "4.7uF"
+			(at 179.0762 74.93 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+			(at 177.8 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 177.8 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 177.8 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "6dc2b4d1-483c-464b-b6e9-648f00dc874a")
+		)
+		(pin "1"
+			(uuid "623351a2-2407-4447-a997-3528d50238e8")
+		)
+		(instances
+			(project "pcb"
+				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
+					(reference "C8")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "power:+3.3V")
 		(at 269.24 24.13 0)
 		(unit 1)
@@ -8393,73 +8473,6 @@
 			(project "pcb"
 				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
 					(reference "#PWR06")
-					(unit 1)
-				)
-			)
-		)
-	)
-	(symbol
-		(lib_id "power:+3.3V")
-		(at 179.07 77.47 270)
-		(unit 1)
-		(exclude_from_sim no)
-		(in_bom yes)
-		(on_board yes)
-		(dnp no)
-		(fields_autoplaced yes)
-		(uuid "172668b0-657c-4771-945b-39762605fc0a")
-		(property "Reference" "#PWR022"
-			(at 175.26 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Value" "+3.3V"
-			(at 180.3401 80.01 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(justify left)
-			)
-		)
-		(property "Footprint" ""
-			(at 179.07 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Datasheet" ""
-			(at 179.07 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(property "Description" "Power symbol creates a global label with name \"+3.3V\""
-			(at 179.07 77.47 0)
-			(effects
-				(font
-					(size 1.27 1.27)
-				)
-				(hide yes)
-			)
-		)
-		(pin "1"
-			(uuid "f5d97869-007f-4086-a267-e5e49e004498")
-		)
-		(instances
-			(project "pcb"
-				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
-					(reference "#PWR022")
 					(unit 1)
 				)
 			)
@@ -9291,6 +9304,72 @@
 			(project ""
 				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
 					(reference "U1")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "power:GND")
+		(at 181.61 77.47 90)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "45f829ac-9fe9-4a1a-9190-a7ec6bb9d092")
+		(property "Reference" "#PWR022"
+			(at 187.96 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 186.69 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 181.61 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 181.61 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 181.61 77.47 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "d4defd9a-9de0-4e85-b853-c006683dd5cc")
+		)
+		(instances
+			(project "pcb"
+				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
+					(reference "#PWR022")
 					(unit 1)
 				)
 			)
