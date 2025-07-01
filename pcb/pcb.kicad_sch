@@ -5236,7 +5236,7 @@
 		)
 		(uuid "64c6f6eb-06ec-4ee4-a3d4-5c318030512d")
 	)
-	(text "Moisture Sensor"
+	(text "MOISTURE"
 		(exclude_from_sim no)
 		(at 258.064 103.124 0)
 		(effects
@@ -5256,7 +5256,7 @@
 		)
 		(uuid "724d75da-b689-467c-a36f-f4ac8f53b4b7")
 	)
-	(text "Debug"
+	(text "DEBUG"
 		(exclude_from_sim no)
 		(at 213.36 109.474 0)
 		(effects
@@ -8567,7 +8567,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "900k"
+		(property "Value" "450k"
 			(at 88.9 41.9099 0)
 			(effects
 				(font
@@ -8576,7 +8576,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
 			(at 86.36 40.64 0)
 			(effects
 				(font
@@ -11175,7 +11175,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "200k"
+		(property "Value" "100k"
 			(at 88.9 52.0699 0)
 			(effects
 				(font
@@ -11184,7 +11184,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
 			(at 86.36 50.8 0)
 			(effects
 				(font
