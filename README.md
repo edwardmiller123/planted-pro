@@ -23,7 +23,7 @@
 - [Slide switch](https://lcsc.com/product-detail/Slide-Switches_SHOU-HAN-MSK12C02-HB_C431541.html?s_z=s_Switches%257CSlide%2520Switches)
 	- [maybe this one](https://www.amazon.co.uk/Miniature-Model-Railway-Switch-2-Position/dp/B00TXNXFZC/259-1494948-4487924?pd_rd_w=fCK5e&content-id=amzn1.sym.6448d24d-f04d-4e11-90e5-10165d266aa2&pf_rd_p=6448d24d-f04d-4e11-90e5-10165d266aa2&pf_rd_r=H9Y4PVHCB2WFH620DCAF&pd_rd_wg=IW9Gh&pd_rd_r=92e969ec-19a7-4c8d-8360-4e458b67bc73&pd_rd_i=B00TXNXFZC&psc=1)
 - [3.7v lipo Battery](https://www.adafruit.com/product/2011)
-- [battery connector](https://uk.farnell.com/jst-japan-solderless-terminals/b2b-ph-k-s-lf-sn/header-top-entry-2way-2mm/dp/9491856)
+- [2mm JST Battery Connector](https://www.amazon.com/CQRobot-Pieces-Connector-Housing-Adapter/dp/B09DP9FZTX?dib=eyJ2IjoiMSJ9.sNePKIuEPVewtteYfS58lZhW1LPmAVkOUnPIESSHRV1hvavSnGyljd52drfUkW5t4vHY770J1QYnJR6J5vuRVibrd9-3cRKNr1A3Vood9wdaIiXBvQhf0mdvStLx7khxwPU3F8Po8fU3Oj-s-p_wBD1qKetaDQ-Cf7YYYW11nkU2uM8TZcRV8bM0esdYdNTfc2DC5A6KGKV8WKj3iSCdm2a_5utHmO_mh-Fdf6InY6w.CRPhyqQcm5MJQbVlpLiQIjypTNYh30MgPEx-_YJeLQ0&dib_tag=se&keywords=jst%2Bph%2B2%2Bpin%2Bconnector&qid=1751377308&sr=8-2&th=1)
 - [TLV62569DBV](https://www.lcsc.com/product-detail/DC-DC-Converters_Texas-Instruments-TLV62569DBVR_C141836.html?s_z=n_TLV62569DBV) (step down regulator) 
 - [MCP73831T](https://lcsc.com/product-detail/Battery-Management_Microchip-Tech-MCP73831T-2ACI-OT_C424093.html?s_z=n_mcp73831) (power management chip for charging circuit)
 - Capacitors (0603) (all 16v)
