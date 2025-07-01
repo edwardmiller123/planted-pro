@@ -31,12 +31,11 @@
 	- [10uF (x1)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10A106MO8NQNC_C92487.html?s_z=n_capacitors)
 	- [100nF (x6)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10B104KO8NNNC_C66501.html?s_z=n_capacitors)
 - Resistors (0603)
-	- [900k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF9003T5E_C407504.html?s_z=n_resistors)
 	- [200k (x2)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF2003T5E_C25811.html?s_z=n_resistors)
 	- [2k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_FOJAN-FRC0603J202-TS_C2907137.html?s_z=n_resistors)
 	- [1k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1001T5E_C21190.html?s_z=n_resistors)
 	- [1.5k (x2)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1501T5E_C22843.html?s_z=s_Resistors%257CChip%2520Resistor%2520-%2520Surface%2520Mount)
 	- [450k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF4533T5E_C25818.html?s_z=s_Resistors%257CChip%2520Resistor%2520-%2520Surface%2520Mount) backup
-	- [100k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.html?s_z=n_resistors) (0402) backup
+	- [100k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.html?s_z=n_resistors)
 - [2.2uH Inductor (0603)](https://lcsc.com/product-detail/Inductors-SMD_Murata-Electronics-LQM18PN2R2MFRL_C337910.html?s_z=n_inductor)
 - [USB-C Connector](https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-TYPE-C-6P-073_C668623.html?s_z=n_usb)
