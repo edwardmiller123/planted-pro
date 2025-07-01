@@ -8567,7 +8567,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "450k"
+		(property "Value" "453k"
 			(at 88.9 41.9099 0)
 			(effects
 				(font
@@ -8576,7 +8576,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
 			(at 86.36 40.64 0)
 			(effects
 				(font
@@ -11184,7 +11184,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" "Resistor_SMD:R_0402_1005Metric_Pad0.72x0.64mm_HandSolder"
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
 			(at 86.36 50.8 0)
 			(effects
 				(font

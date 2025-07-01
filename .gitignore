@@ -5,3 +5,4 @@ plant-monitor
 pcb-backups
 *.lck
 *auto_saved_files*
+pcb/gerber
