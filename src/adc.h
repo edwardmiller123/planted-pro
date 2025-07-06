@@ -2,6 +2,7 @@
 #define ADC_H
 
 #include "memmap.h"
+#include "utils.h"
 
 #define ADC_BASE (APB2_BASE + 0x2000U)
 
@@ -31,8 +32,6 @@ typedef enum adc {
 void configure_adc();
 
 // manually trigger a conversion from the given ADC and read the result
-int32_t adc_manual_conversion(adc adc_num);
-
-void adc_irq_handler();
+uint32_t adc_manual_conversion(adc adc_num, result_code * result);
 
 #endif

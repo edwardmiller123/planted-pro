@@ -12,6 +12,7 @@ void ring_buffer_reset(ring_buffer *buf)
 	buf->size = 0;
 	buf->iterator_pos = 0;
 	buf->word_count = 0;
+	buf->word_capacity = RING_BUF_CAPACITY / sizeof(uint32_t);
 
 	mem_zero(buf->data, RING_BUF_CAPACITY);
 }
@@ -41,11 +42,11 @@ void ring_buffer_write_byte(ring_buffer *buf, uint8_t byte)
 	if (buf->pos == buf->back && buf->size > 0)
 	{
 		buf->back++;
-	}
 
-	if (buf->back == RING_BUF_CAPACITY)
-	{
-		buf->back = 0;
+		if (buf->back == RING_BUF_CAPACITY)
+		{
+			buf->back = 0;
+		}
 	}
 
 	buf->data[buf->pos++] = byte;
@@ -70,7 +71,13 @@ uint8_t ring_buffer_read_byte(ring_buffer *buf, result_code *result)
 		return 0;
 	}
 
+	if (buf->back == RING_BUF_CAPACITY)
+	{
+		buf->back = 0;
+	}
+
 	uint8_t byte = buf->data[buf->back++];
+
 	buf->size--;
 
 	buf->iterator_pos = buf->back;
@@ -86,7 +93,7 @@ void ring_buffer_write_word(ring_buffer *buf, uint32_t word)
 		ring_buffer_write_byte(buf, byte_ptr[i]);
 	}
 
-	if (buf->size < RING_BUF_CAPACITY)
+	if (buf->word_count < buf->word_capacity)
 	{
 		buf->word_count++;
 	}
@@ -113,7 +120,7 @@ uint32_t ring_buffer_read_word(ring_buffer *buf, result_code *result)
 	}
 
 	// always assumes the data stored is all single bytes or full words not a mix
-	if (buf->size > 0)
+	if (buf->word_count > 0)
 	{
 		buf->word_count--;
 	}

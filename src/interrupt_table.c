@@ -23,6 +23,6 @@ int_table interrupt_table = {
     .pend_sv = NULL,
     .systick = &systick_handler,
     // ... //
-    .adc_irq_handler = &adc_irq_handler,
+    .adc_irq_handler = NULL,
     .usart1_irq_handler = &usart1_irq_handler,
 };

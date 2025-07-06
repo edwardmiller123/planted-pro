@@ -9,21 +9,24 @@
 #include "sensor.h"
 #include "heap.h"
 
-sensor * init_sensor(uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num)
+
+sensor *init_sensor(uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t sample_size, adc adc_num)
 {
-	sensor * s = malloc(sizeof(sensor));
-	if (s == NULL) {
+	sensor *s = malloc(sizeof(sensor));
+	if (s == NULL)
+	{
 		logger(ERROR, "Failed to allocate memory for sensor");
 		return NULL;
 	}
 
-	queue *readings = init_queue(DEFAULT_QUEUE_CAPACITY);
-	if (readings == NULL) {
-		logger(ERROR, "Failed to initialise sensor readings queue");
+	ring_buffer *readings = init_ring_buffer();
+	if (readings == NULL)
+	{
+		logger(ERROR, "Failed to initialise sensor readings buffer");
 		return NULL;
 	}
 
-	s->readings_queue = readings;
+	s->readings_buffer = readings;
 
 	s->sensor_percent = UNDEFINED_PERCENTAGE;
 	s->min_adc_reading = min_adc_reading;
@@ -43,21 +46,23 @@ void set_percent(sensor *s)
 
 int sensor_calculate_average(sensor *s)
 {
+
 	uint32_t total_val = 0;
 	int32_t reading;
 	for (int i = 0; i < s->sample_size; i++)
 	{
-		reading = fifo_get(s->readings_queue);
-		if (reading == -1)
+		result_code read_result;
+		reading = ring_buffer_read_word(s->readings_buffer, &read_result);
+		if (read_result == EMPTY)
 		{
-			logger(ERROR, "failed to fetch reading from queue");
-			return -1;
+			logger(WARNING, "Sensor tried to read from empty readings buffer");
+			return 0;
 		}
-		
+
 		uint32_t args[] = {reading};
 		loggerf(DEBUG, "Removed $ from sensor readings queue", args, 1, NULL, 0);
 
-		total_val += (uint32_t)reading;
+		total_val += reading;
 	}
 
 	uint32_t average = fp_divide(total_val, s->sample_size);
@@ -76,20 +81,17 @@ int sensor_calculate_average(sensor *s)
 
 int sensor_read_adc(sensor *s)
 {
-	int32_t reading = adc_manual_conversion(s->adc_num);
-	if (reading == -1)
+	result_code adc_result;
+	uint32_t reading = adc_manual_conversion(s->adc_num, &adc_result);
+	if (adc_result == FAILURE)
 	{
 		logger(ERROR, "Failed to read adc conversion");
 		return -1;
 	}
 
-	if (fifo_add(s->readings_queue, (uint32_t)reading) == -1)
-	{
-		logger(ERROR, "Failed to add light reading");
-		return -1;
-	}
-
-	uint32_t args[] = {(uint32_t)reading};
-	loggerf(DEBUG, "Added $ to sensor readings queue", args, 1, NULL, 0);
+	ring_buffer_write_word(s->readings_buffer, reading);
+	
+	uint32_t args[] = {reading};
+	loggerf(DEBUG, "Added $ to sensor readings buffer", args, 1, NULL, 0);
 	return 0;
 }

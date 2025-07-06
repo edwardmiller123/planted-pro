@@ -5,13 +5,13 @@
 #include <stdbool.h>
 
 #include "adc.h"
-#include "queue.h"
+#include "ringbuf.h"
 
 #define UNDEFINED_PERCENTAGE 101
 
 // generic sensor
 typedef struct sensor {
-	queue * readings_queue;
+	ring_buffer * readings_buffer;
 	uint32_t raw_average;
 	uint8_t sensor_percent;
 	uint32_t min_adc_reading;

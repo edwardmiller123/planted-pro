@@ -34,16 +34,13 @@ monitor * init_monitor(sensor * s)
 
 int monitor_process_samples(monitor *m, int (*action)(struct monitor *))
 {
-	if (m->snr->readings_queue->size == m->snr->sample_size)
+	if (m->snr->readings_buffer->word_count == m->snr->sample_size)
 	{
 		if (action(m) == -1)
 		{
 			logger(ERROR, "Failed to process adc samples");
 			return -1;
 		}
-
-		queue_reset(m->snr->readings_queue);
-		logger(DEBUG, "Sensor sample queue reset");
 	}
 	return 0;
 }

@@ -35,8 +35,6 @@ void configure_adc1()
 	// trigger EOCS bit to be set at the end of each conversion
 	io_set_bit(ADC1_CR2, 10);
 
-	// enable EOC_interrupt
-	io_set_bit(ADC1_CR1, 0);
 
 	// enable adc
 	io_set_bit(ADC1_CR2, 0);
@@ -70,8 +68,6 @@ void configure_adc2()
 	// trigger EOCS bit to be set at the end of each conversion
 	io_set_bit(ADC2_CR2, 10);
 
-	// enable EOC_interrupt
-	io_set_bit(ADC2_CR1, 0);
 
 	// enable adc
 	io_set_bit(ADC2_CR2, 0);
@@ -85,8 +81,6 @@ void configure_adc()
 	configure_adc1();
 
 	configure_adc2();
-
-	nvic_enable_irq(IRQ_ADC);
 }
 
 bool adc1_conversion_complete()
@@ -121,7 +115,7 @@ int wait_for_adc(adc adc_num, uint32_t timeout)
 	return 0;
 }
 
-int32_t adc_manual_conversion(adc adc_num)
+uint32_t adc_manual_conversion(adc adc_num, result_code * result)
 {
 
 	uint32_t ctrl_reg;
@@ -148,7 +142,10 @@ int32_t adc_manual_conversion(adc adc_num)
 	if (wait_for_adc(adc_num, 500) == -1)
 	{
 		loggerf(ERROR, "& conversion failed", NULL, 0, logger_args_str, 1);
-		return -1;
+		if (result != NULL) {
+			*result = FAILURE;
+		}
+		return 0;
 	}
 
 	uint32_t adc_val = IO_ACCESS(data_reg);
@@ -157,9 +154,4 @@ int32_t adc_manual_conversion(adc adc_num)
 	loggerf(DEBUG, "& read conversion value: $", logger_args_int, 1, logger_args_str, 1);
 
 	return adc_val;
-}
-
-void adc_irq_handler()
-{
-	logger(DEBUG, "ADC interrupt triggered");
 }
