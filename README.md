@@ -8,8 +8,6 @@
 - assemble
 
 - optional:
-	- replaces all queue swith ring buffers
-	- send current reading along with historical data
 	- receive current time?
 
 

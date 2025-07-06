@@ -44,6 +44,7 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 
 int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8_t water_percent)
 {
+	// TODO: Some of the values are not in order
 	// remove the oldest data point if the queue is full
 	if (e->export_buf->word_count == e->data_point_limit)
 	{
@@ -127,13 +128,23 @@ char *data_point_to_json(data_point *dp, uint8_t *buf)
 	return (char *)buf;
 }
 
-// converts the contense of the export queue to a json list string
-char *export_queue_to_json(exporter *e, uint8_t *buf)
+// converts the contense of the export queue, along with the current reading, to a json string
+char *export_queue_to_json(exporter *e, data_point current, uint8_t *buf)
 {
 	char *list_divider = ", ";
 	uint32_t list_divider_len = str_len(list_divider);
 
-	uint8_t *buf_pos = byte_copy((uint8_t *)"[", buf, 1);
+	uint8_t *buf_pos = byte_copy((uint8_t *)"{\"current\": ", buf, 12);
+
+	uint8_t current_dp_buf[MAX_DATA_POINT_JSON_SIZE];
+	mem_zero(current_dp_buf, MAX_DATA_POINT_JSON_SIZE);
+	char *current_dp_json = data_point_to_json(&current, current_dp_buf);
+
+	buf_pos = byte_copy((uint8_t *)current_dp_json, buf_pos, str_len(current_dp_json));
+
+	buf_pos = byte_copy((uint8_t *)list_divider, buf_pos, list_divider_len);
+
+	buf_pos = byte_copy((uint8_t *)"\"graph\": [", buf_pos, 10);
 
 	ring_buffer *rb = e->export_buf;
 	for (int i = 0; i < rb->word_count; i++)
@@ -154,15 +165,15 @@ char *export_queue_to_json(exporter *e, uint8_t *buf)
 		buf_pos = byte_copy((uint8_t *)list_divider, buf_pos, list_divider_len);
 	}
 
-	byte_copy((uint8_t *)"]", buf_pos, 1);
+	byte_copy((uint8_t *)"]}", buf_pos, 2);
 
 	return (char *)buf;
 }
 
-int export_data(exporter *e)
+int export_data(exporter *e, data_point current)
 {
 	uint8_t buf[MAX_JSON_SIZE];
-	char *json_output = export_queue_to_json(e, buf);
+	char *json_output = export_queue_to_json(e, current, buf);
 
 	char *log_args[] = {json_output};
 	loggerf(INFO, "Exporting data: &", NULL, 0, log_args, 1);
@@ -178,6 +189,9 @@ int export_data(exporter *e)
 
 void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
 {
+	uint32_t ts = get_system_uptime();
+	data_point current_data = {.ts = ts, .light_percent = light_percent, .water_percent = water_percent};
+
 	uint8_t usart1_received_byte = usart1_read_byte(NULL);
 
 	uint32_t log_args[] = {usart1_received_byte};
@@ -185,13 +199,12 @@ void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
 
 	if (usart1_received_byte == (uint8_t)SEND_CODE)
 	{
-		if (export_data(e) == -1)
+		if (export_data(e, current_data) == -1)
 		{
 			logger(ERROR, "Failed to export data");
 		}
 	}
 
-	uint32_t ts = get_system_uptime();
 	if (ts < e->poll_interval || (ts - e->last_read_ts) < e->poll_interval)
 	{
 		return;
