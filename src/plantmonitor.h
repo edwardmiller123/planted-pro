@@ -2,6 +2,7 @@
 #define PLANTMON_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "monitor.h"
 #include "export.h"
@@ -19,9 +20,10 @@ typedef struct plant_monitor
 	monitor *lm;
 	monitor *wm;
 	exporter * e;
+	bool debug_led;
 } plant_monitor;
 
-plant_monitor * init_plant_monitor();
+plant_monitor *init_plant_monitor(bool debug_led);
 
 void run_monitor(plant_monitor *pm);
 

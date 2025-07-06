@@ -11,6 +11,7 @@
 #include "sensor.h"
 #include "monitor.h"
 #include "export.h"
+#include "gpio.h"
 #include "heap.h"
 
 #define DISPLAY_SWITCH_TIME 3000
@@ -25,7 +26,7 @@
 #define EXPORT_POLL_INTERVAL 500
 #define EXPORT_POINT_COUNT 12
 
-plant_monitor *init_plant_monitor()
+plant_monitor *init_plant_monitor(bool debug_led)
 {
 	plant_monitor *pm = malloc(sizeof(plant_monitor));
 	if (pm == NULL)
@@ -73,6 +74,7 @@ plant_monitor *init_plant_monitor()
 	pm->display_change_interval = 0;
 	pm->lm = lm;
 	pm->wm = wm;
+	pm->debug_led = debug_led;
 
 	// TODO: change this to poll every 15 minutes for 12 hours after we are done testing
 	exporter *e = init_exporter(EXPORT_POLL_INTERVAL, EXPORT_POINT_COUNT);
@@ -174,6 +176,11 @@ void display_info(plant_monitor *pm)
 		return;
 	}
 
+	if (pm->debug_led)
+	{
+		toggle_user_led();
+	}
+
 	pm->currently_showing = (info_type) !(bool)pm->currently_showing;
 	pm->display_change_interval = now;
 
@@ -197,5 +204,4 @@ void run_monitor(plant_monitor *pm)
 	poll_sensors(pm);
 
 	run_exporter(pm->e, pm->lm->percent, pm->wm->percent);
-
 }
