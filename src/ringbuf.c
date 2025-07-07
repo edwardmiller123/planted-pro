@@ -132,7 +132,7 @@ uint8_t ring_buffer_next_byte(ring_buffer *buf)
 {
 	uint8_t val = buf->data[buf->iterator_pos];
 
-	if (buf->iterator_pos == buf->pos || buf->iterator_pos == (RING_BUF_CAPACITY - 1))
+	if (buf->pos > buf->back && buf->iterator_pos == buf->pos)
 	{
 		buf->iterator_pos = buf->back;
 	}
