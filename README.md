@@ -7,9 +7,6 @@
 - print case
 - assemble
 
-- optional:
-	- receive current time?
-
 
 # Parts List
 - [STM32F446RE](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44) 
@@ -36,3 +33,14 @@
 	- [100k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.html?s_z=n_resistors)
 - [2.2uH Inductor (0603)](https://lcsc.com/product-detail/Inductors-SMD_Murata-Electronics-LQM18PN2R2MFRL_C337910.html?s_z=n_inductor)
 - [USB-C Connector](https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-TYPE-C-6P-073_C668623.html?s_z=n_usb)
+
+
+# Dimensions
+- main board: 60mm L, 48mm W
+	- screws: 2mm Diam, centre is 3mm from edge
+- lcd: 80mm L, 36mm W
+	- screws: 3mm diameter
+	- screen: 70mm L, 24mm W
+	- screen to edge border: 5mm
+- hc-05: 37mm L, 15mm W
+- Moisture sensor: 23mm W, 1mm thick
