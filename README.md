@@ -43,4 +43,7 @@
 	- screen: 70mm L, 24mm W
 	- screen to edge border: 5mm
 - hc-05: 37mm L, 15mm W
-- Moisture sensor: 23mm W, 1mm thick
+- Moisture sensor: 26 L (internal part), 23mm W, 1mm thick
+- battery: 61mm L, 36mm W
+- usbc connector: 8.64mm W, ~1mm H
+	- 5.72mm away from board corner
