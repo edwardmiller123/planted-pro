@@ -50,3 +50,6 @@
 - power switch: 19mm L, 6mm W
 	- switch body: 10mm L
 	- screw holes 2.2mm Diam 
+
+- case: 
+	- top and bottom screw holes have 4.4mm diam insets. Sides are at coords (3, 3) from each corner, centre of hole is at 5.2mm from sides
