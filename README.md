@@ -10,7 +10,7 @@
 
 # Parts List
 - [STM32F446RE](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44) 
-- RG1602A (lcd screen) 
+- [RG1602A](https://lcsc.com/product-detail/LCD-Screen_HS-HS1602A-B_C18198249.html?s_z=s_Displays%257CLCD%2520Screen)
 - [Photo resistor](https://lcsc.com/product-detail/Photoresistors_Senba-Sensing-Tech-GL5528_C125627.html?s_z=n_ldr)
 - [Capacitive moisture Sensor](https://thepihut.com/products/capacitive-soil-moisture-sensor?variant=32137736421438&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gQT=1)
 - [Potentiometer](https://lcsc.com/product-detail/Potentiometers-Variable-Resistors_BOURNS-3296W-1-502LF_C60620.html?s_z=n_potentiometer)
@@ -40,6 +40,7 @@
 	- screws: 2mm Diam, centre is 3mm from edge
 - lcd: 80mm L, 36mm W
 	- screws: 3mm diameter
+		- edge of screw hole 0.5mm by 0.5 from edge of screen
 	- screen: 70mm L, 24mm W
 	- screen to edge border: 5mm
 - hc-05: 37mm L, 15mm W
