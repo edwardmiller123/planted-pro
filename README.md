@@ -54,3 +54,4 @@
 
 - case: 
 	- top and bottom screw holes have 4.4mm diam insets. Sides are at coords (5.2, 5.2) from each corner, centre of hole is at 7.4mm from sides
+	- window for charge light is 21mm from edge of lid and is 20mm by 10mm
