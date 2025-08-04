@@ -9,7 +9,7 @@
 
 
 # Parts List
-- [STM32F446RE](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44) 
+- [STM32F446RC](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44) 
 - [RG1602A](https://lcsc.com/product-detail/LCD-Screen_HS-HS1602A-B_C18198249.html?s_z=s_Displays%257CLCD%2520Screen)
 - [Photo resistor](https://lcsc.com/product-detail/Photoresistors_Senba-Sensing-Tech-GL5528_C125627.html?s_z=n_ldr)
 - [Capacitive moisture Sensor](https://thepihut.com/products/capacitive-soil-moisture-sensor?variant=32137736421438&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gQT=1)
