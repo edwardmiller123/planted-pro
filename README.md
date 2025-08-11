@@ -7,6 +7,10 @@
 - print case
 - assemble
 
+# Notes:
+- Make lid screw holes deeper
+- create holes for threaded inserts (or just screws)
+
 
 # Parts List
 - [STM32F446RC](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44) 
