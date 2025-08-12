@@ -1,15 +1,19 @@
 # TODO
-- check battery charge capability
 - calibrate light sensors
-- fix lcd contrast (potential divider?)
-- design case
-- make pcb
+- fix lcd contrast
+- make pcb v2
 - print case
 - assemble
 
-# Notes:
+# Review Notes:
 - Make lid screw holes deeper
 - create holes for threaded inserts (or just screws)
+- redesign board
+	- may need to power lcd screen with 5v (need to check)
+		- if so then will need to add boost converter to 5v
+	- if lcd can take 3.3v then need to add:
+		- 3.3v and GND for back light
+		- add potentiometer to board along with pin for v0 of lcd
 
 
 # Parts List
