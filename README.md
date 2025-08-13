@@ -9,11 +9,9 @@
 - Make lid screw holes deeper
 - create holes for threaded inserts (or just screws)
 - redesign board
-	- may need to power lcd screen with 5v (need to check)
-		- if so then will need to add boost converter to 5v
-	- if lcd can take 3.3v then need to add:
-		- 3.3v and GND for back light
-		- add potentiometer to board along with pin for v0 of lcd
+	- need to add boost converter for 5v lcd
+	- 5v and GND for back light
+	- add potentiometer to board along with pin for v0 of lcd
 
 
 # Parts List
@@ -22,7 +20,9 @@
 - [Photo resistor](https://lcsc.com/product-detail/Photoresistors_Senba-Sensing-Tech-GL5528_C125627.html?s_z=n_ldr)
 - [Capacitive moisture Sensor](https://thepihut.com/products/capacitive-soil-moisture-sensor?variant=32137736421438&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gQT=1)
 - [Potentiometer](https://lcsc.com/product-detail/Potentiometers-Variable-Resistors_BOURNS-3296W-1-502LF_C60620.html?s_z=n_potentiometer)
+	- https://www.lcsc.com/product-detail/C50204.html?s_z=s_Resistors%257CPotentiometers%252C%2520Variable%2520Resistors
 - [HC-05 bluetooth module](https://www.ebay.co.uk/itm/292453360759?_trksid=p2332490.c101875.m1851&itmprp=cksum%3A2924533607597ce4980384724e938639b3fbd7e3c8a7%7Cenc%3AAQAKAAABgG96wQ16jds4VFcrhy1F3d4mbwZUJI9Fs%252BgdXYAHIzlX2e3YaNh7x%252BEnKA3G%252BCqSl1Xn4McfcWFK1GytmS2qxJ87mtE8Gm3iR1Ja4WBwh0hNHJrJx3Ki5mp04ow4CO7lP%252BooCybZDDU%252BbbSwmg7CbTin%252BBzBzbCYVnbjvyQAHu6--HI4MB7SvJl5IJqlyvomgoLMlgT6qAJzX0SANJhty2eH3mQTC7%252BUo1LCOV3zWqvDqzCovhNfZOVRWeQrp4Ib940QIXVfkbgMChVaQC8jaFp9qsYISBmoCevGwwiOSYfXSTaRtKKmKJomNeOFznaKU%252BfYJWIYT2d%252Byg8HwVOL%252FMvVKaBpjretD8cwgMV25JwAi%252F3okrkgASOdr8zgIhIJ1uhVPHUAAK4WAnLH4ByvQZw3r7reVYLkeqrS%252BgdrXDXqoDtmupxVLuJUaXoccZ%252BfDBpx%252FDfPTZwpnzQo33H4PQy87JFmpMNaG5D0nygs1lxubCCDXdalR9ajKwWFwMtcnA%253D%253D%7Campid%3APL_CLK%7Cclp%3A2332490&itmmeta=01JWEGA52AW853YMGK755K31X3) [datasheet](https://components101.com/sites/default/files/component_datasheet/HC-05%20Datasheet.pdf)
+	- [HM-10](https://www.aliexpress.com/item/1005009402343096.html?spm=a2g0o.productlist.main.2.320b7c96oQV4Gw&algo_pvid=ebedd72d-44bf-445e-82d3-dead5112c31a&algo_exp_id=ebedd72d-44bf-445e-82d3-dead5112c31a-1&pdp_ext_f=%7B%22order%22%3A%222%22%2C%22eval%22%3A%221%22%7D&pdp_npi=6%40dis%21GBP%214.94%212.47%21%21%2146.51%2123.26%21%40211b61a417551015548667805ee04a%2112000048989294355%21sea%21UK%210%21ABX%211%210%21n_tag%3A-29910%3Bm03_new_user%3A-29895&curPageLogUid=lp460BPBusNW&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005009402343096%7C_p_origin_prod%3A)
 - [Slide switch](https://www.amazon.com/dp/B08SLPWDR9?ref_=ppx_hzod_title_dt_b_fed_asin_title_0_1&th=1)
 - [3.7v lipo Battery](https://www.adafruit.com/product/2011)
 - [2mm JST Battery Connector](https://www.amazon.com/CQRobot-Pieces-Connector-Housing-Adapter/dp/B09DP9FZTX?dib=eyJ2IjoiMSJ9.sNePKIuEPVewtteYfS58lZhW1LPmAVkOUnPIESSHRV1hvavSnGyljd52drfUkW5t4vHY770J1QYnJR6J5vuRVibrd9-3cRKNr1A3Vood9wdaIiXBvQhf0mdvStLx7khxwPU3F8Po8fU3Oj-s-p_wBD1qKetaDQ-Cf7YYYW11nkU2uM8TZcRV8bM0esdYdNTfc2DC5A6KGKV8WKj3iSCdm2a_5utHmO_mh-Fdf6InY6w.CRPhyqQcm5MJQbVlpLiQIjypTNYh30MgPEx-_YJeLQ0&dib_tag=se&keywords=jst%2Bph%2B2%2Bpin%2Bconnector&qid=1751377308&sr=8-2&th=1)
@@ -41,6 +41,9 @@
 	- [100k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.html?s_z=n_resistors)
 - [2.2uH Inductor (0603)](https://lcsc.com/product-detail/Inductors-SMD_Murata-Electronics-LQM18PN2R2MFRL_C337910.html?s_z=n_inductor)
 - [USB-C Connector](https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-TYPE-C-6P-073_C668623.html?s_z=n_usb)
+
+- boost converter
+	- [MC34063ADR2G](https://www.lcsc.com/product-detail/C32078.html?s_z=n_MC34063A)
 
 
 # Dimensions
