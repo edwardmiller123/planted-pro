@@ -1,6 +1,6 @@
 # TODO
-- calibrate light sensors
-- fix lcd contrast
+- order HM-10
+- order parts for boost converter
 - make pcb v2
 - print case
 - assemble
@@ -8,10 +8,6 @@
 # Review Notes:
 - Make lid screw holes deeper
 - create holes for threaded inserts (or just screws)
-- redesign board
-	- need to add boost converter for 5v lcd
-	- 5v and GND for back light
-	- add potentiometer to board along with pin for v0 of lcd
 
 
 # Parts List
@@ -44,6 +40,7 @@
 
 - boost converter
 	- [MC34063ADR2G](https://www.lcsc.com/product-detail/C32078.html?s_z=n_MC34063A)
+		- https://www.onsemi.com/pub/Collateral/AN920-D.PDF
 
 
 # Dimensions
