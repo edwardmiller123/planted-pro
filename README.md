@@ -6,8 +6,6 @@
 - assemble
 
 # Review Notes:
-- Make lid screw holes deeper
-- create holes for threaded inserts (or just screws)
 
 
 # Parts List
@@ -61,5 +59,6 @@
 	- screw holes 2.2mm Diam 
 
 - case: 
-	- top and bottom screw holes have 4.4mm diam insets. Sides are at coords (5.2, 5.2) from each corner, centre of hole is at 7.4mm from sides
+	- top and bottom screw holes are 2mm diam each starts 4.2mm from side.
 	- window for charge light is 21mm from edge of lid and is 20mm by 10mm
+	- lid is 5 mm deep, Lid indents start at 3.2mm from edge, indents are 3mm deep
