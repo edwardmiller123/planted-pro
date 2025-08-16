@@ -11411,7 +11411,7 @@
 			(color 0 0 0 0.0000)
 		)
 		(uuid "35fc4441-f6a4-47a2-a2bf-f82d66d1cb23")
-		(property "Sheetname" "LCD"
+		(property "Sheetname" "5v Peripherals"
 			(at 303.53 -0.7116 0)
 			(effects
 				(font

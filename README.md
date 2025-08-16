@@ -39,6 +39,7 @@
 - boost converter
 	- [MC34063ADR2G](https://www.lcsc.com/product-detail/C32078.html?s_z=n_MC34063A)
 		- https://www.onsemi.com/pub/Collateral/AN920-D.PDF
+		Vout = 1.25(1+ (R2 / R1)) = 1.25(1+(300k/100k))
 
 
 # Dimensions
