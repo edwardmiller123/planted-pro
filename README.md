@@ -6,7 +6,8 @@
 - assemble
 
 # Review Notes:
-
+	- use smaller resistors on the boost comverter divider
+	- maybe use ti chip https://www.ti.com/power-management/acdc-dcdc-converters/products.html#1129=Boost%3BBuck-Boost&238max=1.8%3B7&
 
 # Parts List
 - [STM32F446RC](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44) 
@@ -40,6 +41,7 @@
 	- [MC34063ADR2G](https://www.lcsc.com/product-detail/C32078.html?s_z=n_MC34063A)
 		- https://www.onsemi.com/pub/Collateral/AN920-D.PDF
 		Vout = 1.25(1+ (R2 / R1)) = 1.25(1+(300k/100k))
+	
 
 
 # Dimensions
