@@ -20,9 +20,11 @@
 		- [TPS613222A](https://www.lcsc.com/product-detail/C2071163.html?s_z=n_TPS613222A)
 		- [Schottky diode](https://www.lcsc.com/product-detail/C8678.html?s_z=n_Schottky%2520diode)
 	- Capacitors (0603) (all 16v)
+		- [22uF (x1)](https://www.lcsc.com/product-detail/C6119868.html?s_z=s_Capacitors%257CMultilayer%2520Ceramic%2520Capacitors%2520MLCC%2520-%2520SMD%252FSMT)
 		- [4.7uF (x5)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10A475KO8NNNC_C19666.html?s_z=n_capacitors)
 		- [10uF (x1)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10A106MO8NQNC_C92487.html?s_z=n_capacitors)
 		- [100nF (x6)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10B104KO8NNNC_C66501.html?s_z=n_capacitors)
+		- [1nF (x1)](https://www.lcsc.com/product-detail/C163169.html?s_z=s_Capacitors%257CMultilayer%2520Ceramic%2520Capacitors%2520MLCC%2520-%2520SMD%252FSMT)
 	- Resistors (0603)
 		- [200k (x2)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF2003T5E_C25811.html?s_z=n_resistors)
 		- [2k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_FOJAN-FRC0603J202-TS_C2907137.html?s_z=n_resistors)
@@ -30,6 +32,7 @@
 		- [1.5k (x2)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF1501T5E_C22843.html?s_z=s_Resistors%257CChip%2520Resistor%2520-%2520Surface%2520Mount)
 		- [450k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0603WAF4533T5E_C25818.html?s_z=s_Resistors%257CChip%2520Resistor%2520-%2520Surface%2520Mount) backup
 		- [100k (x1)](https://lcsc.com/product-detail/Chip-Resistor-Surface-Mount_UNI-ROYAL-Uniroyal-Elec-0402WGF1003TCE_C25741.html?s_z=n_resistors)
+		- [10 (x1)](https://www.lcsc.com/product-detail/C22859.html)
 	- [2.2uH Inductor (x2)](https://lcsc.com/product-detail/Inductors-SMD_Murata-Electronics-LQM18PN2R2MFRL_C337910.html?s_z=n_inductor)
 	- [USB-C Connector](https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-TYPE-C-6P-073_C668623.html?s_z=n_usb)
 

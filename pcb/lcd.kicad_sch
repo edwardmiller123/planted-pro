@@ -1965,6 +1965,16 @@
 		)
 		(uuid "5c92c288-2224-4b51-8725-1fc4ac620324")
 	)
+	(text "Datasheet gives typical values of R13 and C17 \nas 5 ohms and 120pF however these were \nhard to find in 0603 package"
+		(exclude_from_sim no)
+		(at 103.124 69.342 0)
+		(effects
+			(font
+				(size 1.016 1.016)
+			)
+		)
+		(uuid "7516f683-c1af-404d-b106-ed0a97be0051")
+	)
 	(text "LCD"
 		(exclude_from_sim no)
 		(at 230.124 36.83 0)
@@ -2661,7 +2671,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "5"
+		(property "Value" "10"
 			(at 127 70.866 90)
 			(effects
 				(font
@@ -3009,7 +3019,7 @@
 				(justify right)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Inductor_SMD:L_0603_1608Metric_Pad1.05x0.95mm_HandSolder"
 			(at 119.38 97.79 0)
 			(effects
 				(font
@@ -3079,7 +3089,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Connector_PinHeader_2.54mm:PinHeader_1x11_P2.54mm_Vertical"
 			(at 240.03 55.88 0)
 			(effects
 				(font
@@ -3839,7 +3849,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
 			(at 152.4 102.87 0)
 			(effects
 				(font
@@ -4116,7 +4126,7 @@
 				(justify right)
 			)
 		)
-		(property "Value" "120pF"
+		(property "Value" "1nF"
 			(at 143.51 70.612 90)
 			(effects
 				(font
