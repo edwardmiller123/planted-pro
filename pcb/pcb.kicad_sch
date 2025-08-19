@@ -7189,13 +7189,12 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "Vext"
-			(at 60.96 85.0899 0)
+		(property "Value" "+Vext"
+			(at 58.42 81.28 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify left)
 			)
 		)
 		(property "Footprint" ""
@@ -7781,7 +7780,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "Vext"
+		(property "Value" "+Vext"
 			(at 102.87 143.5099 0)
 			(effects
 				(font
@@ -8487,7 +8486,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3.7V"
+		(property "Value" "+Vbat"
 			(at 26.162 29.464 0)
 			(effects
 				(font
@@ -9917,7 +9916,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "Vbat"
+		(property "Value" "+Vbat"
 			(at 56.642 151.384 0)
 			(effects
 				(font
@@ -10115,7 +10114,7 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "+3.3V"
+		(property "Value" "+3.3Vswin"
 			(at 97.79 27.178 0)
 			(effects
 				(font
@@ -10252,13 +10251,12 @@
 				(hide yes)
 			)
 		)
-		(property "Value" "Vbat"
-			(at 116.84 39.3699 0)
+		(property "Value" "+3.3Vswin"
+			(at 114.3 43.18 0)
 			(effects
 				(font
 					(size 1.27 1.27)
 				)
-				(justify right)
 			)
 		)
 		(property "Footprint" ""
