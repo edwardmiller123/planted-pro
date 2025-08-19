@@ -6,9 +6,8 @@
 - assemble
 
 # Review Notes:
-	- use smaller resistors on the boost comverter divider
-	- maybe use ti chip https://www.ti.com/power-management/acdc-dcdc-converters/products.html#1129=Boost%3BBuck-Boost&238max=1.8%3B7&
-
+	- use smaller resistors on the boost converter divider
+	- maybe use this one instead for boost converter [TPS613222A](https://www.ti.com/lit/ds/symlink/tps61322.pdf)
 # Parts List
 - [STM32F446RC](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44) 
 - [RG1602A](https://lcsc.com/product-detail/LCD-Screen_HS-HS1602A-B_C18198249.html?s_z=s_Displays%257CLCD%2520Screen)
