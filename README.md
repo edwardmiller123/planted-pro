@@ -5,6 +5,15 @@
 - print case
 - assemble
 
+# Review notes
+- inductors should take more current (maybe double the input)
+- more ground stitching
+- ferrite bead and 1 ohm damping resistor for usb charging
+	- there should be 1 resistor for every capcitor dirctly connected on that line
+	- ferrite bead should have low dc resistance and high dc resistance at 100mhz
+- find actual 5ohm resistor and 120pF capacitor (or close enough) for boost converter
+- maybe use horizontal pin headers to save room in the case
+
 # Parts List
 - main board:
 	- [STM32F446RC](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44)
