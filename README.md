@@ -6,8 +6,6 @@
 - assemble
 
 # Review notes
-- more ground stitching
-- maybe use horizontal pin headers to save room in the case
 
 # Parts List
 - main board:
