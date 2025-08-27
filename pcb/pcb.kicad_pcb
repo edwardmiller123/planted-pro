@@ -12161,6 +12161,17 @@
 			)
 		)
 	)
+	(gr_text "rev 2"
+		(at 77.8 97.8 0)
+		(layer "F.SilkS")
+		(uuid "2f0607ea-2bb8-4291-9104-8b57410aedd6")
+		(effects
+			(font
+				(size 0.75 0.75)
+				(thickness 0.09375)
+			)
+		)
+	)
 	(gr_text "GND"
 		(at 103.9 73.6 0)
 		(layer "F.SilkS")
