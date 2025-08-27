@@ -1,19 +1,12 @@
 # TODO
 - order HM-10
-- order parts for boost converter
+- order parts for pcb v2
 - make pcb v2
 - print case
 - assemble
 
 # Review notes
 - case changes:
-	- hole for power switch needs to be 1mm wider (length)
-	- add screw holes for power switch
-	- lcd hole needs to be wider to account for backlight thing (measure extra size)
-	- battery holder area should be 1mm wider
-	- moisture sensor hole should be 1mm taller and have rounded corners
-	- remove moisture sensor holder wall
-	- hc-05 holder area should be 1 mm wider and make wall taller
 	- dont use supports for screw holes since they are so small
 
 
