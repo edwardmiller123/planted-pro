@@ -6,8 +6,10 @@
 - assemble
 
 # Review notes
-- case changes:
-	- dont use supports for screw holes since they are so small
+- pcb changes:
+	- power plane on boost converter input 
+	- thick trace for switch input
+	- fix buck schematic
 
 
 # Parts List
