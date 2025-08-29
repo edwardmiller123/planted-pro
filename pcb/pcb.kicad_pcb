@@ -12087,6 +12087,17 @@
 			)
 		)
 	)
+	(gr_text "1"
+		(at 85 54.6 0)
+		(layer "F.SilkS")
+		(uuid "86c86b79-37ef-424d-b06c-a24c4208ca54")
+		(effects
+			(font
+				(size 0.7 0.7)
+				(thickness 0.15)
+			)
+		)
+	)
 	(gr_text "LCD"
 		(at 107.2 71.1 0)
 		(layer "F.SilkS")
