@@ -6,11 +6,6 @@
 - assemble
 
 # Review notes
-- pcb changes:
-	- power plane on boost converter input 
-	- thick trace for switch input
-	- fix buck schematic
-
 
 # Parts List
 - main board:
@@ -75,5 +70,5 @@
 
 - case: 
 	- top and bottom screw holes are 2mm diam each starts 4.2mm from side.
-	- window for charge light is 21mm from edge of lid and is 20mm by 10mm
+	- window for charge light is 21mm from edge of lid and is 20mm L by 10mm W
 	- lid is 5 mm deep, Lid indents start at 3.2mm from edge, indents are 3mm deep

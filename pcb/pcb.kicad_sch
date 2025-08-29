@@ -6010,16 +6010,6 @@
 		)
 		(uuid "724d75da-b689-467c-a36f-f4ac8f53b4b7")
 	)
-	(text "Datasheet gives typical values of R13 and C17 \nas 5 ohms and 120pF however these were \nhard to find in 0603 package"
-		(exclude_from_sim no)
-		(at 58.674 211.582 0)
-		(effects
-			(font
-				(size 1.016 1.016)
-			)
-		)
-		(uuid "a5336776-c79f-405c-b3d7-5dd5dea7cf9b")
-	)
 	(text "Light"
 		(exclude_from_sim no)
 		(at 375.666 57.658 0)
@@ -6215,12 +6205,6 @@
 		(diameter 0)
 		(color 0 0 0 0)
 		(uuid "c4da215f-2a99-4ced-bd89-34e4bdab071b")
-	)
-	(junction
-		(at 99.06 34.29)
-		(diameter 0)
-		(color 0 0 0 0)
-		(uuid "d2a064ea-78cc-4d05-818f-3fcc708d2e9b")
 	)
 	(junction
 		(at 193.04 199.39)
@@ -7142,16 +7126,6 @@
 	)
 	(wire
 		(pts
-			(xy 99.06 34.29) (xy 99.06 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "58978bec-92e2-4d92-b663-9a420b431c99")
-	)
-	(wire
-		(pts
 			(xy 107.95 226.06) (xy 107.95 240.03)
 		)
 		(stroke
@@ -7489,16 +7463,6 @@
 			(type default)
 		)
 		(uuid "7f540fc1-dae4-49b9-a912-374127d99aa9")
-	)
-	(wire
-		(pts
-			(xy 99.06 45.72) (xy 86.36 45.72)
-		)
-		(stroke
-			(width 0)
-			(type default)
-		)
-		(uuid "8000f957-4bf6-4eb1-94c8-61ddde4808e1")
 	)
 	(wire
 		(pts
@@ -8476,7 +8440,7 @@
 			)
 		)
 	)
-	(global_label "SYS LED"
+	(global_label "DEBUG LED"
 		(shape input)
 		(at 170.18 175.26 180)
 		(fields_autoplaced yes)
@@ -8488,7 +8452,7 @@
 		)
 		(uuid "2ab326e8-7ce4-4a01-ba4f-91bdb91d50ea")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 159.2725 175.26 0)
+			(at 156.4906 175.26 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -8916,7 +8880,7 @@
 			)
 		)
 	)
-	(global_label "SYS LED"
+	(global_label "DEBUG LED"
 		(shape input)
 		(at 287.02 39.37 0)
 		(fields_autoplaced yes)
@@ -8928,7 +8892,7 @@
 		)
 		(uuid "e487457c-34b8-4bb2-ac3a-b3c257114cfa")
 		(property "Intersheetrefs" "${INTERSHEET_REFS}"
-			(at 297.9275 39.37 0)
+			(at 300.7094 39.37 0)
 			(effects
 				(font
 					(size 1.27 1.27)
@@ -9963,7 +9927,7 @@
 				)
 			)
 		)
-		(property "Value" "SYS LED"
+		(property "Value" "DEBUG LED"
 			(at 265.1125 35.56 0)
 			(effects
 				(font
