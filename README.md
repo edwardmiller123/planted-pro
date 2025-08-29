@@ -70,5 +70,8 @@
 
 - case: 
 	- top and bottom screw holes are 2mm diam each starts 4.2mm from side.
-	- window for charge light is 21mm from edge of lid and is 20mm L by 10mm W
+	- window for charge light is 20mm L by 10mm W
 	- lid is 5 mm deep, Lid indents start at 3.2mm from edge, indents are 3mm deep
+
+- case v2:
+	- top and bottom screw holes 2mm diam and are 3.2 mm from outer edges
