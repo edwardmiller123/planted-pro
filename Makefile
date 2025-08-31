@@ -13,7 +13,7 @@ plant-monitor: $(COBJS)
 	$(LD) $^ -T linker.ld -o $@
 
 %.o: %.c
-	$(CC) $(CFLAGS) $(USE_MODE) -c $^ -o $@ -g
+	$(CC) $(CFLAGS) $(USE_MODE) -DGITSHA="git rev-parse --short HEAD" -c $^ -o $@ -g
 
 .PHONY: clean
 

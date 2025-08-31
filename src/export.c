@@ -16,6 +16,13 @@
 #define MAX_DATA_POINT_JSON_SIZE 64
 #define SEND_CODE '6'
 
+#ifndef GIT_SHA
+
+#define GIT_SHA "0"
+
+#endif
+
+
 exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 {
 	exporter *e = malloc(sizeof(exporter));
@@ -44,7 +51,6 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 
 int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8_t water_percent)
 {
-	// TODO: Some of the values are not in order
 	// remove the oldest data point if the queue is full
 	if (e->export_buf->word_count == e->data_point_limit)
 	{
@@ -134,7 +140,15 @@ char *export_queue_to_json(exporter *e, data_point current, uint8_t *buf)
 	char *list_divider = ", ";
 	uint32_t list_divider_len = str_len(list_divider);
 
-	uint8_t *buf_pos = byte_copy((uint8_t *)"{\"current\": ", buf, 12);
+	uint8_t *buf_pos = byte_copy((uint8_t *)"{\"version\": ", buf, 12);
+
+	uint16_t git_sha_len = str_len(GIT_SHA);
+
+	buf_pos = byte_copy((uint8_t *)GIT_SHA, buf_pos, git_sha_len);
+
+	buf_pos = byte_copy((uint8_t *)list_divider, buf_pos, list_divider_len);
+
+	buf_pos = byte_copy((uint8_t *)"\"current\": ", buf_pos, 11);
 
 	uint8_t current_dp_buf[MAX_DATA_POINT_JSON_SIZE];
 	mem_zero(current_dp_buf, MAX_DATA_POINT_JSON_SIZE);
