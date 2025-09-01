@@ -1,4 +1,6 @@
 # TODO
+- fix commit sha in export payload
+- read real unix time from bluetooth and sync clock
 - order HM-10
 - order parts for pcb v2
 - make pcb v2
@@ -6,6 +8,8 @@
 - assemble
 
 # Review notes
+	- thicker power traces
+	- tear drop trace ends
 
 # Parts List
 - main board:
