@@ -1,7 +1,15 @@
+# Build Artifacts
 *.o
 plant-monitor
-*.json
+
+# Editor Configuration
 .vscode
+
+# Kicad Files
 pcb-backups
 *.lck
 *auto_saved_files*
+
+# Testing
+xpacks
+*.json

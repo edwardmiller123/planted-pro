@@ -83,3 +83,11 @@
 
 - case v2:
 	- top and bottom screw holes 2mm diam and are 3.2 mm from outer edges
+
+
+- Plans:
+ - fetch correct time from app.
+	- if first byte in receive buffer is a 6 then export graph data.
+	- if first byte is a 1 or a 2 then it is a unix time stamp and should read full buffer
+	- after reading timestamp we convert to int and sync internal clock. All time stamps are from then on using the real time
+	- will need to keep internal time in seconds as well as milli seconds

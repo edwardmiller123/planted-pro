@@ -22,4 +22,6 @@ uint32_t get_system_uptime(void);
 
 int wait_for_condition(bool (*cond)(void), uint32_t ms);
 
+void update_unix_time(uint32_t time);
+
 #endif
