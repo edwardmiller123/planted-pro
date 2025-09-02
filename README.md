@@ -8,8 +8,12 @@
 - assemble
 
 # Review notes
-	- thicker power traces
-	- tear drop trace ends
+	- case:
+		screen screw hole centres should be 2mm further away from screen in y and 1mm closer in x
+		- cant get moisture sensore in. May be possible in v2 but consider alternative way to position it
+	- pcb:
+		- thicker power traces
+		- tear drop trace ends
 
 # Parts List
 - main board:
