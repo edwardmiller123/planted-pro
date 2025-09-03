@@ -10374,7 +10374,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "100"
+		(property "Value" "100k"
 			(at 113.03 91.4399 0)
 			(effects
 				(font
@@ -10383,7 +10383,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
 			(at 110.49 90.17 0)
 			(effects
 				(font
@@ -10510,7 +10510,7 @@
 				(justify left)
 			)
 		)
-		(property "Value" "M SEN"
+		(property "Value" "Moisture"
 			(at 386.08 34.2899 0)
 			(effects
 				(font
@@ -12199,7 +12199,7 @@
 				(justify left)
 			)
 		)
-		(property "Footprint" ""
+		(property "Footprint" "Resistor_SMD:R_0603_1608Metric_Pad0.98x0.95mm_HandSolder"
 			(at 110.49 78.74 0)
 			(effects
 				(font

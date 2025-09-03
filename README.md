@@ -1,6 +1,7 @@
 # TODO
 - fix commit sha in export payload
 - read real unix time from bluetooth and sync clock
+- Add battery sensor logic
 - order HM-10
 - order parts for pcb v2
 - make pcb v2
@@ -12,7 +13,6 @@
 		screen screw hole centres should be 2mm further away from screen in y and 1mm closer in x
 		- cant get moisture sensore in. May be possible in v2 but consider alternative way to position it
 	- pcb:
-		- thicker power traces
 		- tear drop trace ends
 
 # Parts List
