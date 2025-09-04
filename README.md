@@ -10,10 +10,17 @@
 
 # Review notes
 	- case:
-		screen screw hole centres should be 2mm further away from screen in y and 1mm closer in x
-		- cant get moisture sensore in. May be possible in v2 but consider alternative way to position it
+		- screen screw hole centres should be 2mm further away from screen in y
+		- screw holes for moisture sensor should be m2.5 
+		- moisture sensor hole and screw holes should b 1 mm further from the wall if possible
+		- top and bottom screw holes should just be 1 continous hole all the way through
+		- remove wall for hm-10 as it wont fit
+		
 	- pcb:
-		- tear drop trace ends
+		- more thick power traces
+		- dont cut ground plane under power supply (minimise)
+			- find way to route vbat signal to adc such that it doesnt cut ground plane under power supply as much
+		- maybe move main chip power input to better route things
 
 # Parts List
 - main board:
