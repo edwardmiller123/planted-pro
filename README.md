@@ -10,11 +10,17 @@
 
 # Review notes
 	- case:
-		- screen screw hole centres should be 2mm further away from screen in y
 		- screw holes for moisture sensor should be m2.5 
 		- moisture sensor hole and screw holes should b 1 mm further from the wall if possible
 		- top and bottom screw holes should just be 1 continous hole all the way through
 		- remove wall for hm-10 as it wont fit
+		- move main board over by 1mm 
+		- raise moistuire sensor hole by 1mm 
+		- battery length wall should be 1mm further over
+		- compartment join hole should be closer to main board by about 10mm (or just make hole bigger)
+		- case bottom compartment should be 3mm taller
+		- case top compartment should be 4mm taller
+		- make ldr window more central and round the corners to make strionger
 		
 
 # Parts List
@@ -69,7 +75,7 @@
 		- edge of screw hole 0.5mm by 0.5 from edge of screen
 	- screen: 70mm L, 24mm W
 	- screen to edge border: 5mm
-- hc-05: 37mm L, 15mm W
+- hc-05: 37mm L (43mm with pin headers), 15mm W
 - Moisture sensor: 26 L (internal part), 23mm W, 1mm thick
 - battery: 61mm L, 36mm W, 5mm H
 - usbc connector: 8.64mm W, ~3mm H
@@ -89,7 +95,7 @@
 
 - Plans:
  - fetch correct time from app.
-	- if first byte in receive buffer is a 6 then export graph data.
-	- if first byte is a 1 or a 2 then it is a unix time stamp and should read full buffer
+	- Sync button in app sends the time in format "T1234567894T". We poll buffer for 'T' then read time and send back export payload
 	- after reading timestamp we convert to int and sync internal clock. All time stamps are from then on using the real time
 	- will need to keep internal time in seconds as well as milli seconds
+	- may need to remove pin headers from hm-10s to make fit
