@@ -16,11 +16,6 @@
 		- top and bottom screw holes should just be 1 continous hole all the way through
 		- remove wall for hm-10 as it wont fit
 		
-	- pcb:
-		- more thick power traces
-		- dont cut ground plane under power supply (minimise)
-			- find way to route vbat signal to adc such that it doesnt cut ground plane under power supply as much
-		- maybe move main chip power input to better route things
 
 # Parts List
 - main board:
