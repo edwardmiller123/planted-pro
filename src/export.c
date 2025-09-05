@@ -142,9 +142,16 @@ char *export_queue_to_json(exporter *e, data_point current, uint8_t *buf)
 
 	uint8_t *buf_pos = byte_copy((uint8_t *)"{\"version\": ", buf, 12);
 
+	char * quote = "\"";
+	uint16_t quote_len = str_len(quote);
+
+	buf_pos = byte_copy((uint8_t *)quote, buf_pos, quote_len);
+
 	uint16_t git_sha_len = str_len(GIT_SHA);
 
 	buf_pos = byte_copy((uint8_t *)GIT_SHA, buf_pos, git_sha_len);
+
+	buf_pos = byte_copy((uint8_t *)quote, buf_pos, quote_len);
 
 	buf_pos = byte_copy((uint8_t *)list_divider, buf_pos, list_divider_len);
 
