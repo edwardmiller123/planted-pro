@@ -9,20 +9,7 @@
 - assemble
 
 # Review notes
-	- case:
-		- screw holes for moisture sensor should be m2.5 
-		- moisture sensor hole and screw holes should b 1 mm further from the wall if possible
-		- top and bottom screw holes should just be 1 continous hole all the way through
-		- remove wall for hm-10 as it wont fit
-		- move main board over by 1mm 
-		- raise moistuire sensor hole by 1mm 
-		- battery length wall should be 1mm further over
-		- compartment join hole should be closer to main board by about 10mm (or just make hole bigger)
-		- case bottom compartment should be 3mm taller
-		- case top compartment should be 4mm taller
-		- make ldr window more central and round the corners to make strionger
 		
-
 # Parts List
 - main board:
 	- [STM32F446RC](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44)
@@ -63,6 +50,7 @@
 	- [Capacitive moisture Sensor](https://thepihut.com/products/capacitive-soil-moisture-sensor?variant=32137736421438&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gQT=1)
 	- [HC-05 bluetooth module](https://www.ebay.co.uk/itm/292453360759?_trksid=p2332490.c101875.m1851&itmprp=cksum%3A2924533607597ce4980384724e938639b3fbd7e3c8a7%7Cenc%3AAQAKAAABgG96wQ16jds4VFcrhy1F3d4mbwZUJI9Fs%252BgdXYAHIzlX2e3YaNh7x%252BEnKA3G%252BCqSl1Xn4McfcWFK1GytmS2qxJ87mtE8Gm3iR1Ja4WBwh0hNHJrJx3Ki5mp04ow4CO7lP%252BooCybZDDU%252BbbSwmg7CbTin%252BBzBzbCYVnbjvyQAHu6--HI4MB7SvJl5IJqlyvomgoLMlgT6qAJzX0SANJhty2eH3mQTC7%252BUo1LCOV3zWqvDqzCovhNfZOVRWeQrp4Ib940QIXVfkbgMChVaQC8jaFp9qsYISBmoCevGwwiOSYfXSTaRtKKmKJomNeOFznaKU%252BfYJWIYT2d%252Byg8HwVOL%252FMvVKaBpjretD8cwgMV25JwAi%252F3okrkgASOdr8zgIhIJ1uhVPHUAAK4WAnLH4ByvQZw3r7reVYLkeqrS%252BgdrXDXqoDtmupxVLuJUaXoccZ%252BfDBpx%252FDfPTZwpnzQo33H4PQy87JFmpMNaG5D0nygs1lxubCCDXdalR9ajKwWFwMtcnA%253D%253D%7Campid%3APL_CLK%7Cclp%3A2332490&itmmeta=01JWEGA52AW853YMGK755K31X3) [datasheet](https://components101.com/sites/default/files/component_datasheet/HC-05%20Datasheet.pdf)
 		- [HM-10](https://www.aliexpress.com/item/1005009402343096.html?spm=a2g0o.productlist.main.2.320b7c96oQV4Gw&algo_pvid=ebedd72d-44bf-445e-82d3-dead5112c31a&algo_exp_id=ebedd72d-44bf-445e-82d3-dead5112c31a-1&pdp_ext_f=%7B%22order%22%3A%222%22%2C%22eval%22%3A%221%22%7D&pdp_npi=6%40dis%21GBP%214.94%212.47%21%21%2146.51%2123.26%21%40211b61a417551015548667805ee04a%2112000048989294355%21sea%21UK%210%21ABX%211%210%21n_tag%3A-29910%3Bm03_new_user%3A-29895&curPageLogUid=lp460BPBusNW&utparam-url=scene%3Asearch%7Cquery_from%3A%7Cx_object_id%3A1005009402343096%7C_p_origin_prod%3A)
+	- [Vollgo VG6328A Bluetooth module](https://www.lcsc.com/product-detail/C20539408.html?s_z=s_IoT%252FCommunication%2520Modules%257CBluetooth%2520Modules)
 
 - [4.2v lipo Battery](https://www.adafruit.com/product/2011)
 
@@ -76,6 +64,7 @@
 	- screen: 70mm L, 24mm W
 	- screen to edge border: 5mm
 - hc-05: 37mm L (43mm with pin headers), 15mm W
+- hm-10: 38mm L, 16mm W
 - Moisture sensor: 26 L (internal part), 23mm W, 1mm thick
 - battery: 61mm L, 36mm W, 5mm H
 - usbc connector: 8.64mm W, ~3mm H
@@ -83,6 +72,7 @@
 - power switch: 19mm L, 6mm W
 	- switch body: 10mm L
 	- screw holes 2.2mm Diam 
+- volgo bluetooth: 16mm L, 13.6mm W
 
 - case: 
 	- top and bottom screw holes are 2mm diam each starts 4.2mm from side.
@@ -94,8 +84,10 @@
 
 
 - Plans:
+ - Intergrate ble into main board
+	- Could shift everything around and just about have room for volgo bluetooth module instead of ble header if hm-10 doesnt fit
  - fetch correct time from app.
 	- Sync button in app sends the time in format "T1234567894T". We poll buffer for 'T' then read time and send back export payload
 	- after reading timestamp we convert to int and sync internal clock. All time stamps are from then on using the real time
 	- will need to keep internal time in seconds as well as milli seconds
-	- may need to remove pin headers from hm-10s to make fit
+	- may need to remove pin headers from hm-10s to make fit- 
