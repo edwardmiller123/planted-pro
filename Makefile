@@ -10,10 +10,10 @@ COBJS := $(patsubst $(SRCDIR)/%.c, $(SRCDIR)/%.o, $(CSRCS))
 USE_MODE = $(if $(MODE),-DMODE=$(MODE),)
 
 COMMIT = $(shell git rev-parse --short HEAD)
-$(info    Building with commit $(COMMIT))
+$(info    Current commit is $(COMMIT))
 
 plant-monitor: $(COBJS)
-	$(LD) $^ -T linker.ld -o $@
+	$(LD) $^ -T $(SRCDIR)/linker.ld -o $@
 
 %.o: %.c
 	$(CC) $(CFLAGS) $(USE_MODE) -DGIT_SHA=\"$(COMMIT)\" -c $^ -o $@ -g
