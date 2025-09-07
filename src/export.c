@@ -2,26 +2,23 @@
 
 #include "export.h"
 #include "ringbuf.h"
-#include "systick.h"
+#include "time.h"
 #include "heap.h"
 #include "utils.h"
 #include "logger.h"
 #include "usart.h"
 
-// slightly bigger than the number of values we want to hold in the queue at any one time so we
-// dont have to reset the queue too frequently
-#define MAX_EXPORT_QUEUE_CAPACITY 128
 #define MAX_JSON_SIZE 1024
 #define MAX_DIGITS 10
 #define MAX_DATA_POINT_JSON_SIZE 64
-#define SEND_CODE '6'
+#define SYNC_CODE 'T'
+#define UNIX_DIGIT_COUNT 10
 
 #ifndef GIT_SHA
 
 #define GIT_SHA "0"
 
 #endif
-
 
 exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 {
@@ -56,11 +53,7 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 	{
 		result_code read_result;
 		uint32_t oldest_data = ring_buffer_read_word(e->export_buf, &read_result);
-		if (read_result == EMPTY)
-		{
-			logger(DEBUG, "Export buffer empty. Skipping read");
-		}
-		else
+		if (read_result == SUCCESS)
 		{
 			uint32_t log_args[] = {((data_point *)oldest_data)->ts, ((data_point *)oldest_data)->light_percent, ((data_point *)oldest_data)->water_percent};
 			loggerf(INFO, "Discarded values from export list. TS: $, Light: $, Water: $", log_args, 3, NULL, 0);
@@ -142,7 +135,7 @@ char *export_queue_to_json(exporter *e, data_point current, uint8_t *buf)
 
 	uint8_t *buf_pos = byte_copy((uint8_t *)"{\"version\": ", buf, 12);
 
-	char * quote = "\"";
+	char *quote = "\"";
 	uint16_t quote_len = str_len(quote);
 
 	buf_pos = byte_copy((uint8_t *)quote, buf_pos, quote_len);
@@ -208,23 +201,65 @@ int export_data(exporter *e, data_point current)
 	return 0;
 }
 
-void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
+int read_and_update_time()
 {
-	uint32_t ts = get_system_uptime();
-	data_point current_data = {.ts = ts, .light_percent = light_percent, .water_percent = water_percent};
+	uint8_t time_buf[UNIX_DIGIT_COUNT];
+	result_code usart_read_status;
+	uint8_t value;
+	for (int i = 0; i < UNIX_DIGIT_COUNT; i++)
+	{
+		value = usart1_read_byte(&usart_read_status);
+		if (usart_read_status == EMPTY)
+		{
+			logger(ERROR, "Too few bytes read from USART1");
+			return -1;
+		}
+		time_buf[i] = value;
+	}
 
+	result_code conversion_status;
+	uint32_t unix_time = string_to_uint_base_10((char *)time_buf, UNIX_DIGIT_COUNT, &conversion_status);
+	if (conversion_status == BAD_INPUT) {
+		logger(ERROR, "Time in wrong format");
+		return -1;
+	}
+
+	uint32_t log_args[] = {unix_time};
+	loggerf(INFO, "Syncing unix time to $", log_args, 1, NULL, 0);
+
+	update_unix_time(unix_time);
+
+	return 0;
+}
+
+void poll_bluetooth(exporter *e, data_point current_data)
+{
 	uint8_t usart1_received_byte = usart1_read_byte(NULL);
 
 	uint32_t log_args[] = {usart1_received_byte};
 	loggerf(DEBUG, "Read byte $ from USART1 receive buffer", log_args, 1, NULL, 0);
 
-	if (usart1_received_byte == (uint8_t)SEND_CODE)
+	if (usart1_received_byte != (uint8_t)SYNC_CODE)
 	{
-		if (export_data(e, current_data) == -1)
-		{
-			logger(ERROR, "Failed to export data");
-		}
+		return;
 	}
+
+	if (read_and_update_time() == -1) {
+		logger(ERROR, "Failed read sync time");
+	}
+
+	if (export_data(e, current_data) == -1)
+	{
+		logger(ERROR, "Failed to export data");
+	}
+}
+
+void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
+{
+	uint32_t ts = get_unix_time();
+	data_point current_data = {.ts = ts, .light_percent = light_percent, .water_percent = water_percent};
+
+	poll_bluetooth(e, current_data);
 
 	if (ts < e->poll_interval || (ts - e->last_read_ts) < e->poll_interval)
 	{

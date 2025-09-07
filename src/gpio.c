@@ -2,7 +2,7 @@
 
 #include "gpio.h"
 #include "io.h"
-#include "systick.h"
+#include "time.h"
 #include "interrupts.h"
 
 // alters the state of the given pin in the given gpio port using the atomic BSSR register

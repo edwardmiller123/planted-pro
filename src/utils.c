@@ -2,7 +2,7 @@
 #include <stdbool.h>
 
 #include "utils.h"
-#include "systick.h"
+#include "time.h"
 
 #define MAX_STRING_SIZE 1024
 #define MAX_DIGITS 10
@@ -108,7 +108,7 @@ char *int_to_string(uint32_t integer, char *new_str)
 		n /= 10;
 		i++;
 	} while (n > 0);
-	
+
 	reverse_str[i] = '\0';
 
 	char *result_string = reverse_string(reverse_str, new_str);
@@ -118,8 +118,8 @@ char *int_to_string(uint32_t integer, char *new_str)
 
 int wait_for_condition(bool (*cond)(void), uint32_t ms)
 {
-	uint32_t timeout = get_system_uptime() + ms;
-	while (get_system_uptime() < timeout)
+	uint32_t timeout = get_system_counter() + ms;
+	while (get_system_counter() < timeout)
 	{
 		if ((*cond)())
 		{
@@ -127,4 +127,74 @@ int wait_for_condition(bool (*cond)(void), uint32_t ms)
 		}
 	}
 	return -1;
+}
+
+uint8_t char_to_int(char character, result_code *status)
+{
+	if (status != NULL)
+	{
+		*status = SUCCESS;
+	}
+
+	switch (character)
+	{
+	case '0':
+		return 0;
+	case '1':
+		return 1;
+	case '2':
+		return 2;
+	case '3':
+		return 3;
+	case '4':
+		return 4;
+	case '5':
+		return 5;
+	case '6':
+		return 6;
+	case '7':
+		return 7;
+	case '8':
+		return 8;
+	case '9':
+		return 9;
+	}
+
+	if (status != NULL)
+	{
+		*status = BAD_INPUT;
+	}
+
+	return 123;
+}
+
+uint32_t string_to_uint_base_10(char *str, uint32_t len, result_code *status)
+{
+
+	if (status != NULL)
+	{
+		*status = SUCCESS;
+	}
+
+	uint32_t total = 0;
+	uint8_t current_num = 0;
+	result_code conversion_status;
+
+	for (int i = 0; i < len; i++)
+	{
+		current_num = char_to_int(str[i], &conversion_status);
+		if (conversion_status != SUCCESS)
+		{
+			if (status != NULL)
+			{
+				*status = conversion_status;
+			}
+
+			return 0;
+		}
+
+		total *= 10;
+		total += current_num;
+	}
+	return total;
 }

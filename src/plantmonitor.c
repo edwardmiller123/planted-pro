@@ -3,7 +3,7 @@
 
 #include "plantmonitor.h"
 #include "logger.h"
-#include "systick.h"
+#include "time.h"
 #include "lcd.h"
 #include "utils.h"
 #include "usart.h"
@@ -23,7 +23,7 @@
 
 #define SAMPLE_SIZE 5
 
-#define EXPORT_POLL_INTERVAL 500
+#define EXPORT_POLL_INTERVAL_SECONDS 1
 #define EXPORT_POINT_COUNT 12
 
 plant_monitor *init_plant_monitor(bool debug_led)
@@ -77,7 +77,7 @@ plant_monitor *init_plant_monitor(bool debug_led)
 	pm->debug_led = debug_led;
 
 	// TODO: change this to poll every 15 minutes for 12 hours after we are done testing
-	exporter *e = init_exporter(EXPORT_POLL_INTERVAL, EXPORT_POINT_COUNT);
+	exporter *e = init_exporter(EXPORT_POLL_INTERVAL_SECONDS, EXPORT_POINT_COUNT);
 	if (e == NULL)
 	{
 		logger(ERROR, "Failed to initialise exporter");
@@ -170,7 +170,7 @@ void display_moisture_info(monitor *m)
 
 void display_info(plant_monitor *pm)
 {
-	uint32_t now = get_system_uptime();
+	uint32_t now = get_system_counter();
 	if (now < (pm->display_change_interval + DISPLAY_SWITCH_TIME))
 	{
 		return;

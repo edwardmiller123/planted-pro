@@ -23,6 +23,8 @@ typedef struct exporter {
 
 exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count);
 
+// The exporter stores the current reading and checks the USART1 buffer for updates. If the sync code is found then we
+// proceed to read the unix time from the buffer and sync the internal clock. We then send back the recorded readings and timestamps.
 void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent);
 
 #endif

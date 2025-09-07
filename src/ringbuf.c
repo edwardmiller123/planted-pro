@@ -61,6 +61,11 @@ void ring_buffer_write_byte(ring_buffer *buf, uint8_t byte)
 
 uint8_t ring_buffer_read_byte(ring_buffer *buf, result_code *result)
 {
+	if (result != NULL)
+	{
+		*result = SUCCESS;
+	}
+
 	if (buf->size == 0)
 	{
 		if (result != NULL)
@@ -101,6 +106,11 @@ void ring_buffer_write_word(ring_buffer *buf, uint32_t word)
 
 uint32_t ring_buffer_read_word(ring_buffer *buf, result_code *result)
 {
+	if (result != NULL)
+	{
+		*result = SUCCESS;
+	}
+	
 	if (buf->size == 0)
 	{
 		if (result != NULL)

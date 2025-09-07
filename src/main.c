@@ -5,7 +5,7 @@
 #include "io.h"
 #include "gpio.h"
 #include "usart.h"
-#include "systick.h"
+#include "time.h"
 #include "logger.h"
 #include "lcd.h"
 #include "adc.h"
@@ -48,7 +48,7 @@ int main(void)
 
     set_log_level(ll);
 
-    uint32_t args[1] = {get_system_uptime()};
+    uint32_t args[1] = {get_system_counter()};
     loggerf(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);
 
     configure_lcd();

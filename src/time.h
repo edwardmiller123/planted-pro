@@ -18,7 +18,9 @@ void init_systick(void);
 
 void sys_sleep(uint32_t ms);
 
-uint32_t get_system_uptime(void);
+uint32_t get_system_counter(void);
+
+uint32_t get_unix_time(void);
 
 int wait_for_condition(bool (*cond)(void), uint32_t ms);
 

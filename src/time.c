@@ -1,4 +1,4 @@
-#include "systick.h"
+#include "time.h"
 #include "interrupts.h"
 #include "io.h"
 #include "gpio.h"
@@ -13,8 +13,8 @@ static uint32_t system_counter;
 // number of ms since the last second
 static uint16_t ms_counter;
 
-// the real unix time which is synced from an external source.
-static uint32_t real_time;
+// the real unix time which is synced from an external source. WIll need to change this by 2038
+static uint32_t unix_time;
 
 void systick_handler(void)
 {
@@ -23,7 +23,7 @@ void systick_handler(void)
         ms_counter +=1; 
     } else {
         ms_counter = 0;
-        real_time += 1;
+        unix_time += 1;
     }
 }
 
@@ -51,13 +51,17 @@ void sys_sleep(uint32_t ms)
     };
 }
 
-uint32_t get_system_uptime(void)
+uint32_t get_system_counter(void)
 {
     return system_counter;
 }
 
+uint32_t get_unix_time(void) {
+    return unix_time;
+}
+
 void update_unix_time(uint32_t time) {
     asm __volatile__("CPSID i");
-    real_time = time;
+    unix_time = time;
     asm __volatile__("CPSIE i");
 }

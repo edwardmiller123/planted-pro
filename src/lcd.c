@@ -3,7 +3,7 @@
 #include "io.h"
 #include "gpio.h"
 #include "utils.h"
-#include "systick.h"
+#include "time.h"
 #include "logger.h"
 #include "lcd.h"
 

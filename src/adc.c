@@ -35,7 +35,6 @@ void configure_adc1()
 	// trigger EOCS bit to be set at the end of each conversion
 	io_set_bit(ADC1_CR2, 10);
 
-
 	// enable adc
 	io_set_bit(ADC1_CR2, 0);
 
@@ -67,7 +66,6 @@ void configure_adc2()
 
 	// trigger EOCS bit to be set at the end of each conversion
 	io_set_bit(ADC2_CR2, 10);
-
 
 	// enable adc
 	io_set_bit(ADC2_CR2, 0);
@@ -115,12 +113,16 @@ int wait_for_adc(adc adc_num, uint32_t timeout)
 	return 0;
 }
 
-uint32_t adc_manual_conversion(adc adc_num, result_code * result)
+uint32_t adc_manual_conversion(adc adc_num, result_code *result)
 {
+	if (result != NULL)
+	{
+		*result = SUCCESS;
+	}
 
 	uint32_t ctrl_reg;
 	uint32_t data_reg;
-	char * log_str;
+	char *log_str;
 	switch (adc_num)
 	{
 	case ADC1:
@@ -137,12 +139,13 @@ uint32_t adc_manual_conversion(adc adc_num, result_code * result)
 
 	io_set_bit(ctrl_reg, 30);
 
-	char * logger_args_str[] = {log_str};
+	char *logger_args_str[] = {log_str};
 
 	if (wait_for_adc(adc_num, 500) == -1)
 	{
 		loggerf(ERROR, "& conversion failed", NULL, 0, logger_args_str, 1);
-		if (result != NULL) {
+		if (result != NULL)
+		{
 			*result = FAILURE;
 		}
 		return 0;
