@@ -1,10 +1,11 @@
 # Build Artifacts
 *.o
-plant-monitor
+pepfw
+*.zip
 
 # Editor Configuration
 .vscode
-
+plant-monitor
 # Kicad Files
 pcb-backups
 *.lck

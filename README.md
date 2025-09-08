@@ -86,8 +86,4 @@
 - Plans:
  - Intergrate ble into main board
 	- Could shift everything around and just about have room for volgo bluetooth module instead of ble header if hm-10 doesnt fit
- - fetch correct time from app.
-	- Sync button in app sends the time in format "T1234567894T". We poll buffer for 'T' then read time and send back export payload
-	- after reading timestamp we convert to int and sync internal clock. All time stamps are from then on using the real time
-	- will need to keep internal time in seconds as well as milli seconds
-	- may need to remove pin headers from hm-10s to make fit- 
+ - may need to remove pin headers from hm-10s to make fit- 
