@@ -23,9 +23,9 @@ USE_MODE = $(if $(MODE),-DMODE=$(MODE),)
 COMMIT = $(shell git rev-parse --short HEAD)
 $(info    Current commit is $(COMMIT))
 
-all: pepfw pcb
+all: $(NAME)-fw.elf pcb
 
-pepfw: $(COBJS)
+$(NAME)-fw.elf: $(COBJS)
 	$(LD) $^ -T $(SRCDIR)/linker.ld -o $@
 
 %.o: %.c
