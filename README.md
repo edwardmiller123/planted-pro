@@ -5,6 +5,8 @@
 - assemble
 
 # Review notes
+	- pcb:
+		- add input capacitor to boost converter
 		
 # Parts List
 - main board:
@@ -23,7 +25,7 @@
 	- Capacitors (0603) (all 16v)
 		- [22uF (x1)](https://www.lcsc.com/product-detail/C6119868.html?s_z=s_Capacitors%257CMultilayer%2520Ceramic%2520Capacitors%2520MLCC%2520-%2520SMD%252FSMT)
 		- [4.7uF (x5)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10A475KO8NNNC_C19666.html?s_z=n_capacitors)
-		- [10uF (x1)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10A106MO8NQNC_C92487.html?s_z=n_capacitors)
+		- [10uF (x2)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10A106MO8NQNC_C92487.html?s_z=n_capacitors)
 		- [100nF (x6)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10B104KO8NNNC_C66501.html?s_z=n_capacitors)
 		- [120pF (x1)](https://www.lcsc.com/product-detail/C282671.html)
 	- Resistors (0603)

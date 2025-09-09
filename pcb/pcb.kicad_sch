@@ -6249,6 +6249,12 @@
 		(uuid "f9d73771-8af7-4b9c-9dd1-abb32756b0d1")
 	)
 	(junction
+		(at 67.31 240.03)
+		(diameter 0)
+		(color 0 0 0 0)
+		(uuid "faf2e290-a17b-4a1e-bacf-5598bf67b4d1")
+	)
+	(junction
 		(at 57.15 156.21)
 		(diameter 0)
 		(color 0 0 0 0)
@@ -6918,6 +6924,16 @@
 	)
 	(wire
 		(pts
+			(xy 67.31 242.57) (xy 67.31 240.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "3bed5978-ee82-4038-84ac-5afb13afb9cf")
+	)
+	(wire
+		(pts
 			(xy 92.71 250.19) (xy 92.71 252.73)
 		)
 		(stroke
@@ -7178,7 +7194,7 @@
 	)
 	(wire
 		(pts
-			(xy 62.23 240.03) (xy 72.39 240.03)
+			(xy 62.23 240.03) (xy 67.31 240.03)
 		)
 		(stroke
 			(width 0)
@@ -7955,6 +7971,16 @@
 			(type default)
 		)
 		(uuid "c69bbaa3-bcd4-4c5c-a592-8089b2db4384")
+	)
+	(wire
+		(pts
+			(xy 67.31 240.03) (xy 72.39 240.03)
+		)
+		(stroke
+			(width 0)
+			(type default)
+		)
+		(uuid "c7573f71-2946-4ed9-b7b0-e0063ffe8ad0")
 	)
 	(wire
 		(pts
@@ -9899,6 +9925,72 @@
 		)
 	)
 	(symbol
+		(lib_id "power:GND")
+		(at 67.31 247.65 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "1e8eb8e9-04de-408d-8b66-b639c03f8db0")
+		(property "Reference" "#PWR031"
+			(at 67.31 254 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Value" "GND"
+			(at 67.31 252.73 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+			)
+		)
+		(property "Footprint" ""
+			(at 67.31 247.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" ""
+			(at 67.31 247.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Power symbol creates a global label with name \"GND\" , ground"
+			(at 67.31 247.65 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "1"
+			(uuid "bd201fe8-98a4-4ca1-8e1e-72ed3976397c")
+		)
+		(instances
+			(project ""
+				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
+					(reference "#PWR031")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
 		(lib_id "Connector:USB_C_Receptacle_USB2.0_14P")
 		(at 36.83 111.76 0)
 		(unit 1)
@@ -10843,6 +10935,76 @@
 			(project ""
 				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
 					(reference "J7")
+					(unit 1)
+				)
+			)
+		)
+	)
+	(symbol
+		(lib_id "Device:C_Small")
+		(at 67.31 245.11 0)
+		(unit 1)
+		(exclude_from_sim no)
+		(in_bom yes)
+		(on_board yes)
+		(dnp no)
+		(fields_autoplaced yes)
+		(uuid "4b0356c5-cf78-4af0-92f0-f313b9529889")
+		(property "Reference" "C15"
+			(at 69.85 243.8462 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Value" "10uF"
+			(at 69.85 246.3862 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(justify left)
+			)
+		)
+		(property "Footprint" "Capacitor_SMD:C_0603_1608Metric_Pad1.08x0.95mm_HandSolder"
+			(at 67.31 245.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Datasheet" "~"
+			(at 67.31 245.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(property "Description" "Unpolarized capacitor, small symbol"
+			(at 67.31 245.11 0)
+			(effects
+				(font
+					(size 1.27 1.27)
+				)
+				(hide yes)
+			)
+		)
+		(pin "2"
+			(uuid "645e4052-c6c7-4fda-9262-c43a393557c4")
+		)
+		(pin "1"
+			(uuid "4e88d16c-fbaf-405d-a8bc-876786d87797")
+		)
+		(instances
+			(project "pcb"
+				(path "/a02550bc-85b4-480d-868d-ccdfd0f6046d"
+					(reference "C15")
 					(unit 1)
 				)
 			)
