@@ -1,7 +1,7 @@
 
 REV = 1
 NAME = planted-pro
-REV_NAME = $(NAME)-r$(REV)
+REV_NAME = $(NAME)-main-board-r$(REV)
 $(info    PCB revision $(REV))
 
 PCBDIR := pcb
@@ -38,6 +38,6 @@ pcb: $(PCB)
 	zip -9 -j $(REV_NAME) $(GERBER_DIR)/*
 
 clean :
-	rm -rf $(SRCDIR)/*.o pep-fw
+	rm -rf $(SRCDIR)/*.o *.elf *.zip
 
 .PHONY: clean pcb
