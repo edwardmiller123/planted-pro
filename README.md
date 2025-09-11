@@ -8,6 +8,13 @@
 - assemble
 
 # Review notes
+	- pcb:
+		- long pads on ble footprint
+		- remove ground plane under ble so it doesnt intefere with the antenna
+		- add 1k resistor to bt connect line and pull it down to ground with 100k resistor
+			- maybe just add led and poll connection status periodically
+		- try and cross lines at right angles
+		- remove led from schematic
 		
 # Parts List
 - Main board:
