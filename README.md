@@ -9,12 +9,7 @@
 
 # Review notes
 	- pcb:
-		- long pads on ble footprint
-		- remove ground plane under ble so it doesnt intefere with the antenna
-		- add 1k resistor to bt connect line and pull it down to ground with 100k resistor
-			- maybe just add led and poll connection status periodically
 		- try and cross lines at right angles
-		- remove led from schematic
 		
 # Parts List
 - Main board:
@@ -62,6 +57,7 @@
 # Dimensions
 - main board: 60mm L, 48mm W
 	- screws: 2mm Diam, centre is 3mm from edge
+	- bluetooth antenna is 15mm corner (usb side)
 - lcd: 80mm L, 36mm W
 	- screws: 3mm diameter
 		- edge of screw hole 0.5mm by 0.5 from edge of screen
