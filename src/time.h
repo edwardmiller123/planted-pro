@@ -12,6 +12,8 @@
 #define STK_VAL_R (STK_BASE + 0x08U)
 #define STK_CALIB_R (STK_BASE + 0x0CU)
 
+#define UNIX_DIGIT_COUNT 10
+
 void systick_handler(void);
 
 void init_systick(void);

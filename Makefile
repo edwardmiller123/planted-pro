@@ -23,7 +23,9 @@ USE_MODE = $(if $(MODE),-DMODE=$(MODE),)
 COMMIT = $(shell git rev-parse --short HEAD)
 $(info    Current commit is $(COMMIT))
 
-all: $(NAME)-fw.elf pcb
+all: fw pcb
+
+fw: $(NAME)-fw.elf
 
 $(NAME)-fw.elf: $(COBJS)
 	$(LD) $^ -T $(SRCDIR)/linker.ld -o $@
@@ -40,4 +42,4 @@ pcb: $(PCB)
 clean :
 	rm -rf $(SRCDIR)/*.o *.elf *.zip
 
-.PHONY: clean pcb
+.PHONY: clean pcb fw

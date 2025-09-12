@@ -13,6 +13,7 @@
 #include "export.h"
 #include "gpio.h"
 #include "heap.h"
+#include "bluetooth.h"
 
 #define DISPLAY_SWITCH_TIME 3000
 
@@ -202,6 +203,8 @@ void run_monitor(plant_monitor *pm)
 	display_info(pm);
 
 	poll_sensors(pm);
+
+	poll_bluetooth(pm->e);
 
 	run_exporter(pm->e, pm->lm->percent, pm->wm->percent);
 }

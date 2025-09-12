@@ -2,6 +2,7 @@
 #define EXPORT_H
 
 #include <stdint.h>
+#include <stdbool.h>
 
 #include "ringbuf.h"
 
@@ -18,6 +19,7 @@ typedef struct exporter {
 	uint16_t poll_interval;
 	uint32_t last_read_ts;
 	uint16_t data_point_limit;
+	bool send_data;
 
 } exporter;
 
