@@ -58,6 +58,9 @@
 - main board: 60mm L, 48mm W
 	- screws: 2mm Diam, centre is 3mm from edge
 	- bluetooth antenna is 15mm corner (usb side)
+	- 1.6mm thick
+		- 4.23 with bluetooth
+		- 12mm with battery header
 - lcd: 80mm L, 36mm W
 	- screws: 3mm diameter
 		- edge of screw hole 0.5mm by 0.5 from edge of screen
@@ -66,7 +69,7 @@
 - hc-05: 37mm L (43mm with pin headers), 15mm W
 - hm-10: 38mm L, 16mm W
 - Moisture sensor: 26 L (internal part), 23mm W, 1mm thick
-- battery: 61mm L, 36mm W, 5mm H
+- battery: 61mm L, 36mm W, 7mm H
 - usbc connector: 8.64mm W, ~3mm H
 	- 5.72mm away from board corner
 - power switch: 19mm L, 6mm W
@@ -82,8 +85,9 @@
 - case v2:
 	- top and bottom screw holes 2mm diam and are 3.2 mm from outer edges
 
+- case v3:
+	- top section H is 14mm
+	- bottom section H is 9mm
+
 
 - Plans:
- - Intergrate ble into main board
-	- Could shift everything around and just about have room for volgo bluetooth module instead of ble header if hm-10 doesnt fit
- - may need to remove pin headers from hm-10s to make fit- 
