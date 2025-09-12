@@ -91,3 +91,4 @@
 
 
 - Plans:
+	- a rising or falling edge on the BT_CONNECT line triggers an interrupt that updates the bluetooth status in the plantmonitor struct and sets the show bluetooth message bool to true. display_info always checks if there is a bluetooth message to display before showinmg other info and reads the current bluetooth status to determine whether it is a disconnect or a connect message
