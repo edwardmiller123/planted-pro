@@ -28,7 +28,7 @@ sensor *init_sensor(uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t
 
 	s->readings_buffer = readings;
 
-	s->sensor_percent = UNDEFINED_PERCENTAGE;
+	s->sensor_percent = 0;
 	s->min_adc_reading = min_adc_reading;
 	s->max_adc_reading = max_adc_reading;
 	s->sample_size = sample_size;

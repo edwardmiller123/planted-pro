@@ -10,6 +10,7 @@ typedef struct data_point {
 	uint32_t ts;
 	uint8_t light_percent;
 	uint8_t water_percent;
+	uint8_t battery_percent;
 } data_point;
 
 // the exporter sends the contense of the export queue over USART1 as a JSON string when requested.
@@ -25,9 +26,9 @@ typedef struct exporter {
 
 exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count);
 
-// The exporter stores the current reading and checks the USART1 buffer for updates. If the sync code is found then we
-// proceed to read the unix time from the buffer and sync the internal clock. We then send back the recorded readings and timestamps.
-void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent);
+// The exporter stores the current readings along with the time stamp. If the send flag is set then it sends 
+// the stored data as json over USART1.
+void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent, uint8_t bat_percent);
 
 #endif
 

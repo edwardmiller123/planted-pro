@@ -24,9 +24,19 @@
 #define ADC2_SMPR1 (ADC2_BASE + 0xCU)
 #define ADC2_DR (ADC2_BASE + 0x4CU)
 
+#define ADC3_BASE (ADC_BASE + 0x200U)
+
+#define ADC3_SR (ADC3_BASE + 0x0U)
+#define ADC3_CR1 (ADC3_BASE + 0x4U)
+#define ADC3_CR2 (ADC3_BASE + 0x8U) 
+#define ADC3_SQR3 (ADC3_BASE + 0x34U) // channel select
+#define ADC3_SMPR1 (ADC3_BASE + 0xCU)
+#define ADC3_DR (ADC3_BASE + 0x4CU)
+
 typedef enum adc {
 	ADC1,
-	ADC2
+	ADC2,
+	ADC3
 } adc;
 
 void configure_adc();

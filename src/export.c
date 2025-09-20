@@ -47,7 +47,7 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 	return e;
 }
 
-int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8_t water_percent)
+int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8_t water_percent, uint8_t battery_percent)
 {
 	// remove the oldest data point if the queue is full
 	if (e->export_buf->word_count == e->data_point_limit)
@@ -56,8 +56,8 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 		uint32_t oldest_data = ring_buffer_read_word(e->export_buf, &read_result);
 		if (read_result == SUCCESS)
 		{
-			uint32_t log_args[] = {((data_point *)oldest_data)->ts, ((data_point *)oldest_data)->light_percent, ((data_point *)oldest_data)->water_percent};
-			loggerf(INFO, "Discarded values from export list. TS: $, Light: $, Water: $", log_args, 3, NULL, 0);
+			uint32_t log_args[] = {((data_point *)oldest_data)->ts, ((data_point *)oldest_data)->light_percent, ((data_point *)oldest_data)->water_percent, ((data_point *)oldest_data)->battery_percent};
+			loggerf(INFO, "Discarded values from export list. TS: $, Light: $, Water: $, Battery: $", log_args, 4, NULL, 0);
 
 			free((void *)oldest_data);
 		}
@@ -73,11 +73,12 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 	dp->ts = ts;
 	dp->light_percent = light_percent;
 	dp->water_percent = water_percent;
+	dp->battery_percent = battery_percent;
 
 	ring_buffer_write_word(e->export_buf, (uint32_t)dp);
 
-	uint32_t log_args[] = {dp->ts, dp->light_percent, dp->water_percent};
-	loggerf(INFO, "Stored values for export. TS: $, Light: $, Water: $", log_args, 3, NULL, 0);
+	uint32_t log_args[] = {dp->ts, dp->light_percent, dp->water_percent, dp->battery_percent};
+	loggerf(INFO, "Stored values for export. TS: $, Light: $, Water: $, Battery: $", log_args, 4, NULL, 0);
 
 	return 0;
 }
@@ -118,6 +119,16 @@ char *data_point_to_json(data_point *dp, uint8_t *buf)
 	char *water_val = int_to_string(dp->water_percent, water_buf);
 	buf_pos = byte_copy((uint8_t *)water_val, buf_pos, str_len(water_val));
 
+	buf_pos = byte_copy((uint8_t *)field_divider, buf_pos, field_divider_len);
+
+	char *bat_field = "\"battery\": ";
+	uint32_t bat_field_len = str_len(bat_field);
+	buf_pos = byte_copy((uint8_t *)bat_field, buf_pos, bat_field_len);
+
+	char battery_buf[MAX_DIGITS] = {'\0'};
+	char *battery_val = int_to_string(dp->battery_percent, battery_buf);
+	buf_pos = byte_copy((uint8_t *)battery_val, buf_pos, str_len(battery_val));
+
 	char *json_end = "}";
 	uint32_t json_end_len = str_len(json_end);
 	byte_copy((uint8_t *)json_end, buf_pos, json_end_len);
@@ -129,7 +140,7 @@ char *data_point_to_json(data_point *dp, uint8_t *buf)
 }
 
 // converts the contense of the export queue, along with the current reading, to a json string
-char *export_queue_to_json(exporter *e, data_point current, uint8_t *buf)
+char *export_queue_to_json(exporter *e, data_point *current, uint8_t *buf)
 {
 	char *list_divider = ", ";
 	uint32_t list_divider_len = str_len(list_divider);
@@ -153,7 +164,7 @@ char *export_queue_to_json(exporter *e, data_point current, uint8_t *buf)
 
 	uint8_t current_dp_buf[MAX_DATA_POINT_JSON_SIZE];
 	mem_zero(current_dp_buf, MAX_DATA_POINT_JSON_SIZE);
-	char *current_dp_json = data_point_to_json(&current, current_dp_buf);
+	char *current_dp_json = data_point_to_json(current, current_dp_buf);
 
 	buf_pos = byte_copy((uint8_t *)current_dp_json, buf_pos, str_len(current_dp_json));
 
@@ -185,7 +196,7 @@ char *export_queue_to_json(exporter *e, data_point current, uint8_t *buf)
 	return (char *)buf;
 }
 
-int export_data(exporter *e, data_point current)
+int export_data(exporter *e, data_point *current)
 {
 	uint8_t buf[MAX_JSON_SIZE];
 	char *json_output = export_queue_to_json(e, current, buf);
@@ -202,14 +213,14 @@ int export_data(exporter *e, data_point current)
 	return 0;
 }
 
-void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
+void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent, uint8_t battery_percent)
 {
 	uint32_t ts = get_unix_time();
-	data_point current_data = {.ts = ts, .light_percent = light_percent, .water_percent = water_percent};
+	data_point current_data = {.ts = ts, .light_percent = light_percent, .water_percent = water_percent, .battery_percent = battery_percent};
 
 	if (e->send_data)
 	{
-		if (export_data(e, current_data) == -1)
+		if (export_data(e, &current_data) == -1)
 		{
 			logger(ERROR, "Failed to export data");
 		}
@@ -224,5 +235,5 @@ void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent)
 
 	e->last_read_ts = ts;
 
-	store_data_for_export(e, ts, light_percent, water_percent);
+	store_data_for_export(e, ts, light_percent, water_percent, battery_percent);
 }

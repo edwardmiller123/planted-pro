@@ -17,7 +17,6 @@
 
 int main(void)
 {
-    bool debug_led = false;
     log_level ll = ERROR;
 
     #ifdef MODE
@@ -28,7 +27,6 @@ int main(void)
             break;
         case 2:
             ll = DEBUG;
-            debug_led = true;
             break;
         }
     #endif
@@ -61,7 +59,7 @@ int main(void)
 
     init_heap();
 
-    plant_monitor *pm = init_plant_monitor(debug_led);
+    plant_monitor *pm = init_plant_monitor();
     if (pm == NULL)
     {
         init_fault_handler();

@@ -14,20 +14,30 @@
 #include "gpio.h"
 #include "heap.h"
 #include "bluetooth.h"
-
-#define DISPLAY_SWITCH_TIME 3000
+#include "display.h"
 
 #define LIGHT_MAX_VALUE 4095
 
 #define WATER_MAX_VALUE 2850
 #define WATER_MIN_VALUE 1200
 
+// The battery has a max charge of 4.2v and can be considered "dead" by the time it
+// reaches 3.3v (any lower and we wont get accurate readings so consider 3.3 to be 0 percent battery).
+// The sensor gives half the battery voltage so we consider 2.1v full and 1.65 "empty".
+// Since the max ADC value 4095 corresponds to the reference voltage 3.3v we get ADC values of,
+// Full: 2620, empty: 2047
+#define BAT_CHARGE_MIN_VALUE 2047
+#define BAT_CHARGE_MAX_VALUE 2620
+
 #define SAMPLE_SIZE 5
+
+// Use a large sample size for the battery as the signal is expected to be noisey
+#define BAT_CHARGE_SAMPLE_SIZE 50
 
 #define EXPORT_POLL_INTERVAL_SECONDS 1
 #define EXPORT_POINT_COUNT 12
 
-plant_monitor *init_plant_monitor(bool debug_led)
+plant_monitor *init_plant_monitor()
 {
 	plant_monitor *pm = malloc(sizeof(plant_monitor));
 	if (pm == NULL)
@@ -37,7 +47,7 @@ plant_monitor *init_plant_monitor(bool debug_led)
 	}
 
 	// After 5 measurements have been taken we calculate the average light level and "percentage" and write it
-	// back to the state struct. The light monitor uses ADC1 to read from a ldr in a potential divider with an 82k resistor
+	// back to the state struct. The light monitor uses ADC1 to read from an ldr in a potential divider
 	sensor *light_sen = init_sensor(0, LIGHT_MAX_VALUE, SAMPLE_SIZE, ADC1);
 	if (light_sen == NULL)
 	{
@@ -57,6 +67,16 @@ plant_monitor *init_plant_monitor(bool debug_led)
 
 	logger(INFO, "Water sensor initialised on ADC2");
 
+	// The battery sensor measures the current battery voltage halfed so that it always remains under the reference voltage
+	sensor *battery_sen = init_sensor(BAT_CHARGE_MIN_VALUE, BAT_CHARGE_MAX_VALUE, BAT_CHARGE_SAMPLE_SIZE, ADC3);
+	if (water_sen == NULL)
+	{
+		logger(ERROR, "Failed to allocate memory for battery sensor");
+		return NULL;
+	}
+
+	logger(INFO, "Battery sensor initialised on ADC3");
+
 	monitor *lm = init_monitor(light_sen);
 	if (lm == NULL)
 	{
@@ -71,11 +91,16 @@ plant_monitor *init_plant_monitor(bool debug_led)
 		return NULL;
 	}
 
-	pm->currently_showing = LIGHT;
-	pm->display_change_interval = 0;
+	monitor *bm = init_monitor(battery_sen);
+	if (wm == NULL)
+	{
+		logger(ERROR, "Failed to initialise battery monitor");
+		return NULL;
+	}
+
 	pm->lm = lm;
 	pm->wm = wm;
-	pm->debug_led = debug_led;
+	pm->bm = bm;
 
 	// TODO: change this to poll every 15 minutes for 12 hours after we are done testing
 	exporter *e = init_exporter(EXPORT_POLL_INTERVAL_SECONDS, EXPORT_POINT_COUNT);
@@ -101,110 +126,21 @@ void poll_sensors(plant_monitor *pm)
 	{
 		logger(ERROR, "Failed to measure water level");
 	}
-}
 
-void display_percent(monitor *m)
-{
-	lcd_set_cursor(0, 1);
-
-	char line2_buf[LCD_LINE_LENGTH];
-	char *line2 = line2_buf;
-
-	if (m->percent == UNDEFINED_PERCENTAGE)
+	if (measure_battery_charge(pm->bm) == -1)
 	{
-		line2 = "Percent: ERROR";
-	}
-	else
-	{
-		char percentage_str[3];
-		char percentage_pretty[4];
-		str_cat(int_to_string(m->percent, percentage_str), "%", percentage_pretty);
-		str_cat("Percent: ", percentage_pretty, line2);
-	}
-
-	lcd_write_string(line2);
-}
-
-void display_light_info(monitor *m)
-{
-	lcd_set_cursor(0, 0);
-
-	// display the percent first so its not held up from being visible by the screen scrolling
-	// which blocks
-	display_percent(m);
-
-	char line1_buf[LCD_MAX_MSG_LEN];
-	char *line1 = line1_buf;
-
-	if (m->level == NULL)
-	{
-		line1 = "Light: ERROR";
-	}
-	else
-	{
-		str_cat("Light: ", (char *)m->level, line1);
-	}
-
-	lcd_write_string_and_scroll(line1, 0, 0);
-}
-
-void display_moisture_info(monitor *m)
-{
-	lcd_set_cursor(0, 0);
-
-	display_percent(m);
-
-	char line1_buf[LCD_MAX_MSG_LEN];
-	char *line1 = line1_buf;
-
-	if (m->level == NULL)
-	{
-		lcd_write_string("Soil: ERROR");
-	}
-	else
-	{
-		str_cat("Soil: ", (char *)m->level, line1);
-	}
-
-	lcd_write_string_and_scroll(line1, 0, 0);
-}
-
-void display_info(plant_monitor *pm)
-{
-	uint32_t now = get_system_counter();
-	if (now < (pm->display_change_interval + DISPLAY_SWITCH_TIME))
-	{
-		return;
-	}
-
-	if (pm->debug_led)
-	{
-		toggle_user_led();
-	}
-
-	pm->currently_showing = (info_type) !(bool)pm->currently_showing;
-	pm->display_change_interval = now;
-
-	lcd_clear_display();
-
-	switch (pm->currently_showing)
-	{
-	case LIGHT:
-		display_light_info(pm->lm);
-		break;
-	case MOISTURE:
-		display_moisture_info(pm->wm);
-		break;
+		logger(ERROR, "Failed to measure battery charge");
 	}
 }
 
 void run_monitor(plant_monitor *pm)
 {
-	display_info(pm);
+	display_info(pm->lm, pm->wm, pm->bm);
 
 	poll_sensors(pm);
 
 	poll_bluetooth(pm->e);
 
-	run_exporter(pm->e, pm->lm->percent, pm->wm->percent);
+	run_exporter(pm->e, pm->lm->percent, pm->wm->percent, pm->bm->percent);
+
 }

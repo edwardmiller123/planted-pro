@@ -73,12 +73,47 @@ void configure_adc2()
 	logger(INFO, "Initilaised ADC2 with PA4, channel 4 as input");
 }
 
+// configures the ADC3 to use channel 3 on PA3 as the input pin
+void configure_adc3()
+{
+
+	// enable adc3 clock on APB2 bus
+	io_set_bit(RCC_APB2ENR, 10);
+
+	// set PA3 to analog mode
+	io_set_bit(GPIOA_MODER, 6);
+	io_set_bit(GPIOA_MODER, 7);
+
+	// enable 1st conversion channel 3
+	io_set_bit(ADC3_SQR3, 0);
+	io_clear_bit(ADC3_SQR3, 1);
+	io_clear_bit(ADC3_SQR3, 2);
+	io_clear_bit(ADC3_SQR3, 3);
+	io_clear_bit(ADC3_SQR3, 4);
+
+	// enable scan mode
+	io_set_bit(ADC3_CR1, 8);
+
+	// ensure right alignment of data
+	io_clear_bit(ADC3_CR2, 11);
+
+	// trigger EOCS bit to be set at the end of each conversion
+	io_set_bit(ADC3_CR2, 10);
+
+	// enable adc
+	io_set_bit(ADC3_CR2, 0);
+
+	logger(INFO, "Initilaised ADC3 with PA3, channel 3 as input");
+}
+
 // configure ADC1 and ADC2 with GPIO pins PA1 and PA4
 void configure_adc()
 {
 	configure_adc1();
 
 	configure_adc2();
+
+	configure_adc3();
 }
 
 bool adc1_conversion_complete()
@@ -89,6 +124,11 @@ bool adc1_conversion_complete()
 bool adc2_conversion_complete()
 {
 	return (bool)io_get_bit(ADC2_SR, 1);
+}
+
+bool adc3_conversion_complete()
+{
+	return (bool)io_get_bit(ADC3_SR, 1);
 }
 
 int wait_for_adc(adc adc_num, uint32_t timeout)
@@ -106,6 +146,14 @@ int wait_for_adc(adc adc_num, uint32_t timeout)
 		if (wait_for_condition(&adc2_conversion_complete, timeout) == -1)
 		{
 			logger(ERROR, "ADC2 conversion timed out");
+			return -1;
+		}
+		break;
+
+	case ADC3:
+		if (wait_for_condition(&adc3_conversion_complete, timeout) == -1)
+		{
+			logger(ERROR, "ADC3 conversion timed out");
 			return -1;
 		}
 		break;
@@ -134,6 +182,11 @@ uint32_t adc_manual_conversion(adc adc_num, result_code *result)
 		ctrl_reg = ADC2_CR2;
 		data_reg = ADC2_DR;
 		log_str = "ADC2";
+		break;
+	case ADC3:
+		ctrl_reg = ADC3_CR2;
+		data_reg = ADC3_DR;
+		log_str = "ADC3";
 		break;
 	}
 

@@ -7,8 +7,6 @@
 #include "adc.h"
 #include "ringbuf.h"
 
-#define UNDEFINED_PERCENTAGE 101
-
 // generic sensor
 typedef struct sensor {
 	ring_buffer * readings_buffer;

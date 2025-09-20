@@ -18,17 +18,18 @@ const char *light_bright_indirect = "Bright Indirect";
 const char *light_medium = "Medium";
 const char *light_low = "Low";
 
-monitor * init_monitor(sensor * s)
+monitor *init_monitor(sensor *s)
 {
-	monitor * m = malloc(sizeof(monitor));
-	if (m == NULL) {
+	monitor *m = malloc(sizeof(monitor));
+	if (m == NULL)
+	{
 		logger(ERROR, "Failed to allocate memory for monitor");
 		return NULL;
 	}
 
 	m->snr = s;
 	m->level = NULL;
-	m->percent = UNDEFINED_PERCENTAGE;
+	m->percent = 0;
 	return m;
 }
 
@@ -70,7 +71,7 @@ int set_light_level(monitor *lm)
 		lm->level = (char *)light_bright_direct;
 	}
 
-	char *args_level[] = {lm->level};
+	char *args_level[] = {(char *)lm->level};
 	loggerf(DEBUG, "Light level set to &", NULL, 0, args_level, 1);
 
 	// we want the "light" percentage and darkness gives the max adc value
@@ -128,7 +129,7 @@ int set_water_level(monitor *wm)
 		wm->level = (char *)soil_saturated;
 	}
 
-	char *args_level[] = {wm->level};
+	char *args_level[] = {(char *)wm->level};
 	loggerf(DEBUG, "Water level set to &", NULL, 0, args_level, 1);
 
 	// we want the water "percentage" and dry soil gives the max adc value
@@ -151,6 +152,51 @@ int measure_water(monitor *wm)
 	if (sensor_read_adc(wm->snr) == -1)
 	{
 		logger(ERROR, "Failed to take water sensor reading");
+		return -1;
+	}
+
+	return 0;
+}
+
+const char *battery_low = "Low Battery";
+
+int set_battery_charge(monitor *bm)
+{
+	if (sensor_calculate_average(bm->snr) == -1)
+	{
+		logger(ERROR, "Failed to get average battery charge reading");
+		return -1;
+	}
+
+	bm->level = NULL;
+
+	if (bm->snr->sensor_percent < BAT_LOW_PERCENT) {
+		bm->level = battery_low;
+
+		char *args_level[] = {(char *)bm->level};
+		loggerf(DEBUG, "Battery level set to &", NULL, 0, args_level, 1);
+	}
+
+	bm->percent = bm->snr->sensor_percent;
+
+	uint32_t args_intensity[] = {bm->percent};
+	loggerf(DEBUG, "Charge percent set to $", args_intensity, 1, NULL, 0);
+
+	return 0;
+
+}
+
+int measure_battery_charge(monitor *bm)
+{
+	if (monitor_process_samples(bm, &set_battery_charge) == -1)
+	{
+		logger(ERROR, "Failed to calculate battery charge");
+		return -1;
+	}
+
+	if (sensor_read_adc(bm->snr) == -1)
+	{
+		logger(ERROR, "Failed to take battery sensor reading");
 		return -1;
 	}
 

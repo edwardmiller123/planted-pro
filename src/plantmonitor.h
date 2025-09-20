@@ -7,23 +7,17 @@
 #include "monitor.h"
 #include "export.h"
 
-typedef enum info_type
-{
-	LIGHT,
-	MOISTURE,
-} info_type;
-
 typedef struct plant_monitor
 {
-	uint32_t display_change_interval;
-	info_type currently_showing;
+	uint32_t display_last_changed;
+	uint8_t currently_showing_idx;
 	monitor *lm;
 	monitor *wm;
+	monitor *bm;
 	exporter * e;
-	bool debug_led;
 } plant_monitor;
 
-plant_monitor *init_plant_monitor(bool debug_led);
+plant_monitor *init_plant_monitor();
 
 void run_monitor(plant_monitor *pm);
 

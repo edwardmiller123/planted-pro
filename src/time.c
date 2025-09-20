@@ -2,6 +2,7 @@
 #include "interrupts.h"
 #include "io.h"
 #include "gpio.h"
+#include "logger.h"
 
 // We keep track of the system up time in millisseconds and the real unix time in seconds.
 // The real time is the actual unix timestamp. It begins synced with the system counter until its updated
