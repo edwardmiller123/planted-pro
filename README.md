@@ -1,15 +1,11 @@
 # TODO
+- make pcb rev 4
 - Write message to screen when bluetooth connects
 	- enable interrupt for PC7
-- May need to change logic for ble
-- Add battery sensor logic
-- make pcb v2
 - print case
 - assemble
 
 # Review notes
-	- pcb:
-		- try and cross lines at right angles
 		
 # Parts List
 - Main board:
@@ -81,9 +77,6 @@
 	- top and bottom screw holes are 2mm diam each starts 4.2mm from side.
 	- window for charge light is 20mm L by 10mm W
 	- lid is 5 mm deep, Lid indents start at 3.2mm from edge, indents are 3mm deep
-
-- case v2:
-	- top and bottom screw holes 2mm diam and are 3.2 mm from outer edges
 
 - case v3:
 	- top section H is 14mm
