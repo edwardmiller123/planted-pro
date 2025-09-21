@@ -1,5 +1,5 @@
 
-REV = 3
+REV = 4
 NAME = planted-pro
 REV_NAME = $(NAME)-main-board-r$(REV)
 
