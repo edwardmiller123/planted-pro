@@ -2,7 +2,7 @@
 *.o
 *.zip
 *.elf
-
+build
 # Editor Configuration
 .vscode
 plant-monitor

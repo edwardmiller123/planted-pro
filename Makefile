@@ -3,19 +3,22 @@ REV = 4
 NAME = planted-pro
 REV_NAME = $(NAME)-main-board-r$(REV)
 
-PCBDIR := pcb
+PCB_DIR := pcb
 
-PCB := $(wildcard $(PCBDIR)/*.kicad_pcb)
+PCB := $(wildcard $(PCB_DIR)/*.kicad_pcb)
 
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
 
-SRCDIR := src
-GERBER_DIR := pcb/gerber
+SRC_DIR := src
+
+BUILD_DIR := build
+GERBER_DIR := $(BUILD_DIR)/gerber
+OBJ_DIR := $(BUILD_DIR)/obj
 
 CFLAGS = -mcpu=cortex-m4 -mthumb -g -Wall
-CSRCS := $(filter-out $(SRCDIR)/interrupt_table.c, $(wildcard $(SRCDIR)/*.c))
-COBJS := $(patsubst $(SRCDIR)/%.c, $(SRCDIR)/%.o, $(CSRCS))
+CSRCS := $(filter-out $(SRC_DIR)/interrupt_table.c, $(wildcard $(SRC_DIR)/*.c))
+COBJS := $(patsubst $(SRC_DIR)/%.c, $(OBJ_DIR)/%.o, $(CSRCS))
 
 USE_MODE = $(if $(MODE),-DMODE=$(MODE),)
 
@@ -24,13 +27,16 @@ COMMIT = $(shell git rev-parse --short HEAD)
 all: fw pcb
 
 fw: $(NAME)-fw.elf
-	$(info    Current commit is $(COMMIT))
+	$(info    FW build commit is $(COMMIT))
 
 $(NAME)-fw.elf: $(COBJS)
-	$(LD) $^ -T $(SRCDIR)/linker.ld -o $@
+	$(LD) $^ -T $(SRC_DIR)/linker.ld -o $@
 
-%.o: %.c
+$(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	$(CC) $(CFLAGS) $(USE_MODE) -DGIT_SHA=\"$(COMMIT)\" -c $^ -o $@ -g
+
+$(OBJ_DIR):
+	mkdir -p $(OBJ_DIR)
 
 pcb: $(PCB)
 	mkdir -p $(GERBER_DIR)
@@ -40,6 +46,6 @@ pcb: $(PCB)
 	$(info    PCB revision $(REV))
 
 clean :
-	rm -rf $(SRCDIR)/*.o *.elf *.zip
+	rm -rf build *.elf *.zip
 
 .PHONY: clean pcb fw
