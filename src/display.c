@@ -106,7 +106,6 @@ void display_battery_info(monitor *m)
 	{
 		lcd_set_cursor(0, 1);
 		lcd_write_string((char *)m->level);
-		return;
 	}
 
 	lcd_set_cursor(0, 0);

@@ -46,7 +46,6 @@ void set_percent(sensor *s)
 
 int sensor_calculate_average(sensor *s)
 {
-
 	uint32_t total_val = 0;
 	int32_t reading;
 	for (int i = 0; i < s->sample_size; i++)

@@ -1,4 +1,6 @@
 # TODO
+- light and water level text should be based on percentage not raw value
+- calibrate light
 - make pcb rev 4
 - Write message to screen when bluetooth connects
 	- enable interrupt for PC7

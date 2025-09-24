@@ -5,7 +5,7 @@
 #include "utils.h"
 
 // This must be a multiple of 4
-#define RING_BUF_CAPACITY 128
+#define RING_BUF_CAPACITY 256
 
 // circular buffer. Reads and writes should either be as uint8_t or uint32_t.
 // Using both in the same buffer is undefined
