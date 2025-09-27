@@ -15,11 +15,10 @@
 
 // EXTI Interrupt numbers
 
-#define EXTI9 9
+#define EXTI7 7
 
 // NVIC registers
-#define NVIC_OFFSET 0xE000U
-#define NVIC_BASE (CORE_PERIPH_BASE + NVIC_OFFSET)
+#define NVIC_BASE (CORE_PERIPH_BASE + 0xE000U)
 
 #define NVIC_ISER_OFFSET 0x100
 #define NVIC_ISER0 (NVIC_BASE + NVIC_ISER_OFFSET + 0x0U)
@@ -44,8 +43,19 @@
 // Interrupt mask register
 #define EXTI_IMR (EXTI_BASE + 0x0U)
 
+// Rising edge detection
+#define EXTI_RTSR (EXTI_BASE + 0x08)
+
+// Falling edge detetcion
+#define EXTI_FTSR (EXTI_BASE + 0x0C)
+
 // Interrupt pending register
 #define EXTI_PR (EXTI_BASE + 0x14U)
+
+#define SYSCFG_BASE (APB2_BASE + 0x3800)
+
+// External interrupt configuration
+#define SYSCFG_EXTICR2 (SYSCFG_BASE + 0x0C)
 
 void nvic_enable_irq(uint32_t n);
 

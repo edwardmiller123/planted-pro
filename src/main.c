@@ -49,6 +49,8 @@ int main(void)
     uint32_t args[1] = {get_system_counter()};
     loggerf(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);
 
+    configure_bluetooth();
+
     configure_lcd();
 
     configure_adc();

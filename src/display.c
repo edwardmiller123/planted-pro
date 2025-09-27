@@ -10,6 +10,7 @@
 #include "sensor.h"
 #include "monitor.h"
 #include "gpio.h"
+#include "bluetooth.h"
 
 #define DISPLAY_SWITCH_TIME 3000
 
@@ -26,6 +27,7 @@ typedef enum info_type
 const info_type display_order[DISPLAY_SEQ_LEN] = {LIGHT, MOISTURE, LIGHT, MOISTURE, BATTERY};
 static uint8_t currently_showing_idx = 0;
 
+// system uptime when the display message last rotated
 static uint32_t display_last_changed = 0;
 
 void display_percent(monitor *m, uint8_t row)
@@ -128,22 +130,46 @@ void display_battery_info(monitor *m)
 	lcd_write_string_and_scroll(line1, 0, 0);
 }
 
-void display_info(monitor * light_mon, monitor * water_mon, monitor * bat_mon)
+void display_bluetooth_info(bt_status bts)
+{
+	logger(INFO, "Displaying bluetooth message");
+
+	lcd_set_cursor(0, 0);
+
+	lcd_write_string("Bluetooth:");
+
+	lcd_set_cursor(0, 1);
+
+	char * state_msg = "Disconnected";
+	if (bts == CONNECTED) {
+		state_msg = "Connected";
+	}
+
+	lcd_write_string(state_msg);
+}
+
+void display_info(monitor *light_mon, monitor *water_mon, monitor *bat_mon)
 {
 	uint32_t now = get_system_counter();
+
+	// check for bluetooth changes first so the message appears fast
+	if (bt_status_changed())
+	{
+		bt_status bts = get_bluetooth_status();
+		display_bluetooth_info(bts);
+
+		// update the last changed time so we display the message for the full length of time
+		display_last_changed = now;
+	}
 
 	if (now < (display_last_changed + DISPLAY_SWITCH_TIME))
 	{
 		return;
 	}
 
-	#ifdef MODE
-		toggle_user_led();
-	#endif
-
-	if (currently_showing_idx > DISPLAY_SEQ_LEN) {
-		currently_showing_idx = 0;
-	}
+#ifdef MODE
+	toggle_user_led();
+#endif
 
 	display_last_changed = now;
 
@@ -163,4 +189,9 @@ void display_info(monitor * light_mon, monitor * water_mon, monitor * bat_mon)
 	}
 
 	currently_showing_idx += 1;
+
+	if (currently_showing_idx > DISPLAY_SEQ_LEN)
+	{
+		currently_showing_idx = 0;
+	}
 }

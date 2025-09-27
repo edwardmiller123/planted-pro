@@ -6,6 +6,7 @@
 #include "gpio.h"
 #include "adc.h"
 #include "usart.h"
+#include "bluetooth.h"
 
 extern uint32_t _stack;
 
@@ -24,5 +25,6 @@ int_table interrupt_table = {
     .systick = &systick_handler,
     // ... //
     .adc_irq_handler = NULL,
+    .exti9_5_irq_handler = &bluetooth_irq_handler,
     .usart1_irq_handler = &usart1_irq_handler,
 };
