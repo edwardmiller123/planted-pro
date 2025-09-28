@@ -157,14 +157,14 @@ void configure_lcd(void)
 	lcd_write_byte((uint8_t)0xC, INSTRUCTION);
 	sys_sleep(1);
 
-	logger(INFO, "Initialised LCD in 8-bit mode");
+	LOG(INFO, "Initialised LCD in 8-bit mode");
 }
 
 // write the given string from the current cursor position
 void lcd_write_string(char *str)
 {
 	char *args[] = {str};
-	loggerf(DEBUG, "Writing string to lcd: &", NULL, 0, args, 1);
+	LOGF(DEBUG, "Writing string to lcd: &", NULL, 0, args, 1);
 
 	for (int i = 0; i < LCD_LINE_LENGTH; i++)
 	{
@@ -199,7 +199,7 @@ void lcd_write_string_and_scroll(char *str, uint32_t start_x, uint32_t start_y)
 		str_trunc = &str[i];
 		if (str_trunc[i] == '\0')
 		{
-			logger(DEBUG, "LCD exiting scroll");
+			LOG(DEBUG, "LCD exiting scroll");
 			return;
 		}
 		lcd_set_cursor(start_x, start_y);
@@ -210,7 +210,7 @@ void lcd_write_string_and_scroll(char *str, uint32_t start_x, uint32_t start_y)
 
 void lcd_clear_display()
 {
-	logger(DEBUG, "Clearing lcd display");
+	LOG(DEBUG, "Clearing lcd display");
 	lcd_write_byte((uint8_t)0x1, INSTRUCTION);
 	sys_sleep(2);
 }
@@ -220,7 +220,7 @@ void lcd_set_cursor(uint32_t x, uint32_t y)
 	if (y > 1)
 	{
 		uint32_t args[] = {x, y};
-		loggerf(ERROR, "Invalid cursor position: ($, $)", args, 2, NULL, 0);
+		LOGF(ERROR, "Invalid cursor position: ($, $)", args, 2, NULL, 0);
 		return;
 	}
 
@@ -228,7 +228,7 @@ void lcd_set_cursor(uint32_t x, uint32_t y)
 	uint32_t pos = y_offset + x;
 
 	uint32_t args2[] = {pos};
-	loggerf(DEBUG, "Setting cursor address to $", args2, 1, NULL, 0);
+	LOGF(DEBUG, "Setting cursor address to $", args2, 1, NULL, 0);
 
 	lcd_write_byte((uint8_t)set_bit(pos, 7), INSTRUCTION);
 	sys_sleep(1);

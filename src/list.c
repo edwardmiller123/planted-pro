@@ -30,7 +30,7 @@ void list_remove(list *l, node *n)
 {
 	if (l->size == 0)
 	{
-		logger(WARNING, "Cant remove node from empty list");
+		LOG(WARNING, "Cant remove node from empty list");
 		return;
 	}
 

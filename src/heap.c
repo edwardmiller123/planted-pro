@@ -28,14 +28,14 @@ void init_heap()
 	h.top = &h.data[0];
 
 	uint32_t args[] = {MAX_HEAP_SIZE};
-	loggerf(INFO, "Initialised heap. Max size: $", args, 1, NULL, 0);
+	LOGF(INFO, "Initialised heap. Max size: $", args, 1, NULL, 0);
 }
 
 void *malloc(uint32_t size)
 {
 	if (size == 0)
 	{
-		logger(ERROR, "Tried to allocate 0 bytes");
+		LOG(ERROR, "Tried to allocate 0 bytes");
 		return NULL;
 	}
 
@@ -57,7 +57,7 @@ void *malloc(uint32_t size)
 			*(uint32_t *)current_block = size;
 
 			uint32_t args[] = {size, (uint32_t)current_block};
-			loggerf(DEBUG, "Allocated $ bytes on heap at free block address: $ ", args, 2, NULL, 0);
+			LOGF(DEBUG, "Allocated $ bytes on heap at free block address: $ ", args, 2, NULL, 0);
 
 			return (void *)(current_block + META_DATA_SIZE);
 		}
@@ -67,7 +67,7 @@ void *malloc(uint32_t size)
 
 	if (h.top >= heap_max)
 	{
-		logger(ERROR, "Heap memory limit reached");
+		LOG(ERROR, "Heap memory limit reached");
 		return NULL;
 	}
 
@@ -79,7 +79,7 @@ void *malloc(uint32_t size)
 
 	uint32_t usage = (uint32_t)h.top - (uint32_t)h.bottom;
 	uint32_t args[] = {size + META_DATA_SIZE, (uint32_t)current_block, (uint32_t)h.top, usage};
-	loggerf(DEBUG, "Allocated $ bytes on heap at new block address $. Heap top: $, Usage: $ bytes", args, 4, NULL, 0);
+	LOGF(DEBUG, "Allocated $ bytes on heap at new block address $. Heap top: $, Usage: $ bytes", args, 4, NULL, 0);
 
 	return (void *)(current_block + META_DATA_SIZE);
 }
@@ -96,7 +96,7 @@ void free(void *alloc_mem)
 
 		uint32_t usage = (uint32_t)h.top - (uint32_t)h.bottom;
 		uint32_t args[] = {(uint32_t)block, usage, (uint32_t)h.top};
-		loggerf(DEBUG, "Freed heap block $. Heap usage decreased to $. Heap top: $", args, 3, NULL, 0);
+		LOGF(DEBUG, "Freed heap block $. Heap usage decreased to $. Heap top: $", args, 3, NULL, 0);
 		return;
 	}
 
@@ -107,5 +107,5 @@ void free(void *alloc_mem)
 	list_add(h.free_blocks, (node *)alloc_mem);
 
 	uint32_t args[] = {(uint32_t)block};
-	loggerf(DEBUG, "Freed heap block $. Added block to free list", args, 3, NULL, 0);
+	LOGF(DEBUG, "Freed heap block $. Added block to free list", args, 3, NULL, 0);
 }

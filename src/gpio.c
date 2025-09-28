@@ -29,7 +29,7 @@ void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action)
     }
 }
 
-void toggle_user_led()
+void toggle_debug_led()
 {
     io_toggle_bit(GPIOA_ODR, LED2);
 }
@@ -38,13 +38,13 @@ void fast_blink()
 {
     for (int i = 0; i < 4; i++)
     {
-        toggle_user_led();
+        toggle_debug_led();
         sys_sleep(50);
     }
 }
 
 // Initialise GPIOA for the user LED. Requires GPIOA to be enabled first
-void init_user_led()
+void init_debug_led()
 {
     // set GPIO PA5 mode to output. Since this option is encoded as two bits we shouldnt assume
     // one hasnt been set

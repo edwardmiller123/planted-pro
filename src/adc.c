@@ -38,7 +38,7 @@ void configure_adc1()
 	// enable adc
 	io_set_bit(ADC1_CR2, 0);
 
-	logger(INFO, "Initilaised ADC1 with PA1, channel 1 as input");
+	LOG(INFO, "Initilaised ADC1 with PA1, channel 1 as input");
 }
 
 // configures ADC2 to use channel 4 on PA4 as the input pin
@@ -70,7 +70,7 @@ void configure_adc2()
 	// enable adc
 	io_set_bit(ADC2_CR2, 0);
 
-	logger(INFO, "Initilaised ADC2 with PA4, channel 4 as input");
+	LOG(INFO, "Initilaised ADC2 with PA4, channel 4 as input");
 }
 
 // configures the ADC3 to use channel 3 on PA3 as the input pin
@@ -103,7 +103,7 @@ void configure_adc3()
 	// enable adc
 	io_set_bit(ADC3_CR2, 0);
 
-	logger(INFO, "Initilaised ADC3 with PA3, channel 3 as input");
+	LOG(INFO, "Initilaised ADC3 with PA3, channel 3 as input");
 }
 
 // configure ADC1 and ADC2 with GPIO pins PA1 and PA4
@@ -138,14 +138,14 @@ int wait_for_adc(adc adc_num, uint32_t timeout)
 	case ADC1:
 		if (wait_for_condition(&adc1_conversion_complete, timeout) == -1)
 		{
-			logger(ERROR, "ADC1 conversion timed out");
+			LOG(ERROR, "ADC1 conversion timed out");
 			return -1;
 		}
 		break;
 	case ADC2:
 		if (wait_for_condition(&adc2_conversion_complete, timeout) == -1)
 		{
-			logger(ERROR, "ADC2 conversion timed out");
+			LOG(ERROR, "ADC2 conversion timed out");
 			return -1;
 		}
 		break;
@@ -153,7 +153,7 @@ int wait_for_adc(adc adc_num, uint32_t timeout)
 	case ADC3:
 		if (wait_for_condition(&adc3_conversion_complete, timeout) == -1)
 		{
-			logger(ERROR, "ADC3 conversion timed out");
+			LOG(ERROR, "ADC3 conversion timed out");
 			return -1;
 		}
 		break;
@@ -196,7 +196,7 @@ uint32_t adc_manual_conversion(adc adc_num, result_code *result)
 
 	if (wait_for_adc(adc_num, 500) == -1)
 	{
-		loggerf(ERROR, "& conversion failed", NULL, 0, logger_args_str, 1);
+		LOGF(ERROR, "& conversion failed", NULL, 0, logger_args_str, 1);
 		if (result != NULL)
 		{
 			*result = FAILURE;
@@ -207,7 +207,7 @@ uint32_t adc_manual_conversion(adc adc_num, result_code *result)
 	uint32_t adc_val = IO_ACCESS(data_reg);
 
 	uint32_t logger_args_int[] = {adc_val};
-	loggerf(DEBUG, "& read conversion value: $", logger_args_int, 1, logger_args_str, 1);
+	LOGF(DEBUG, "& read conversion value: $", logger_args_int, 1, logger_args_str, 1);
 
 	return adc_val;
 }

@@ -42,7 +42,7 @@ plant_monitor *init_plant_monitor()
 	plant_monitor *pm = malloc(sizeof(plant_monitor));
 	if (pm == NULL)
 	{
-		logger(ERROR, "Failed to allocate memory for plant monitor");
+		LOG(ERROR, "Failed to allocate memory for plant monitor");
 		return NULL;
 	}
 
@@ -51,50 +51,50 @@ plant_monitor *init_plant_monitor()
 	sensor *light_sen = init_sensor(0, LIGHT_MAX_VALUE, SAMPLE_SIZE, ADC1);
 	if (light_sen == NULL)
 	{
-		logger(ERROR, "Failed to allocate memory for light sensor");
+		LOG(ERROR, "Failed to allocate memory for light sensor");
 		return NULL;
 	}
 
-	logger(INFO, "Light sensor initialised on ADC1");
+	LOG(INFO, "Light sensor initialised on ADC1");
 
 	// The water monitor uses a capacitive soil moisture sensor
 	sensor *water_sen = init_sensor(WATER_MIN_VALUE, WATER_MAX_VALUE, SAMPLE_SIZE, ADC2);
 	if (water_sen == NULL)
 	{
-		logger(ERROR, "Failed to allocate memory for water sensor");
+		LOG(ERROR, "Failed to allocate memory for water sensor");
 		return NULL;
 	}
 
-	logger(INFO, "Water sensor initialised on ADC2");
+	LOG(INFO, "Water sensor initialised on ADC2");
 
 	// The battery sensor measures the current battery voltage halfed so that it always remains under the reference voltage
 	sensor *battery_sen = init_sensor(BAT_CHARGE_MIN_VALUE, BAT_CHARGE_MAX_VALUE, BAT_CHARGE_SAMPLE_SIZE, ADC3);
 	if (water_sen == NULL)
 	{
-		logger(ERROR, "Failed to allocate memory for battery sensor");
+		LOG(ERROR, "Failed to allocate memory for battery sensor");
 		return NULL;
 	}
 
-	logger(INFO, "Battery sensor initialised on ADC3");
+	LOG(INFO, "Battery sensor initialised on ADC3");
 
 	monitor *lm = init_monitor(light_sen);
 	if (lm == NULL)
 	{
-		logger(ERROR, "Failed to initialise light monitor");
+		LOG(ERROR, "Failed to initialise light monitor");
 		return NULL;
 	}
 
 	monitor *wm = init_monitor(water_sen);
 	if (wm == NULL)
 	{
-		logger(ERROR, "Failed to initialise water monitor");
+		LOG(ERROR, "Failed to initialise water monitor");
 		return NULL;
 	}
 
 	monitor *bm = init_monitor(battery_sen);
 	if (wm == NULL)
 	{
-		logger(ERROR, "Failed to initialise battery monitor");
+		LOG(ERROR, "Failed to initialise battery monitor");
 		return NULL;
 	}
 
@@ -106,7 +106,7 @@ plant_monitor *init_plant_monitor()
 	exporter *e = init_exporter(EXPORT_POLL_INTERVAL_SECONDS, EXPORT_POINT_COUNT);
 	if (e == NULL)
 	{
-		logger(ERROR, "Failed to initialise exporter");
+		LOG(ERROR, "Failed to initialise exporter");
 		return NULL;
 	}
 
@@ -119,17 +119,17 @@ void poll_sensors(plant_monitor *pm)
 {
 	if (measure_light(pm->lm) == -1)
 	{
-		logger(ERROR, "Failed to measure light level");
+		LOG(ERROR, "Failed to measure light level");
 	}
 
 	if (measure_water(pm->wm) == -1)
 	{
-		logger(ERROR, "Failed to measure water level");
+		LOG(ERROR, "Failed to measure water level");
 	}
 
 	if (measure_battery_charge(pm->bm) == -1)
 	{
-		logger(ERROR, "Failed to measure battery charge");
+		LOG(ERROR, "Failed to measure battery charge");
 	}
 }
 

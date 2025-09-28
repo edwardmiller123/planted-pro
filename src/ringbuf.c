@@ -22,7 +22,7 @@ ring_buffer *init_ring_buffer()
 	ring_buffer *buf = malloc(sizeof(ring_buffer));
 	if (buf == NULL)
 	{
-		logger(ERROR, "Failed to malloc ring buffer");
+		LOG(ERROR, "Failed to malloc ring buffer");
 		return NULL;
 	}
 

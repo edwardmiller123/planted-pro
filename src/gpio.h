@@ -91,9 +91,9 @@ void gpio_write_pin_atomic(gpio port, uint32_t pin, gpio_action action);
 
 #define LED2 PA5
 
-void toggle_user_led();
+void toggle_debug_led();
 
-void init_user_led();
+void init_debug_led();
 
 // Backup error signalling
 void fast_blink();

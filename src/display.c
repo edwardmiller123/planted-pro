@@ -54,7 +54,7 @@ void display_percent(monitor *m, uint8_t row)
 
 void display_light_info(monitor *m)
 {
-	logger(INFO, "Displaying light info");
+	LOG(INFO, "Displaying light info");
 
 	// display the percent first so its not held up from being visible by the screen scrolling
 	// which blocks
@@ -79,7 +79,7 @@ void display_light_info(monitor *m)
 
 void display_moisture_info(monitor *m)
 {
-	logger(INFO, "Displaying moisture info");
+	LOG(INFO, "Displaying moisture info");
 
 	display_percent(m, 1);
 
@@ -102,7 +102,7 @@ void display_moisture_info(monitor *m)
 
 void display_battery_info(monitor *m)
 {
-	logger(INFO, "Displaying battery info");
+	LOG(INFO, "Displaying battery info");
 
 	if (m->level != NULL)
 	{
@@ -132,7 +132,7 @@ void display_battery_info(monitor *m)
 
 void display_bluetooth_info(bt_status bts)
 {
-	logger(INFO, "Displaying bluetooth message");
+	LOG(INFO, "Displaying bluetooth message");
 
 	lcd_set_cursor(0, 0);
 
@@ -167,8 +167,8 @@ void display_info(monitor *light_mon, monitor *water_mon, monitor *bat_mon)
 		return;
 	}
 
-#ifdef MODE
-	toggle_user_led();
+#ifdef LOGLEVEL
+	toggle_debug_led();
 #endif
 
 	display_last_changed = now;

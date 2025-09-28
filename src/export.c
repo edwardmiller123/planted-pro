@@ -25,14 +25,14 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 	exporter *e = malloc(sizeof(exporter));
 	if (e == NULL)
 	{
-		logger(ERROR, "Failed to malloc exporter");
+		LOG(ERROR, "Failed to malloc exporter");
 		return NULL;
 	}
 
 	ring_buffer *buf = init_ring_buffer();
 	if (buf == NULL)
 	{
-		logger(ERROR, "Failed to initialise export buffer");
+		LOG(ERROR, "Failed to initialise export buffer");
 		return NULL;
 	}
 
@@ -42,7 +42,7 @@ exporter *init_exporter(uint16_t poll_interval, uint16_t data_point_count)
 	e->last_read_ts = 0;
 	e->send_data = false;
 
-	logger(INFO, "Initialised Exporter");
+	LOG(INFO, "Initialised Exporter");
 
 	return e;
 }
@@ -57,7 +57,7 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 		if (read_result == SUCCESS)
 		{
 			uint32_t log_args[] = {((data_point *)oldest_data)->ts, ((data_point *)oldest_data)->light_percent, ((data_point *)oldest_data)->water_percent, ((data_point *)oldest_data)->battery_percent};
-			loggerf(INFO, "Discarded values from export list. TS: $, Light: $, Water: $, Battery: $", log_args, 4, NULL, 0);
+			LOGF(INFO, "Discarded values from export list. TS: $, Light: $, Water: $, Battery: $", log_args, 4, NULL, 0);
 
 			free((void *)oldest_data);
 		}
@@ -66,7 +66,7 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 	data_point *dp = malloc(sizeof(data_point));
 	if (dp == NULL)
 	{
-		logger(ERROR, "Failed to malloc data point");
+		LOG(ERROR, "Failed to malloc data point");
 		return -1;
 	}
 
@@ -78,7 +78,7 @@ int store_data_for_export(exporter *e, uint32_t ts, uint8_t light_percent, uint8
 	ring_buffer_write_word(e->export_buf, (uint32_t)dp);
 
 	uint32_t log_args[] = {dp->ts, dp->light_percent, dp->water_percent, dp->battery_percent};
-	loggerf(INFO, "Stored values for export. TS: $, Light: $, Water: $, Battery: $", log_args, 4, NULL, 0);
+	LOGF(INFO, "Stored values for export. TS: $, Light: $, Water: $, Battery: $", log_args, 4, NULL, 0);
 
 	return 0;
 }
@@ -134,7 +134,7 @@ char *data_point_to_json(data_point *dp, uint8_t *buf)
 	byte_copy((uint8_t *)json_end, buf_pos, json_end_len);
 
 	char *log_args[] = {(char *)buf};
-	loggerf(DEBUG, "Created JSON string: &", NULL, 0, log_args, 1);
+	LOGF(DEBUG, "Created JSON string: &", NULL, 0, log_args, 1);
 
 	return (char *)buf;
 }
@@ -202,11 +202,11 @@ int export_data(exporter *e, data_point *current)
 	char *json_output = export_queue_to_json(e, current, buf);
 
 	char *log_args[] = {json_output};
-	loggerf(INFO, "Exporting data: &", NULL, 0, log_args, 1);
+	LOGF(INFO, "Exporting data: &", NULL, 0, log_args, 1);
 
 	if (usart_send_buffer(USART1, (uint8_t *)json_output, str_len(json_output)) == -1)
 	{
-		logger(ERROR, "Failed to export data over USART1");
+		LOG(ERROR, "Failed to export data over USART1");
 		return -1;
 	}
 
@@ -222,7 +222,7 @@ void run_exporter(exporter *e, uint8_t light_percent, uint8_t water_percent, uin
 	{
 		if (export_data(e, &current_data) == -1)
 		{
-			logger(ERROR, "Failed to export data");
+			LOG(ERROR, "Failed to export data");
 		}
 
 		e->send_data = false;

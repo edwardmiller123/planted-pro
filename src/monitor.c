@@ -23,7 +23,7 @@ monitor *init_monitor(sensor *s)
 	monitor *m = malloc(sizeof(monitor));
 	if (m == NULL)
 	{
-		logger(ERROR, "Failed to allocate memory for monitor");
+		LOG(ERROR, "Failed to allocate memory for monitor");
 		return NULL;
 	}
 
@@ -39,7 +39,7 @@ int monitor_process_samples(monitor *m, int (*action)(struct monitor *))
 	{
 		if (action(m) == -1)
 		{
-			logger(ERROR, "Failed to process adc samples");
+			LOG(ERROR, "Failed to process adc samples");
 			return -1;
 		}
 	}
@@ -50,7 +50,7 @@ int set_light_level(monitor *lm)
 {
 	if (sensor_calculate_average(lm->snr) == -1)
 	{
-		logger(ERROR, "Failed to get average light reading");
+		LOG(ERROR, "Failed to get average light reading");
 		return -1;
 	};
 
@@ -72,13 +72,13 @@ int set_light_level(monitor *lm)
 	}
 
 	char *args_level[] = {(char *)lm->level};
-	loggerf(DEBUG, "Light level set to &", NULL, 0, args_level, 1);
+	LOGF(DEBUG, "Light level set to &", NULL, 0, args_level, 1);
 
 	// we want the "light" percentage and darkness gives the max adc value
 	lm->percent = 100 - lm->snr->sensor_percent;
 
 	uint32_t args_intensity[] = {lm->percent};
-	loggerf(DEBUG, "Light intensity set to $", args_intensity, 1, NULL, 0);
+	LOGF(DEBUG, "Light intensity set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
 }
@@ -87,13 +87,13 @@ int measure_light(monitor *lm)
 {
 	if (monitor_process_samples(lm, &set_light_level) == -1)
 	{
-		logger(ERROR, "Failed to calculate light level");
+		LOG(ERROR, "Failed to calculate light level");
 		return -1;
 	}
 
 	if (sensor_read_adc(lm->snr) == -1)
 	{
-		logger(ERROR, "Failed to take light sensor reading");
+		LOG(ERROR, "Failed to take light sensor reading");
 		return -1;
 	}
 
@@ -112,7 +112,7 @@ int set_water_level(monitor *wm)
 {
 	if (sensor_calculate_average(wm->snr) == -1)
 	{
-		logger(ERROR, "Failed to get average water reading");
+		LOG(ERROR, "Failed to get average water reading");
 		return -1;
 	}
 
@@ -130,13 +130,13 @@ int set_water_level(monitor *wm)
 	}
 
 	char *args_level[] = {(char *)wm->level};
-	loggerf(DEBUG, "Water level set to &", NULL, 0, args_level, 1);
+	LOGF(DEBUG, "Water level set to &", NULL, 0, args_level, 1);
 
 	// we want the water "percentage" and dry soil gives the max adc value
 	wm->percent = 100 - wm->snr->sensor_percent;
 
 	uint32_t args_intensity[] = {wm->percent};
-	loggerf(DEBUG, "Soil saturation set to $", args_intensity, 1, NULL, 0);
+	LOGF(DEBUG, "Soil saturation set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
 }
@@ -145,13 +145,13 @@ int measure_water(monitor *wm)
 {
 	if (monitor_process_samples(wm, &set_water_level) == -1)
 	{
-		logger(ERROR, "Failed to calculate water level");
+		LOG(ERROR, "Failed to calculate water level");
 		return -1;
 	}
 
 	if (sensor_read_adc(wm->snr) == -1)
 	{
-		logger(ERROR, "Failed to take water sensor reading");
+		LOG(ERROR, "Failed to take water sensor reading");
 		return -1;
 	}
 
@@ -164,7 +164,7 @@ int set_battery_charge(monitor *bm)
 {
 	if (sensor_calculate_average(bm->snr) == -1)
 	{
-		logger(ERROR, "Failed to get average battery charge reading");
+		LOG(ERROR, "Failed to get average battery charge reading");
 		return -1;
 	}
 
@@ -174,13 +174,13 @@ int set_battery_charge(monitor *bm)
 		bm->level = battery_low;
 
 		char *args_level[] = {(char *)bm->level};
-		loggerf(DEBUG, "Battery level set to &", NULL, 0, args_level, 1);
+		LOGF(DEBUG, "Battery level set to &", NULL, 0, args_level, 1);
 	}
 
 	bm->percent = bm->snr->sensor_percent;
 
 	uint32_t args_intensity[] = {bm->percent};
-	loggerf(DEBUG, "Charge percent set to $", args_intensity, 1, NULL, 0);
+	LOGF(DEBUG, "Charge percent set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
 
@@ -190,13 +190,13 @@ int measure_battery_charge(monitor *bm)
 {
 	if (monitor_process_samples(bm, &set_battery_charge) == -1)
 	{
-		logger(ERROR, "Failed to calculate battery charge");
+		LOG(ERROR, "Failed to calculate battery charge");
 		return -1;
 	}
 
 	if (sensor_read_adc(bm->snr) == -1)
 	{
-		logger(ERROR, "Failed to take battery sensor reading");
+		LOG(ERROR, "Failed to take battery sensor reading");
 		return -1;
 	}
 

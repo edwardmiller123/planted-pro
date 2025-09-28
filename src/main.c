@@ -17,18 +17,8 @@
 
 int main(void)
 {
-    log_level ll = ERROR;
-
-    #ifdef MODE
-        switch (MODE)
-        {
-        case 1:
-            ll = INFO;
-            break;
-        case 2:
-            ll = DEBUG;
-            break;
-        }
+    #ifdef LOGLEVEL
+        set_log_level((log_level)LOGLEVEL);
     #endif
 
     // enable gpio ports A - D in AHB1 bus
@@ -39,15 +29,13 @@ int main(void)
 
     init_systick();
 
-    init_user_led();
+    init_debug_led();
 
     // used for logging
     configure_usart3(DEFAULT_BAUD);
 
-    set_log_level(ll);
-
     uint32_t args[1] = {get_system_counter()};
-    loggerf(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);
+    LOGF(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);
 
     configure_bluetooth();
 
@@ -57,7 +45,7 @@ int main(void)
 
     // configured for the HC-05 bluetooth module
     configure_usart1(HC05_BAUD);
-    logger(INFO, "Initialised USART1");
+    LOG(INFO, "Initialised USART1");
 
     init_heap();
 

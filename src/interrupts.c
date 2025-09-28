@@ -77,7 +77,7 @@ void nmi_handler(void)
 
 void hard_fault_handler(void)
 {
-    logger(FATAL, "Hard Fault");
+    LOG(FATAL, "Hard Fault");
     while (1)
     {
         ;
@@ -117,7 +117,7 @@ void debug_monitor_handler(void)
 }
 
 void init_fault_handler(void) {
-    logger(FATAL, "Initialisation fault");
+    LOG(FATAL, "Initialisation fault");
     while (1)
     {
         ;

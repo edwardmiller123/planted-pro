@@ -15,14 +15,14 @@ sensor *init_sensor(uint32_t min_adc_reading, uint32_t max_adc_reading, uint32_t
 	sensor *s = malloc(sizeof(sensor));
 	if (s == NULL)
 	{
-		logger(ERROR, "Failed to allocate memory for sensor");
+		LOG(ERROR, "Failed to allocate memory for sensor");
 		return NULL;
 	}
 
 	ring_buffer *readings = init_ring_buffer();
 	if (readings == NULL)
 	{
-		logger(ERROR, "Failed to initialise sensor readings buffer");
+		LOG(ERROR, "Failed to initialise sensor readings buffer");
 		return NULL;
 	}
 
@@ -54,12 +54,12 @@ int sensor_calculate_average(sensor *s)
 		reading = ring_buffer_read_word(s->readings_buffer, &read_result);
 		if (read_result == EMPTY)
 		{
-			logger(WARNING, "Sensor tried to read from empty readings buffer");
+			LOG(WARNING, "Sensor tried to read from empty readings buffer");
 			return 0;
 		}
 
 		uint32_t args[] = {reading};
-		loggerf(DEBUG, "Removed $ from sensor readings queue", args, 1, NULL, 0);
+		LOGF(DEBUG, "Removed $ from sensor readings queue", args, 1, NULL, 0);
 
 		total_val += reading;
 	}
@@ -68,12 +68,12 @@ int sensor_calculate_average(sensor *s)
 	s->raw_average = average;
 
 	uint32_t args_average[] = {average};
-	loggerf(DEBUG, "Set average sensor ADC value to $", args_average, 1, NULL, 0);
+	LOGF(DEBUG, "Set average sensor ADC value to $", args_average, 1, NULL, 0);
 
 	set_percent(s);
 
 	uint32_t args_percent[] = {s->sensor_percent};
-	loggerf(DEBUG, "Sensor percent set to $", args_percent, 1, NULL, 0);
+	LOGF(DEBUG, "Sensor percent set to $", args_percent, 1, NULL, 0);
 
 	return 0;
 }
@@ -84,13 +84,13 @@ int sensor_read_adc(sensor *s)
 	uint32_t reading = adc_manual_conversion(s->adc_num, &adc_result);
 	if (adc_result == FAILURE)
 	{
-		logger(ERROR, "Failed to read adc conversion");
+		LOG(ERROR, "Failed to read adc conversion");
 		return -1;
 	}
 
 	ring_buffer_write_word(s->readings_buffer, reading);
 	
 	uint32_t args[] = {reading};
-	loggerf(DEBUG, "Added $ to sensor readings buffer", args, 1, NULL, 0);
+	LOGF(DEBUG, "Added $ to sensor readings buffer", args, 1, NULL, 0);
 	return 0;
 }
