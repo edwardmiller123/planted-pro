@@ -8,6 +8,11 @@
 - assemble
 
 # Review notes
+	- case:
+		- cap to cover antenna should be bigger as there are holes in the print
+		- space for lcd backlight in lid should be 1mm wider
+		- usb cap should be 1 mm smaller so it fits better
+		- remeber to remove supports for the screw holes in the lid
 		
 # Parts List
 - Main board:
@@ -83,7 +88,3 @@
 - case v3:
 	- top section H is 14mm
 	- bottom section H is 9mm
-
-
-- Plans:
-	- a rising or falling edge on the BT_CONNECT line triggers an interrupt that updates the bluetooth status in the plantmonitor struct and sets the show bluetooth message bool to true. display_info always checks if there is a bluetooth message to display before showinmg other info and reads the current bluetooth status to determine whether it is a disconnect or a connect message
