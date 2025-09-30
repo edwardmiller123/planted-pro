@@ -9,9 +9,6 @@
 
 # Review notes
 	- case:
-		- cap to cover antenna should be bigger as there are holes in the print
-		- space for lcd backlight in lid should be 1mm wider
-		- usb cap should be 1 mm smaller so it fits better
 		- remeber to remove supports for the screw holes in the lid
 		
 # Parts List
