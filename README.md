@@ -9,9 +9,13 @@
 
 # Review notes
 	- case:
-		- remeber to remove supports for the screw holes in the lid
-		- moisture sensor right screw hole should be 1mm closer to all
-		- put platform under moisture sensor at height of hole
+		- antenna cap is not deep enough. Make the space as large as possible
+		- make moisture sensor platform longer
+		- right screw hole for moisture sensor should be 0.5 mm closer to other hole
+		- usb cap is to small
+		- lid:
+			- make window indent larger to make it easier to glue the plastic in
+			- right screw holes for screen should be 0.5 mm closer to window
 		
 # Parts List
 - Main board:
