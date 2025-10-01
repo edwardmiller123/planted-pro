@@ -10,6 +10,8 @@
 # Review notes
 	- case:
 		- remeber to remove supports for the screw holes in the lid
+		- moisture sensor right screw hole should be 1mm closer to all
+		- put platform under moisture sensor at height of hole
 		
 # Parts List
 - Main board:
