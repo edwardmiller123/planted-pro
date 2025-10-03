@@ -1,21 +1,10 @@
 # TODO
 - light and water level text should be based on percentage not raw value
 - calibrate light
-- make pcb rev 4
-- Write message to screen when bluetooth connects
-	- enable interrupt for PC7
 - print case
 - assemble
 
 # Review notes
-	- case:
-		- antenna cap is not deep enough. Make the space as large as possible
-		- make moisture sensor platform longer
-		- right screw hole for moisture sensor should be 0.5 mm closer to other hole
-		- usb cap is to small
-		- lid:
-			- make window indent larger to make it easier to glue the plastic in
-			- right screw holes for screen should be 0.5 mm closer to window
 		
 # Parts List
 - Main board:
@@ -85,8 +74,9 @@
 
 - case: 
 	- top and bottom screw holes are 2mm diam each starts 4.2mm from side.
-	- window for charge light is 20mm L by 10mm W
-	- lid is 5 mm deep, Lid indents start at 3.2mm from edge, indents are 3mm deep
+	- lid is 5 mm deep, Lid screw indents start at 3.2mm from edge, indents are 3mm deep
+		- lid window indent is 12mm x 8mm
+	- LDR window indent is 32mm x 6mm
 
 - case v3:
 	- top section H is 14mm
