@@ -2749,7 +2749,7 @@
 				)
 			)
 		)
-		(property "Value" "DBG LED"
+		(property "Value" "DEBUG LED"
 			(at -0.6 1.6 180)
 			(layer "F.SilkS")
 			(uuid "ecce8378-68f5-44ee-9ed7-a3c792350928")
@@ -10756,7 +10756,7 @@
 		(at 106.6 46.56)
 		(descr "Through hole straight pin header, 1x04, 2.54mm pitch, single row")
 		(tags "Through hole pin header THT 1x04 2.54mm single row")
-		(property "Reference" "DBG"
+		(property "Reference" "J4"
 			(at 3.3 3.8 0)
 			(layer "F.SilkS")
 			(uuid "deb862d8-0c14-4646-a47d-f776ffefe23c")
