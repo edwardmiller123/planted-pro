@@ -44,7 +44,7 @@ int main(void)
     configure_adc();
 
     // configured for the HC-05 bluetooth module
-    configure_usart1(HC05_BAUD);
+    configure_usart1(BLUETOOTH_BAUD);
     LOG(INFO, "Initialised USART1");
 
     init_heap();

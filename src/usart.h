@@ -6,7 +6,7 @@
 #include "memmap.h"
 #include "utils.h"
 
-#define HC05_BAUD 9600
+#define BLUETOOTH_BAUD 115200
 #define DEFAULT_BAUD 115200
 
 typedef enum usart {
