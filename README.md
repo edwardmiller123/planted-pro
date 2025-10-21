@@ -5,6 +5,7 @@
 - assemble
 
 # Review notes
+- EXTI9_5 interuupt handler being triggered by debug LED. Likely that the EXTI is configured wrong
 		
 # Parts List
 - Main board:
