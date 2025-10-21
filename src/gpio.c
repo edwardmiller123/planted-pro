@@ -51,12 +51,13 @@ void init_debug_led()
     io_set_bit(GPIOA_MODER, 10);
     io_clear_bit(GPIOA_MODER, 11);
 
-    // set GPIO PA5 mode to pull up
-    io_set_bit(GPIOA_PUPDR, 10);
+    // // set GPIO PA5 mode to no pull up or pull down
+    io_clear_bit(GPIOA_PUPDR, 10);
+    io_clear_bit(GPIOA_PUPDR, 11);
 
     // set GPIO type to push pull
     IO_ACCESS(GPIOA_OTYPER) = 0x0U;
 
-    // set GPIO output speed to medium
-    IO_ACCESS(GPIOA_OSPEEDR) = 0x400U;
+    // set GPIO output speed to low
+    IO_ACCESS(GPIOA_OSPEEDR) = 0x0U;
 }
