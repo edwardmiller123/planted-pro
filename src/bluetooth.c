@@ -23,12 +23,12 @@ void configure_bluetooth()
 	io_clear_bit(GPIOC_MODER, 14);
 	io_clear_bit(GPIOC_MODER, 15);
 
-	// unmask the interrupt line
-	io_set_bit(EXTI_IMR, EXTI7);
-
 	// set to trigger on rising and falling edge
 	io_set_bit(EXTI_RTSR, EXTI7);
 	io_set_bit(EXTI_FTSR, EXTI7);
+
+	// enable SYSCFG clock om APB2 bus
+	io_set_bit(RCC_APB2ENR, 14);
 
 	// Map pin PC7 to the EXTI
 	io_clear_bit(SYSCFG_EXTICR2, 12);
@@ -36,8 +36,15 @@ void configure_bluetooth()
 	io_clear_bit(SYSCFG_EXTICR2, 14);
 	io_clear_bit(SYSCFG_EXTICR2, 15);
 
+	// wait for the interrupt line to stabaize as we dont want to trigger the interrupt when we first turn
+	// on unintentionally
+	sys_sleep(500);
+
 	// enable irq line in the nvic
 	nvic_enable_irq(EXTI9_5);
+
+	// unmask the interrupt line
+	io_set_bit(EXTI_IMR, EXTI7);
 
 	// TODO: use usart to set the bluetooth module name
 }
