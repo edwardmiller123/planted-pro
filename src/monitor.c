@@ -7,11 +7,10 @@
 #include "sensor.h"
 #include "heap.h"
 
-// values calibrated using an 82k resistor in the potential divider
-#define LIGHT_BRIGHT_DIRECT_VAL 1000
-#define LIGHT_BRIGHT_INDIRECT_VAL 1500
-#define LIGHT_MEDIUM_VAL 2000
-#define LIGHT_LOW_VAL 3600
+// values calibrated using a 200k resistor in the potential divider
+#define LIGHT_BRIGHT_DIRECT_VAL 80
+#define LIGHT_BRIGHT_INDIRECT_VAL 60
+#define LIGHT_LOW_VAL 25
 
 const char *light_bright_direct = "Bright Direct";
 const char *light_bright_indirect = "Bright Indirect";
@@ -54,28 +53,28 @@ int set_light_level(monitor *lm)
 		return -1;
 	};
 
-	if (lm->snr->raw_average > LIGHT_LOW_VAL)
-	{
-		lm->level = (char *)light_low;
-	}
-	else if (lm->snr->raw_average > LIGHT_MEDIUM_VAL)
-	{
-		lm->level = (char *)light_medium;
-	}
-	else if (lm->snr->raw_average > LIGHT_BRIGHT_INDIRECT_VAL)
-	{
-		lm->level = (char *)light_bright_indirect;
-	}
-	else
-	{
-		lm->level = (char *)light_bright_direct;
-	}
-
 	[[maybe_unused]] char *args_level[] = {(char *)lm->level};
 	LOGF(DEBUG, "Light level set to &", NULL, 0, args_level, 1);
 
 	// we want the "light" percentage and darkness gives the max adc value
 	lm->percent = 100 - lm->snr->sensor_percent;
+
+	if (lm->percent < LIGHT_LOW_VAL)
+	{
+		lm->level = (char *)light_low;
+	}
+	else if (lm->percent < LIGHT_BRIGHT_INDIRECT_VAL && lm->percent > LIGHT_LOW_VAL)
+	{
+		lm->level = (char *)light_medium;
+	}
+	else if (lm->percent > LIGHT_BRIGHT_INDIRECT_VAL && lm->percent < LIGHT_BRIGHT_DIRECT_VAL)
+	{
+		lm->level = (char *)light_bright_indirect;
+	}
+	else if (lm->percent > LIGHT_BRIGHT_DIRECT_VAL)
+	{
+		lm->level = (char *)light_bright_direct;
+	}
 
 	[[maybe_unused]] uint32_t args_intensity[] = {lm->percent};
 	LOGF(DEBUG, "Light intensity set to $", args_intensity, 1, NULL, 0);
@@ -101,7 +100,6 @@ int measure_light(monitor *lm)
 }
 
 #define WATER_HIGH_VAL 80
-#define WATER_MEDIUM_VAL 50
 #define WATER_DRY_VAL 20
 
 const char *soil_saturated = "Saturated";
@@ -122,11 +120,11 @@ int set_water_level(monitor *wm)
 	// we want the water "percentage" and dry soil gives the max adc value
 	wm->percent = 100 - wm->snr->sensor_percent;
 
-	if (wm->percent > WATER_DRY_VAL)
+	if (wm->percent < WATER_DRY_VAL)
 	{
 		wm->level = (char *)soil_dry;
 	}
-	else if (wm->percent > WATER_MEDIUM_VAL)
+	else if (wm->percent > WATER_DRY_VAL && wm->percent < WATER_HIGH_VAL)
 	{
 		wm->level = (char *)soil_medium;
 	}
