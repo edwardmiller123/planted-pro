@@ -192,7 +192,7 @@ uint32_t adc_manual_conversion(adc adc_num, result_code *result)
 
 	io_set_bit(ctrl_reg, 30);
 
-	char *logger_args_str[] = {log_str};
+	[[maybe_unused]] char *logger_args_str[] = {log_str};
 
 	if (wait_for_adc(adc_num, 500) == -1)
 	{
@@ -206,7 +206,7 @@ uint32_t adc_manual_conversion(adc adc_num, result_code *result)
 
 	uint32_t adc_val = IO_ACCESS(data_reg);
 
-	uint32_t logger_args_int[] = {adc_val};
+	[[maybe_unused]] uint32_t logger_args_int[] = {adc_val};
 	LOGF(DEBUG, "& read conversion value: $", logger_args_int, 1, logger_args_str, 1);
 
 	return adc_val;

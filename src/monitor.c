@@ -71,13 +71,13 @@ int set_light_level(monitor *lm)
 		lm->level = (char *)light_bright_direct;
 	}
 
-	char *args_level[] = {(char *)lm->level};
+	[[maybe_unused]] char *args_level[] = {(char *)lm->level};
 	LOGF(DEBUG, "Light level set to &", NULL, 0, args_level, 1);
 
 	// we want the "light" percentage and darkness gives the max adc value
 	lm->percent = 100 - lm->snr->sensor_percent;
 
-	uint32_t args_intensity[] = {lm->percent};
+	[[maybe_unused]] uint32_t args_intensity[] = {lm->percent};
 	LOGF(DEBUG, "Light intensity set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
@@ -129,13 +129,13 @@ int set_water_level(monitor *wm)
 		wm->level = (char *)soil_saturated;
 	}
 
-	char *args_level[] = {(char *)wm->level};
+	[[maybe_unused]] char *args_level[] = {(char *)wm->level};
 	LOGF(DEBUG, "Water level set to &", NULL, 0, args_level, 1);
 
 	// we want the water "percentage" and dry soil gives the max adc value
 	wm->percent = 100 - wm->snr->sensor_percent;
 
-	uint32_t args_intensity[] = {wm->percent};
+	[[maybe_unused]] uint32_t args_intensity[] = {wm->percent};
 	LOGF(DEBUG, "Soil saturation set to $", args_intensity, 1, NULL, 0);
 
 	return 0;
@@ -173,13 +173,13 @@ int set_battery_charge(monitor *bm)
 	if (bm->snr->sensor_percent < BAT_LOW_PERCENT) {
 		bm->level = battery_low;
 
-		char *args_level[] = {(char *)bm->level};
+		[[maybe_unused]] char *args_level[] = {(char *)bm->level};
 		LOGF(DEBUG, "Battery level set to &", NULL, 0, args_level, 1);
 	}
 
 	bm->percent = bm->snr->sensor_percent;
 
-	uint32_t args_intensity[] = {bm->percent};
+	[[maybe_unused]] uint32_t args_intensity[] = {bm->percent};
 	LOGF(DEBUG, "Charge percent set to $", args_intensity, 1, NULL, 0);
 
 	return 0;

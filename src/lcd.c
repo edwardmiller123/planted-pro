@@ -163,7 +163,7 @@ void configure_lcd(void)
 // write the given string from the current cursor position
 void lcd_write_string(char *str)
 {
-	char *args[] = {str};
+	[[maybe_unused]] char *args[] = {str};
 	LOGF(DEBUG, "Writing string to lcd: &", NULL, 0, args, 1);
 
 	for (int i = 0; i < LCD_LINE_LENGTH; i++)
@@ -219,7 +219,7 @@ void lcd_set_cursor(uint32_t x, uint32_t y)
 {
 	if (y > 1)
 	{
-		uint32_t args[] = {x, y};
+		[[maybe_unused]] uint32_t args[] = {x, y};
 		LOGF(ERROR, "Invalid cursor position: ($, $)", args, 2, NULL, 0);
 		return;
 	}
@@ -227,7 +227,7 @@ void lcd_set_cursor(uint32_t x, uint32_t y)
 	uint32_t y_offset = y * 0x40;
 	uint32_t pos = y_offset + x;
 
-	uint32_t args2[] = {pos};
+	[[maybe_unused]] uint32_t args2[] = {pos};
 	LOGF(DEBUG, "Setting cursor address to $", args2, 1, NULL, 0);
 
 	lcd_write_byte((uint8_t)set_bit(pos, 7), INSTRUCTION);

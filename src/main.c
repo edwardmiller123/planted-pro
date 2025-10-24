@@ -34,7 +34,7 @@ int main(void)
     // used for logging
     configure_usart3(DEFAULT_BAUD);
 
-    uint32_t args[1] = {get_system_counter()};
+    [[maybe_unused]] uint32_t args[1] = {get_system_counter()};
     LOGF(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);
 
     configure_lcd();

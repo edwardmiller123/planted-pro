@@ -27,7 +27,7 @@ void init_heap()
 	h.bottom = &h.data[0];
 	h.top = &h.data[0];
 
-	uint32_t args[] = {MAX_HEAP_SIZE};
+	[[maybe_unused]] uint32_t args[] = {MAX_HEAP_SIZE};
 	LOGF(INFO, "Initialised heap. Max size: $", args, 1, NULL, 0);
 }
 
@@ -56,7 +56,7 @@ void *malloc(uint32_t size)
 			list_remove(h.free_blocks, free_block_node);
 			*(uint32_t *)current_block = size;
 
-			uint32_t args[] = {size, (uint32_t)current_block};
+			[[maybe_unused]] uint32_t args[] = {size, (uint32_t)current_block};
 			LOGF(DEBUG, "Allocated $ bytes on heap at free block address: $ ", args, 2, NULL, 0);
 
 			return (void *)(current_block + META_DATA_SIZE);
@@ -78,7 +78,7 @@ void *malloc(uint32_t size)
 	h.top += size + META_DATA_SIZE;
 
 	uint32_t usage = (uint32_t)h.top - (uint32_t)h.bottom;
-	uint32_t args[] = {size + META_DATA_SIZE, (uint32_t)current_block, (uint32_t)h.top, usage};
+	[[maybe_unused]] uint32_t args[] = {size + META_DATA_SIZE, (uint32_t)current_block, (uint32_t)h.top, usage};
 	LOGF(DEBUG, "Allocated $ bytes on heap at new block address $. Heap top: $, Usage: $ bytes", args, 4, NULL, 0);
 
 	return (void *)(current_block + META_DATA_SIZE);
@@ -95,7 +95,7 @@ void free(void *alloc_mem)
 		h.top = block;
 
 		uint32_t usage = (uint32_t)h.top - (uint32_t)h.bottom;
-		uint32_t args[] = {(uint32_t)block, usage, (uint32_t)h.top};
+		[[maybe_unused]] uint32_t args[] = {(uint32_t)block, usage, (uint32_t)h.top};
 		LOGF(DEBUG, "Freed heap block $. Heap usage decreased to $. Heap top: $", args, 3, NULL, 0);
 		return;
 	}
@@ -106,6 +106,6 @@ void free(void *alloc_mem)
 	byte_copy((uint8_t *)&free_block_node, (uint8_t *)alloc_mem, sizeof(node));
 	list_add(h.free_blocks, (node *)alloc_mem);
 
-	uint32_t args[] = {(uint32_t)block};
+	[[maybe_unused]] uint32_t args[] = {(uint32_t)block};
 	LOGF(DEBUG, "Freed heap block $. Added block to free list", args, 3, NULL, 0);
 }

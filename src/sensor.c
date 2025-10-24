@@ -58,7 +58,7 @@ int sensor_calculate_average(sensor *s)
 			return 0;
 		}
 
-		uint32_t args[] = {reading};
+		[[maybe_unused]] uint32_t args[] = {reading};
 		LOGF(DEBUG, "Removed $ from sensor readings queue", args, 1, NULL, 0);
 
 		total_val += reading;
@@ -67,12 +67,12 @@ int sensor_calculate_average(sensor *s)
 	uint32_t average = fp_divide(total_val, s->sample_size);
 	s->raw_average = average;
 
-	uint32_t args_average[] = {average};
+	[[maybe_unused]] uint32_t args_average[] = {average};
 	LOGF(DEBUG, "Set average sensor ADC value to $", args_average, 1, NULL, 0);
 
 	set_percent(s);
 
-	uint32_t args_percent[] = {s->sensor_percent};
+	[[maybe_unused]] uint32_t args_percent[] = {s->sensor_percent};
 	LOGF(DEBUG, "Sensor percent set to $", args_percent, 1, NULL, 0);
 
 	return 0;
@@ -90,7 +90,7 @@ int sensor_read_adc(sensor *s)
 
 	ring_buffer_write_word(s->readings_buffer, reading);
 	
-	uint32_t args[] = {reading};
+	[[maybe_unused]] uint32_t args[] = {reading};
 	LOGF(DEBUG, "Added $ to sensor readings buffer", args, 1, NULL, 0);
 	return 0;
 }

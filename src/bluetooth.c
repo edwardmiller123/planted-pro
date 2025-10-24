@@ -203,7 +203,7 @@ int read_and_update_time()
 		return -1;
 	}
 
-	uint32_t log_args[] = {unix_time};
+	[[maybe_unused]] uint32_t log_args[] = {unix_time};
 	LOGF(INFO, "Syncing unix time to $", log_args, 1, NULL, 0);
 
 	update_unix_time(unix_time);
@@ -215,7 +215,7 @@ void poll_bluetooth(exporter *e)
 {
 	uint8_t usart1_received_byte = usart1_read_byte(NULL);
 
-	uint32_t log_args[] = {usart1_received_byte};
+	[[maybe_unused]] uint32_t log_args[] = {usart1_received_byte};
 	LOGF(DEBUG, "Read byte $ from USART1 receive buffer", log_args, 1, NULL, 0);
 
 	if (usart1_received_byte == (uint8_t)SYNC_CODE)
