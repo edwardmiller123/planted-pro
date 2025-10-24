@@ -100,9 +100,9 @@ int measure_light(monitor *lm)
 	return 0;
 }
 
-#define WATER_HIGH_VAL 1400
-#define WATER_MEDIUM_VAL 2000
-#define WATER_DRY_VAL 2400
+#define WATER_HIGH_VAL 80
+#define WATER_MEDIUM_VAL 50
+#define WATER_DRY_VAL 20
 
 const char *soil_saturated = "Saturated";
 const char *soil_medium = "Medium";
@@ -116,24 +116,24 @@ int set_water_level(monitor *wm)
 		return -1;
 	}
 
-	if (wm->snr->raw_average > WATER_DRY_VAL)
-	{
-		wm->level = (char *)soil_dry;
-	}
-	else if (wm->snr->raw_average > WATER_MEDIUM_VAL)
-	{
-		wm->level = (char *)soil_medium;
-	}
-	else
-	{
-		wm->level = (char *)soil_saturated;
-	}
-
 	[[maybe_unused]] char *args_level[] = {(char *)wm->level};
 	LOGF(DEBUG, "Water level set to &", NULL, 0, args_level, 1);
 
 	// we want the water "percentage" and dry soil gives the max adc value
 	wm->percent = 100 - wm->snr->sensor_percent;
+
+	if (wm->percent > WATER_DRY_VAL)
+	{
+		wm->level = (char *)soil_dry;
+	}
+	else if (wm->percent > WATER_MEDIUM_VAL)
+	{
+		wm->level = (char *)soil_medium;
+	}
+	else if (wm->percent > WATER_HIGH_VAL)
+	{
+		wm->level = (char *)soil_saturated;
+	}
 
 	[[maybe_unused]] uint32_t args_intensity[] = {wm->percent};
 	LOGF(DEBUG, "Soil saturation set to $", args_intensity, 1, NULL, 0);
