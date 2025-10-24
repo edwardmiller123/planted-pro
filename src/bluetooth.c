@@ -12,8 +12,110 @@
 
 #define SYNC_CODE 'T'
 
+#define MAX_CMD_LEN 64
+#define MAX_RESPONSE_LEN 64
+#define OK_RESPONSE_LEN 4
+#define BT_RESPONSE_TIMEOUT 500
+
+#define AT_COMMAND_MODE "AT+ENAT\r\n"
+#define AT_READ_BLE_NAME "AT+LEGN\r\n"
+#define AT_SET_BLE_NAME "AT+LENAplanted-pro\r\n"
+#define AT_RESET_MODULE "AT+REST\r\n"
+#define AT_OK "OK\r\n"
+
 static bt_status status = DISCONNECTED;
 static bool has_changed = false;
+
+// Check if USART1 has received a response.
+// The accepted number of characters is the length of the OK response.
+bool usart1_receive_buffer_holds_response()
+{
+	return usart1_receive_buffer_len() >= OK_RESPONSE_LEN;
+}
+
+// Sends the given command and waits for a response in BT receive buffer
+int send_at_cmd_with_response(char *cmd)
+{
+	if (usart_send_buffer(USART1, (uint8_t *)cmd, str_len(cmd)) == -1)
+	{
+		LOG(ERROR, "Failed to send buffer over USART1");
+		return -1;
+	}
+
+	if (wait_for_condition(&usart1_receive_buffer_holds_response, BT_RESPONSE_TIMEOUT) == -1)
+	{
+		LOG(ERROR, "Timed out waiting for BT module response");
+		return -1;
+	}
+
+	return 0;
+}
+
+// Returns True if the USART1 buffer contains the BT response
+bool read_at_ok()
+{
+	char response_buf[MAX_RESPONSE_LEN];
+
+	uint16_t receive_buffer_len = usart1_receive_buffer_len();
+	if (receive_buffer_len > MAX_RESPONSE_LEN)
+	{
+		LOG(WARNING, "Bluetooth response to long");
+		return false;
+	}
+
+	for (int i = 0; i < receive_buffer_len; i++)
+	{
+		// dont need to check the response since we will read 0 bytes if the buffer is empty
+		response_buf[i] = usart1_read_byte(NULL);
+	}
+
+	response_buf[receive_buffer_len] = '\0';
+
+	return str_cmp(response_buf, AT_OK);
+}
+
+int set_ble_name()
+{
+	// first enter cmd mode
+	if (send_at_cmd_with_response(AT_COMMAND_MODE) == -1)
+	{
+		LOG(ERROR, "BT failed to enter command mode");
+		return -1;
+	}
+
+	if (!read_at_ok())
+	{
+		LOG(ERROR, "Didnt receive OK from entering command mode");
+		return -1;
+	}
+
+	// set BLE name
+	if (send_at_cmd_with_response(AT_SET_BLE_NAME) == -1)
+	{
+		LOG(ERROR, "Failed to send set BLE name command");
+		return -1;
+	}
+
+	if (!read_at_ok())
+	{
+		LOG(ERROR, "Didnt receive OK from setting BLE name");
+		return -1;
+	}
+
+	// reset the BT module
+	if (usart_send_buffer(USART1, (uint8_t *)AT_RESET_MODULE, str_len(AT_RESET_MODULE)) == -1)
+	{
+		LOG(ERROR, "Failed to send buffer over USART1");
+		return -1;
+	}
+
+	// allow time for the module to reset
+	sys_sleep(200);
+
+	LOG(INFO, "BLE name set");
+
+	return 0;
+}
 
 void configure_bluetooth()
 {
@@ -46,7 +148,10 @@ void configure_bluetooth()
 	// unmask the interrupt line
 	io_set_bit(EXTI_IMR, EXTI7);
 
-	// TODO: use usart to set the bluetooth module name
+	if (set_ble_name() == -1)
+	{
+		LOG(WARNING, "Failed to set BT module BLE name");
+	}
 }
 
 void bluetooth_irq_handler()

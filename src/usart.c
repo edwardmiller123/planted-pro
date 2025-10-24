@@ -190,3 +190,7 @@ void usart1_irq_handler()
 {
     ring_buffer_write_byte(&usart1_receive_buf, IO_ACCESS(USART1_DR));
 }
+
+uint16_t usart1_receive_buffer_len() {
+    return usart1_receive_buf.size;
+}

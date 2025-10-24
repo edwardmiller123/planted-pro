@@ -32,6 +32,8 @@ uint8_t usart1_read_byte(result_code * result);
 
 void usart1_irq_handler();
 
+uint16_t usart1_receive_buffer_len();
+
 // USART3 //
 
 #define USART3_BASE (APB1_BASE + 0x4800U)

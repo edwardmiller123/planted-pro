@@ -37,15 +37,15 @@ int main(void)
     uint32_t args[1] = {get_system_counter()};
     LOGF(INFO, "Systick, LED2 and USART3 initialisation completed in $ ms", args, 1, NULL, 0);
 
-    configure_bluetooth();
-
     configure_lcd();
 
     configure_adc();
 
-    // configured for the HC-05 bluetooth module
+    // configured for the Volgo bluetooth module
     configure_usart1(BLUETOOTH_BAUD);
     LOG(INFO, "Initialised USART1");
+
+    configure_bluetooth();
 
     init_heap();
 

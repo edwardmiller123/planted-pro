@@ -198,3 +198,34 @@ uint32_t string_to_uint_base_10(char *str, uint32_t len, result_code *status)
 	}
 	return total;
 }
+
+bool str_cmp(char *str1, char *str2)
+{
+	if ((str1 != NULL && str2 == NULL) || (str1 == NULL && str2 != NULL))
+	{
+		return false;
+	}
+
+	if (str1 == NULL && str2 == NULL)
+	{
+		return true;
+	}
+
+	uint32_t str1_len = str_len(str1);
+	uint32_t str2_len = str_len(str2);
+
+	if (str1_len != str2_len)
+	{
+		return false;
+	}
+
+	for (int i = 0; i < str1_len; i++)
+	{
+		if (str1[i] != str2[i])
+		{
+			return false;
+		}
+	}
+
+	return true;
+}

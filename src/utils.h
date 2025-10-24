@@ -64,4 +64,7 @@ int wait_for_condition(bool (*cond)(void), uint32_t ms);
 
 uint32_t string_to_uint_base_10(char *str, uint32_t len, result_code *status);
 
+// Compare two null terminating strings to see if they are equal.
+bool str_cmp(char * str1, char * str2);
+
 #endif
