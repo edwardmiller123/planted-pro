@@ -1,11 +1,8 @@
 # TODO
-- light and water level text should be based on percentage not raw value
-- calibrate light
-- print case
-- assemble
+- make case body 1 or 2 mm taller to provide extra room for wires
+- move outer screw hole for moisture sensor 0.5mm closer to other one so that the screws can hold the sensor down correctly
+- average over more samples for the battery measurements as its currently inaccurate and can sometimes increase
 
-# Review notes
-- EXTI9_5 interuupt handler being triggered by debug LED. Likely that the EXTI is configured wrong
 		
 # Parts List
 - Main board:
