@@ -2,8 +2,6 @@
 - make case body 1 or 2 mm taller to provide extra room for wires
 - change LDR window to just be a hole the size of the LDR
 - move outer screw hole for moisture sensor 0.5mm closer to other one so that the screws can hold the sensor down correctly
-- average over more samples for the battery measurements as its currently inaccurate and can sometimes increase
-
 		
 # Parts List
 - Main board:

@@ -32,10 +32,11 @@
 #define SAMPLE_SIZE 5
 
 // Use a large sample size for the battery as the signal is expected to be noisey
-#define BAT_CHARGE_SAMPLE_SIZE 50
+#define BAT_CHARGE_SAMPLE_SIZE 120
 
-#define EXPORT_POLL_INTERVAL_SECONDS 1
-#define EXPORT_POINT_COUNT 12
+// poll every 15 minutes for 12 hours
+#define EXPORT_POLL_INTERVAL_SECONDS 900
+#define EXPORT_POINT_COUNT 48
 
 plant_monitor *init_plant_monitor()
 {
