@@ -12,7 +12,7 @@ typedef enum bt_status
 } bt_status;
 
 // Initialises the bluetooth module interrupts on PC7 and sets the device name
-void configure_bluetooth();
+int configure_bluetooth();
 
 // Sets the bluetooth state when an interrupt arrives on exti_9_5
 void bluetooth_irq_handler();

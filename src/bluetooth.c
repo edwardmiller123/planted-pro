@@ -20,6 +20,7 @@
 #define AT_COMMAND_MODE "AT+ENAT\r\n"
 #define AT_READ_BLE_NAME "AT+LEGN\r\n"
 #define AT_SET_BLE_NAME "AT+LENAplanted-pro\r\n"
+#define AT_DISABLE_SPP "AT+SPOF\r\n"
 #define AT_RESET_MODULE "AT+REST\r\n"
 #define AT_OK "OK\r\n"
 
@@ -74,21 +75,9 @@ bool read_at_ok()
 	return str_cmp(response_buf, AT_OK);
 }
 
+// Sets the BLE name. Requires the module to be in CMD mode
 int set_ble_name()
 {
-	// first enter cmd mode
-	if (send_at_cmd_with_response(AT_COMMAND_MODE) == -1)
-	{
-		LOG(ERROR, "BT failed to enter command mode");
-		return -1;
-	}
-
-	if (!read_at_ok())
-	{
-		LOG(ERROR, "Didnt receive OK from entering command mode");
-		return -1;
-	}
-
 	// set BLE name
 	if (send_at_cmd_with_response(AT_SET_BLE_NAME) == -1)
 	{
@@ -102,6 +91,52 @@ int set_ble_name()
 		return -1;
 	}
 
+	LOG(INFO, "BLE name set");
+
+	return 0;
+}
+
+int disable_spp() {
+	// disable spp
+	if (send_at_cmd_with_response(AT_DISABLE_SPP) == -1)
+	{
+		LOG(ERROR, "Failed to send disable SPP command");
+		return -1;
+	}
+
+	if (!read_at_ok())
+	{
+		LOG(ERROR, "Didnt receive OK from disableing SPP");
+		return -1;
+	}
+
+	LOG(INFO, "SPP broadcasting disabled");
+
+	return 0;
+}
+
+int configure_volgo_module() {
+	// first enter cmd mode
+	if (send_at_cmd_with_response(AT_COMMAND_MODE) == -1)
+	{
+		LOG(ERROR, "BT failed to enter command mode");
+		return -1;
+	}
+
+	if (!read_at_ok())
+	{
+		LOG(ERROR, "Didnt receive OK from entering command mode");
+		return -1;
+	}
+
+	if (set_ble_name() == -1) {
+		LOG(WARNING, "Failed to set BT module BLE name");
+	}
+
+	if (disable_spp() == -1) {
+		LOG(WARNING, "Failed to disable spp broadcasting");
+	}
+
 	// reset the BT module
 	if (usart_send_buffer(USART1, (uint8_t *)AT_RESET_MODULE, str_len(AT_RESET_MODULE)) == -1)
 	{
@@ -112,12 +147,12 @@ int set_ble_name()
 	// allow time for the module to reset
 	sys_sleep(200);
 
-	LOG(INFO, "BLE name set");
+	LOG(INFO, "Vollgo VG6328A configured");
 
 	return 0;
 }
 
-void configure_bluetooth()
+int configure_bluetooth()
 {
 	// Configure PC7 as an EXTI interrupt line
 
@@ -138,7 +173,7 @@ void configure_bluetooth()
 	io_clear_bit(SYSCFG_EXTICR2, 14);
 	io_clear_bit(SYSCFG_EXTICR2, 15);
 
-	// wait for the interrupt line to stabaize as we dont want to trigger the interrupt when we first turn
+	// wait for the interrupt line to stabalize as we dont want to trigger the interrupt when we first turn
 	// on unintentionally
 	sys_sleep(500);
 
@@ -148,10 +183,12 @@ void configure_bluetooth()
 	// unmask the interrupt line
 	io_set_bit(EXTI_IMR, EXTI7);
 
-	if (set_ble_name() == -1)
+	if (configure_volgo_module() == -1)
 	{
-		LOG(WARNING, "Failed to set BT module BLE name");
+		LOG(ERROR, "Failed to configure bluetooth module");
+		return -1;
 	}
+	return 0;
 }
 
 void bluetooth_irq_handler()

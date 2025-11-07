@@ -45,7 +45,10 @@ int main(void)
     configure_usart1(BLUETOOTH_BAUD);
     LOG(INFO, "Initialised USART1");
 
-    configure_bluetooth();
+    if (configure_bluetooth() == -1) {
+        LOG(ERROR, "Failed to configure bluetooth");
+        init_fault_handler();
+    };
 
     init_heap();
 
