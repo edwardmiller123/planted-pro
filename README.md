@@ -1,7 +1,4 @@
 # TODO
-- make case body 1 or 2 mm taller to provide extra room for wires
-- change LDR window to just be a hole the size of the LDR
-- move outer screw hole for moisture sensor 0.5mm closer to other one so that the screws can hold the sensor down correctly
 		
 # Parts List
 - Main board:
@@ -78,3 +75,6 @@
 - case v3:
 	- top section H is 14mm
 	- bottom section H is 9mm
+
+
+https://www.tinkercad.com/things/aGYA4L6WpCP-planted-pro-v3
