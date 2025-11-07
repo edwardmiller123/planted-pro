@@ -36,7 +36,7 @@
 	- [USB-C Connector](https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-TYPE-C-6P-073_C668623.html?s_z=n_usb)
 
 - External modules:
-	- [RG1602A](https://lcsc.com/product-detail/LCD-Screen_HS-HS1602A-B_C18198249.html?s_z=s_Displays%257CLCD%2520Screen)
+	- [RG1602A](https://lcsc.com/product-detail/LCD-Screen_HS-HS1602A-B_C18198249.html)
 	- [Capacitive moisture Sensor](https://thepihut.com/products/capacitive-soil-moisture-sensor?variant=32137736421438&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gQT=1)
 	- [Vollgo VG6328A Bluetooth module](https://www.lcsc.com/product-detail/C20539408.html?s_z=s_IoT%252FCommunication%2520Modules%257CBluetooth%2520Modules)
 
