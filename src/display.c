@@ -134,9 +134,11 @@ void display_bluetooth_info(bt_status bts)
 {
 	LOG(INFO, "Displaying bluetooth message");
 
+	lcd_clear_display();
+
 	lcd_set_cursor(0, 0);
 
-	lcd_write_string("Bluetooth:");
+	lcd_write_string("Bluetooth");
 
 	lcd_set_cursor(0, 1);
 
