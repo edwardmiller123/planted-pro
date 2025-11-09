@@ -1,9 +1,9 @@
 # Parts List
 - Main board:
 	- [STM32F446RC](https://lcsc.com/product-detail/Microcontrollers-MCU-MPU-SOC_STMicroelectronics-STM32F446RCT6_C915971.html?s_z=n_stm32f44)
-	- [Photo resistor](https://lcsc.com/product-detail/Photoresistors_Senba-Sensing-Tech-GL5528_C125627.html?s_z=n_ldr)
+	- [Photo Resistor](https://lcsc.com/product-detail/Photoresistors_Senba-Sensing-Tech-GL5528_C125627.html?s_z=n_ldr)
 	- [Potentiometer](https://www.lcsc.com/product-detail/C720648.html?s_z=n_potentiometer)
-	- [Slide switch](https://www.amazon.com/dp/B08SLPWDR9?ref_=ppx_hzod_title_dt_b_fed_asin_title_0_1&th=1)
+	- [Slide Switch](https://www.amazon.com/dp/B08SLPWDR9?ref_=ppx_hzod_title_dt_b_fed_asin_title_0_1&th=1)
 	- [2mm JST Battery Connector](https://www.amazon.com/CQRobot-Pieces-Connector-Housing-Adapter/dp/B09DP9FZTX?dib=eyJ2IjoiMSJ9.sNePKIuEPVewtteYfS58lZhW1LPmAVkOUnPIESSHRV1hvavSnGyljd52drfUkW5t4vHY770J1QYnJR6J5vuRVibrd9-3cRKNr1A3Vood9wdaIiXBvQhf0mdvStLx7khxwPU3F8Po8fU3Oj-s-p_wBD1qKetaDQ-Cf7YYYW11nkU2uM8TZcRV8bM0esdYdNTfc2DC5A6KGKV8WKj3iSCdm2a_5utHmO_mh-Fdf6InY6w.CRPhyqQcm5MJQbVlpLiQIjypTNYh30MgPEx-_YJeLQ0&dib_tag=se&keywords=jst%2Bph%2B2%2Bpin%2Bconnector&qid=1751377308&sr=8-2&th=1)
 	- buck converter:
 		- [TLV62569DBV](https://www.lcsc.com/product-detail/DC-DC-Converters_Texas-Instruments-TLV62569DBVR_C141836.html?s_z=n_TLV62569DBV) (step down regulator) 
@@ -11,7 +11,7 @@
 		- [MCP73831T](https://lcsc.com/product-detail/Battery-Management_Microchip-Tech-MCP73831T-2ACI-OT_C424093.html?s_z=n_mcp73831) 
 	- boost converter
 		- [TPS613222A](https://www.lcsc.com/product-detail/C2071163.html?s_z=n_TPS613222A)
-		- [Schottky diode](https://www.lcsc.com/product-detail/C8678.html?s_z=n_Schottky%2520diode)
+		- [Schottky Diode](https://www.lcsc.com/product-detail/C8678.html?s_z=n_Schottky%2520diode)
 	- Capacitors (0603) (all 16v)
 		- [22uF (x1)](https://www.lcsc.com/product-detail/C6119868.html?s_z=s_Capacitors%257CMultilayer%2520Ceramic%2520Capacitors%2520MLCC%2520-%2520SMD%252FSMT)
 		- [4.7uF (x5)](https://lcsc.com/product-detail/Multilayer-Ceramic-Capacitors-MLCC-SMD-SMT_Samsung-Electro-Mechanics-CL10A475KO8NNNC_C19666.html?s_z=n_capacitors)
@@ -30,12 +30,12 @@
 	- Inductors:
 		- [2.2uH 1A Inductor (x2)](https://www.lcsc.com/product-detail/C365953.html?s_z=n_inductors)
 	- Resonance filter:
-		- [ferrite bead](https://www.lcsc.com/product-detail/C79382.html)
+		- [Ferrite Bead](https://www.lcsc.com/product-detail/C79382.html) (30mΩ ±25% 120Ω@100MHz)
 	- [USB-C Connector](https://lcsc.com/product-detail/USB-Connectors_SHOU-HAN-TYPE-C-6P-073_C668623.html?s_z=n_usb)
 
 - External modules:
-	- [RG1602A](https://lcsc.com/product-detail/LCD-Screen_HS-HS1602A-B_C18198249.html)
-	- [Capacitive moisture Sensor](https://thepihut.com/products/capacitive-soil-moisture-sensor?variant=32137736421438&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gQT=1)
+	- [HS1602A](https://lcsc.com/product-detail/LCD-Screen_HS-HS1602A-B_C18198249.html)
+	- [Capacitive Moisture Sensor](https://thepihut.com/products/capacitive-soil-moisture-sensor?variant=32137736421438&country=GB&currency=GBP&utm_medium=product_sync&utm_source=google&utm_content=sag_organic&utm_campaign=sag_organic&gQT=1)
 	- [Vollgo VG6328A Bluetooth module](https://www.lcsc.com/product-detail/C20539408.html?s_z=s_IoT%252FCommunication%2520Modules%257CBluetooth%2520Modules)
 
 - [4.2v lipo Battery](https://www.adafruit.com/product/2011)
