@@ -12,15 +12,15 @@ SCHEMATIC := $(wildcard $(PCBDIR)/*.kicad_sch)
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
 
-SRCDIR := src
+FWDIR := fw
 
 BUILDDIR := build
 GERBERDIR := $(BUILDDIR)/gerber
 OBJDIR := $(BUILDDIR)/obj
 
 CFLAGS = -mcpu=cortex-m4 -mthumb -g -Wall
-CSRCS := $(filter-out $(SRCDIR)/interrupt_table.c, $(wildcard $(SRCDIR)/*.c))
-COBJS := $(patsubst $(SRCDIR)/%.c, $(OBJDIR)/%.o, $(CSRCS))
+CSRCS := $(filter-out $(FWDIR)/interrupt_table.c, $(wildcard $(FWDIR)/*.c))
+COBJS := $(patsubst $(FWDIR)/%.c, $(OBJDIR)/%.o, $(CSRCS))
 
 WITHLOGGING = $(if $(LOGLEVEL),-DLOGLEVEL=$(LOGLEVEL),)
 
@@ -32,9 +32,9 @@ fw: $(NAME)-fw.elf
 	$(info    FW build commit is $(COMMIT))
 
 $(NAME)-fw.elf: $(COBJS)
-	$(LD) $^ -T $(SRCDIR)/linker.ld -o $@
+	$(LD) $^ -T $(FWDIR)/linker.ld -o $@
 
-$(OBJDIR)/%.o: $(SRCDIR)/%.c | $(OBJDIR)
+$(OBJDIR)/%.o: $(FWDIR)/%.c | $(OBJDIR)
 	$(CC) $(CFLAGS) $(WITHLOGGING) -DGIT_SHA=\"$(COMMIT)\" -c $^ -o $@ -g
 
 $(OBJDIR):
