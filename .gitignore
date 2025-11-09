@@ -3,6 +3,7 @@
 *.zip
 *.elf
 build
+*.pdf
 # Editor Configuration
 .vscode
 plant-monitor

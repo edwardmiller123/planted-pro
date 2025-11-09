@@ -7,6 +7,8 @@ PCBDIR := pcb
 
 PCB := $(wildcard $(PCBDIR)/*.kicad_pcb)
 
+SCHEMATIC := $(wildcard $(PCBDIR)/*.kicad_sch)
+
 CC = arm-none-eabi-gcc
 LD = arm-none-eabi-ld
 
@@ -24,7 +26,7 @@ WITHLOGGING = $(if $(LOGLEVEL),-DLOGLEVEL=$(LOGLEVEL),)
 
 COMMIT = $(shell git rev-parse --short HEAD)
 
-all: fw pcb
+all: fw pcb schematic
 
 fw: $(NAME)-fw.elf
 	$(info    FW build commit is $(COMMIT))
@@ -45,7 +47,10 @@ pcb: $(PCB)
 	zip -9 -j $(REVNAME) $(GERBERDIR)/*
 	$(info    PCB revision $(REV))
 
+schematic: $(SCHEMATIC)
+	kicad-cli sch export pdf -o $(REVNAME).pdf $<
+
 clean :
-	rm -rf build *.elf *.zip
+	rm -rf build *.elf *.zip *.pdf
 
 .PHONY: clean pcb fw
