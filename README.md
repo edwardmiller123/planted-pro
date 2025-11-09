@@ -9,8 +9,8 @@ There is also the [planted-pro companion app](https://github.com/edwardmiller123
 - make
 	- If on windows you can use a windows version like [Gnuwin32](https://gnuwin32.sourceforge.net/packages/make.htm)
 
-- A device with the STLINK firmware. (For flashing FW) This could be an [official STlink debugger](https://uk.rs-online.com/web/p/debuggers-in-circuit-emulators/1827791) or a [nucleo board](https://www.st.com/en/evaluation-tools/nucleo-f446re.html)
-- [OpenOCD](https://openocd.org/pages/getting-openocd.html) (For flashing FW)
+- A device with the STLINK firmware. (For flashing main board) This could be an [official STlink debugger](https://uk.rs-online.com/web/p/debuggers-in-circuit-emulators/1827791) or a [nucleo board](https://www.st.com/en/evaluation-tools/nucleo-f446re.html)
+- [OpenOCD](https://openocd.org/pages/getting-openocd.html) (For flashing main board)
 	- [STLINK Tools](https://github.com/stlink-org/stlink) - Optional alternative
 - gdb-multiarch (for flashing and debugging)
 
@@ -21,11 +21,11 @@ Compile the firmware with,
 make fw
 ```
 
-By default the fw is compiled without any log lines and wioth the debug LED disabled. To enable the debug LED and to include the log lines simply run,
+By default the fw is compiled without any log lines and with the debug LED on the main board disabled. To enable these simply run,
 ```
 make fw LOGLEVEL={log level} (-B)
 ```
-where {log level} ranges from 0 to 4 with 0 being FATAL and 4 being DEBUG. You may need to force a full rebuild with -B for make to pick up the symbol changes.
+where {log level} ranges from 0 to 4 with 0 being FATAL and 4 being DEBUG. You may need to force a full rebuild with `-B` for make to pick up the symbol changes.
 
 ### Flashing The Board
 
@@ -40,7 +40,7 @@ The gerber and drill files for the main board can be exported from kicad by runn
 ```
 make pcb
 ```
-This will create a `zip` folder of all the nessecary files ready to be sent to your favourite PCB manufacturer.
+This will create a `zip` of all the nessecary files ready to be sent to your favourite PCB manufacturer.
 
 ### Schematic
 You can export a `pdf` of the schematic with,
