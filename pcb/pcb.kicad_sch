@@ -5,8 +5,8 @@
 	(uuid "a02550bc-85b4-480d-868d-ccdfd0f6046d")
 	(paper "A3")
 	(title_block
-		(title "Plant Monitor PCB")
-		(rev "1")
+		(title "planted-pro main board")
+		(rev "4")
 	)
 	(lib_symbols
 		(symbol "Battery_Management:MCP73831-2-OT"
