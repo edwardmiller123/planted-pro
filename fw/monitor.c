@@ -7,6 +7,7 @@
 #include "sensor.h"
 #include "heap.h"
 #include "fpmath.h"
+#include "ringbuf.h"
 
 // values calibrated using a 200k resistor in the potential divider
 #define LIGHT_BRIGHT_DIRECT_VAL 80
@@ -168,6 +169,7 @@ int measure_water(monitor *wm)
 }
 
 const char *battery_low = "Low Battery";
+const char *battery_calculating = "Calculating...";
 
 // The percent of the maximum measured battery voltage that Vref is equivalent to
 #define VREF_MAX_BAT_PERCENT 58
@@ -180,8 +182,14 @@ const char *battery_low = "Low Battery";
 // This value will be 72% of the min battery value (1.67V from divider)
 static uint16_t v_ref = 0;
 
+#define BAT_PERCENT_MEASUREMENTS 3
+ring_buffer bat_percent_buffer;
+
 int set_battery_charge(monitor *bm)
 {
+	// set the calculating message so this displays while we take the initial battery readings
+	bm->level = battery_calculating;
+
 	if (sensor_calculate_average(bm->snr) == -1)
 	{
 		LOG(ERROR, "Failed to get average battery charge reading");
@@ -200,30 +208,55 @@ int set_battery_charge(monitor *bm)
 	[[maybe_unused]] uint32_t args_min_adc_reading[] = {bm->min_adc_reading};
 	LOGF(DEBUG, "Calibrated min charge ADC value to $", args_min_adc_reading, 1, NULL, 0);
 
-	// calculate the charge percent uisng the scaled values
-	bm->percent = monitor_calculate_percent(bm);
+	// calculate the charge percent using the scaled values
+	uint8_t percent = monitor_calculate_percent(bm);
+
+	[[maybe_unused]] uint32_t args_percent[] = {percent};
+	LOGF(DEBUG, "Calculated battery percent as $", args_percent, 1, NULL, 0);
+
+	if (bat_percent_buffer.size < 3)
+	{
+		ring_buffer_write_byte(&bat_percent_buffer, percent);
+		return 0;
+	}
+
+	uint16_t total = 0;
+	result_code bat_percent_buf_read_result;
+	for (int i = 0; i < BAT_PERCENT_MEASUREMENTS; i++)
+	{
+		total += ring_buffer_read_byte(&bat_percent_buffer, &bat_percent_buf_read_result);
+		if (bat_percent_buf_read_result == EMPTY)
+		{
+			LOG(WARNING, "Attempted to read battery charge from empty buffer");
+			return 0;
+		}
+	}
+
+	// take an average of 3 for the final value just to be sure
+	bm->percent = fp_divide(total, BAT_PERCENT_MEASUREMENTS);
 
 	bm->level = NULL;
 
-	if (bm->percent < BAT_LOW_PERCENT) {
+	if (bm->percent < BAT_LOW_PERCENT)
+	{
 		bm->level = battery_low;
 
 		[[maybe_unused]] char *args_level[] = {(char *)bm->level};
 		LOGF(DEBUG, "Battery level set to &", NULL, 0, args_level, 1);
 	}
 
-	[[maybe_unused]] uint32_t args_intensity[] = {bm->percent};
-	LOGF(DEBUG, "Charge percent set to $", args_intensity, 1, NULL, 0);
+	[[maybe_unused]] uint32_t args_final_percent[] = {bm->percent};
+	LOGF(DEBUG, "Charge percent set to $", args_final_percent, 1, NULL, 0);
 
 	return 0;
-
 }
 
 int measure_battery_charge(monitor *bm)
 {
 	result_code result;
 	v_ref = adc_read_vrefint(&result);
-	if (result == FAILURE) {
+	if (result == FAILURE)
+	{
 		LOG(ERROR, "Failed to read internal reference voltage");
 		return -1;
 	}

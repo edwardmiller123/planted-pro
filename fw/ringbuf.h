@@ -8,7 +8,7 @@
 #define RING_BUF_CAPACITY 512
 
 // circular buffer. Reads and writes should either be as uint8_t or uint32_t.
-// Using both in the same buffer is undefined
+// Using a mix in the same buffer is undefined behaviour
 typedef struct ring_buffer {
 	uint16_t back;
 	uint16_t pos;

@@ -32,7 +32,7 @@
 #define SAMPLE_SIZE 5
 
 // Use a large sample size for the battery as the signal is expected to be noisey
-#define BAT_CHARGE_SAMPLE_SIZE 120
+#define BAT_CHARGE_SAMPLE_SIZE 90
 
 // poll every 15 minutes for 12 hours
 #define EXPORT_POLL_INTERVAL_SECONDS 900
