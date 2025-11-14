@@ -25,7 +25,7 @@ void logger(log_level level, char *msg);
 // logs a formatted message at the given log level over USART1
 void loggerf(log_level level, char *msg, uint32_t int_args[], uint32_t int_arg_count, char *str_args[], uint32_t str_args_count);
 
-// Only make only make the logging function call if we have a log level selected
+// Only include the log lines if we have a log level selected
 #ifdef LOGLEVEL
 #define LOGF(level, msg, int_args, int_arg_count, str_args, str_args_count) loggerf(level, msg, int_args, int_arg_count, str_args, str_args_count)
 #else

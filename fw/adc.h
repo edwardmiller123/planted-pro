@@ -44,4 +44,7 @@ void configure_adc();
 // manually trigger a conversion from the given ADC and read the result
 uint32_t adc_manual_conversion(adc adc_num, result_code * result);
 
+// Read the digital value of Vref which is always equivalent to ~1.21V
+uint16_t adc_read_vrefint(result_code *result);
+
 #endif

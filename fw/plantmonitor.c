@@ -22,12 +22,12 @@
 #define WATER_MIN_VALUE 1200
 
 // The battery has a max charge of 4.2v and can be considered "dead" by the time it
-// reaches 3.3v (any lower and we wont get accurate readings so consider 3.3 to be 0 percent battery).
-// The sensor gives half the battery voltage so we consider 2.1v full and 1.65 "empty".
-// Since the max ADC value 4095 corresponds to the reference voltage 3.3v we get ADC values of,
-// Full: 2620, empty: 2047
-#define BAT_CHARGE_MIN_VALUE 2047
-#define BAT_CHARGE_MAX_VALUE 2620
+// reaches 3.4v (any lower and we wont get accurate readings since this is the supply voltage so consider 3.4 to be 0 percent battery).
+// The sensor gives half the battery voltage so we consider 2.1v full and 1.67 "empty".
+// Since the max ADC value 4095 corresponds to the supply voltage 3.4v we get ADC values of,
+// Full: 2529, empty: 2011
+#define BAT_CHARGE_MIN_VALUE 2011
+#define BAT_CHARGE_MAX_VALUE 2529
 
 #define SAMPLE_SIZE 5
 
@@ -49,7 +49,7 @@ plant_monitor *init_plant_monitor()
 
 	// After 5 measurements have been taken we calculate the average light level and "percentage" and write it
 	// back to the state struct. The light monitor uses ADC1 to read from an ldr in a potential divider
-	sensor *light_sen = init_sensor(0, LIGHT_MAX_VALUE, SAMPLE_SIZE, ADC1);
+	sensor *light_sen = init_sensor(SAMPLE_SIZE, ADC1);
 	if (light_sen == NULL)
 	{
 		LOG(ERROR, "Failed to allocate memory for light sensor");
@@ -59,7 +59,7 @@ plant_monitor *init_plant_monitor()
 	LOG(INFO, "Light sensor initialised on ADC1");
 
 	// The water monitor uses a capacitive soil moisture sensor
-	sensor *water_sen = init_sensor(WATER_MIN_VALUE, WATER_MAX_VALUE, SAMPLE_SIZE, ADC2);
+	sensor *water_sen = init_sensor(SAMPLE_SIZE, ADC2);
 	if (water_sen == NULL)
 	{
 		LOG(ERROR, "Failed to allocate memory for water sensor");
@@ -69,7 +69,7 @@ plant_monitor *init_plant_monitor()
 	LOG(INFO, "Water sensor initialised on ADC2");
 
 	// The battery sensor measures the current battery voltage halfed so that it always remains under the reference voltage
-	sensor *battery_sen = init_sensor(BAT_CHARGE_MIN_VALUE, BAT_CHARGE_MAX_VALUE, BAT_CHARGE_SAMPLE_SIZE, ADC3);
+	sensor *battery_sen = init_sensor(BAT_CHARGE_SAMPLE_SIZE, ADC3);
 	if (water_sen == NULL)
 	{
 		LOG(ERROR, "Failed to allocate memory for battery sensor");
@@ -78,21 +78,21 @@ plant_monitor *init_plant_monitor()
 
 	LOG(INFO, "Battery sensor initialised on ADC3");
 
-	monitor *lm = init_monitor(light_sen);
+	monitor *lm = init_monitor(light_sen, 0, LIGHT_MAX_VALUE);
 	if (lm == NULL)
 	{
 		LOG(ERROR, "Failed to initialise light monitor");
 		return NULL;
 	}
 
-	monitor *wm = init_monitor(water_sen);
+	monitor *wm = init_monitor(water_sen, WATER_MIN_VALUE, WATER_MAX_VALUE);
 	if (wm == NULL)
 	{
 		LOG(ERROR, "Failed to initialise water monitor");
 		return NULL;
 	}
 
-	monitor *bm = init_monitor(battery_sen);
+	monitor *bm = init_monitor(battery_sen, BAT_CHARGE_MIN_VALUE, BAT_CHARGE_MAX_VALUE);
 	if (wm == NULL)
 	{
 		LOG(ERROR, "Failed to initialise battery monitor");

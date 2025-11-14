@@ -65,6 +65,4 @@ make all
 A full parts list can be found [here](docs/parts_list.md) in the docs folder along with data sheets for the MCU/ICs on the board and any external modules. 
 
 # TODO
-- Fix charge monitor. Actual output of buck converter is 3.4v when the battery voltage drops to this the buck outputs less and hence the adc refernce voltage is too low so we dont get accurate readings. Need to change the 0 charge value to match 3.4v. In this situation we should also display 0 percent charge until we can confirm the battery voltage reading is stable again. Maybe check the percent 5 times and require all 5 readings to be within plus or minus 2 percent of the first reading.
 - Decrease the resistor values on the battery charge monitor to reduce noise
-- Can read Vrefint internally to calculate the batery voltage correctly

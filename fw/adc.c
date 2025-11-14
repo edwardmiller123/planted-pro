@@ -11,7 +11,6 @@
 // configures the ADC1 to use channel 1 on PA1 as the input pin
 void configure_adc1()
 {
-
 	// enable adc1 clock on APB2 bus
 	io_set_bit(RCC_APB2ENR, 8);
 
@@ -19,12 +18,19 @@ void configure_adc1()
 	io_set_bit(GPIOA_MODER, 2);
 	io_set_bit(GPIOA_MODER, 3);
 
-	// enable channel 1
+	// enable channel 1 as first conversion
 	io_set_bit(ADC1_SQR3, 0);
 	io_clear_bit(ADC1_SQR3, 1);
 	io_clear_bit(ADC1_SQR3, 2);
 	io_clear_bit(ADC1_SQR3, 3);
 	io_clear_bit(ADC1_SQR3, 4);
+
+	// enable channel 17 as second conversion
+	io_set_bit(ADC1_SQR3, 5);
+	io_clear_bit(ADC1_SQR3, 6);
+	io_clear_bit(ADC1_SQR3, 7);
+	io_clear_bit(ADC1_SQR3, 8);
+	io_set_bit(ADC1_SQR3, 9);
 
 	// enable scan mode
 	io_set_bit(ADC1_CR1, 8);
@@ -51,7 +57,7 @@ void configure_adc2()
 	io_set_bit(GPIOA_MODER, 8);
 	io_set_bit(GPIOA_MODER, 9);
 
-	// enable channel 4
+	// enable channel 4 as first conversion
 	io_clear_bit(ADC2_SQR3, 0);
 	io_clear_bit(ADC2_SQR3, 1);
 	io_set_bit(ADC2_SQR3, 2);
@@ -208,6 +214,46 @@ uint32_t adc_manual_conversion(adc adc_num, result_code *result)
 
 	[[maybe_unused]] uint32_t logger_args_int[] = {adc_val};
 	LOGF(DEBUG, "& read conversion value: $", logger_args_int, 1, logger_args_str, 1);
+
+	// if reading ADC1 then also read the internal reference voltage
+	// if (adc_num == ADC1) {
+	// 	v_ref = IO_ACCESS(data_reg);
+	// }
+
+	return adc_val;
+}
+
+uint16_t adc_read_vrefint(result_code *result) {
+	// enable channel 17 as first conversion
+	io_set_bit(ADC1_SQR3, 0);
+	io_clear_bit(ADC1_SQR3, 1);
+	io_clear_bit(ADC1_SQR3, 2);
+	io_clear_bit(ADC1_SQR3, 3);
+	io_set_bit(ADC1_SQR3, 4);
+
+	io_set_bit(ADC1_CR2, 30);
+
+	if (wait_for_adc(ADC1, 500) == -1)
+	{
+		LOGF(ERROR, "ADC1_IN17 conversion failed", NULL, 0, NULL, 0);
+		if (result != NULL)
+		{
+			*result = FAILURE;
+		}
+		return 0;
+	}
+
+	uint32_t adc_val = IO_ACCESS(ADC1_DR);
+
+	[[maybe_unused]] uint32_t logger_args_int[] = {adc_val};
+	LOGF(DEBUG, "ADC1_IN17 read Vrefint conversion value: $", logger_args_int, 1, NULL, 0);
+
+	// re enable channel 1 as first conversion since we borrowed ADC1 for the reference volatge
+	io_set_bit(ADC1_SQR3, 0);
+	io_clear_bit(ADC1_SQR3, 1);
+	io_clear_bit(ADC1_SQR3, 2);
+	io_clear_bit(ADC1_SQR3, 3);
+	io_clear_bit(ADC1_SQR3, 4);
 
 	return adc_val;
 }
